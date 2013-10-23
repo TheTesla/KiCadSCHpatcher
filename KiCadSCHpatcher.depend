@@ -1,0 +1,53 @@
+# depslib dependency file v1.0
+1382484211 source:c:\projekte\c++\kicadschpatcher\main.cpp
+	<cstdlib>
+	<iostream>
+	<sstream>
+	<fstream>
+	<string>
+	<algorithm>
+	"Table.h"
+	"ICSymbol.h"
+	"ICProcTable.h"
+	<ctime>
+	<iomanip>
+	<stdio.h>
+	"KiCadlibOp.h"
+
+1382484420 c:\projekte\c++\kicadschpatcher\table.h
+	<cstdlib>
+	<fstream>
+	<string>
+	<algorithm>
+
+1354904274 c:\projekte\c++\kicadschpatcher\icsymbol.h
+	<string>
+
+1354903944 c:\projekte\c++\kicadschpatcher\icproctable.h
+	<iostream>
+	"ICSymbol.h"
+	"Table.h"
+	<sstream>
+
+1354904457 c:\projekte\c++\kicadschpatcher\kicadlibop.h
+	"ICSymbol.h"
+	<string>
+	<iostream>
+	<sstream>
+	<fstream>
+	<ctime>
+	<iomanip>
+
+1354665506 source:c:\projekte\c++\kicadschpatcher\icproctable.cpp
+	"ICProcTable.h"
+
+1354676908 source:c:\projekte\c++\kicadschpatcher\icsymbol.cpp
+	"ICSymbol.h"
+
+1378030872 source:c:\projekte\c++\kicadschpatcher\kicadlibop.cpp
+	"KiCadlibOp.h"
+
+1382484259 source:c:\projekte\c++\kicadschpatcher\table.cpp
+	"Table.h"
+	<iostream>
+
