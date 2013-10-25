@@ -32,6 +32,10 @@
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 		</Compiler>
+		<Unit filename="ICProcTable.cpp" />
+		<Unit filename="ICSymbol.cpp" />
+		<Unit filename="KiCadlibOp.cpp" />
+		<Unit filename="Table.cpp" />
 		<Unit filename="main.cpp" />
 		<Extensions>
 			<code_completion />

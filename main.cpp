@@ -29,7 +29,6 @@ using namespace std;
 
 
 
-
 int main(int argc, char *argv[])
 {
     string KiCadSCHFilename;
@@ -40,10 +39,14 @@ int main(int argc, char *argv[])
     KiCadSCHFile.open(KiCadSCHFilename.c_str());
     KiCadSCHTab.loadTable(KiCadSCHFile);
 
-    int i;
+    int i, row;
 
-    for(i=0;i<5;i++){
-        cout << KiCadSCHTab.Tableread(i,1) << endl;
+    row = KiCadSCHTab.findKiCadSCHVal("1k5");
+    cout << KiCadSCHTab.getDS(row)<< endl;
+
+    for(i=row;i<10;i++){
+
+        cout << KiCadSCHTab.Tableread(i,0) << endl;
 
     }
 

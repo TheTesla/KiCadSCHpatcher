@@ -36,6 +36,7 @@ void Table::loadTable(ifstream &File)
             oldpos = 0;
             qmpos = 0;
             entrystartpos = 0;
+            in_quotation_marks = false;
             while(1){
                 pos = line.find_first_of(" ", oldpos);
                 // Leerzeichen zwischen Anfuehrungszeichen zaehlen nicht
@@ -87,6 +88,8 @@ void Table::findtablesize(ifstream &File)
             tmp = 0;
             pos = 0;
             oldpos = 0;
+            qmpos = 0;
+            in_quotation_marks = false;
             while(string::npos!=pos){
                 pos = line.find_first_of(" ", oldpos);
                 // Leerzeichen zwischen Anfuehrungszeichen zaehlen nicht
@@ -106,7 +109,6 @@ void Table::findtablesize(ifstream &File)
         }
     File.clear();
     File.seekg(0,ios::beg);
-    cout << cols << endl;
     }
 }
 
@@ -115,6 +117,17 @@ int Table::findrow(string find, int col, int firstrow)
     int row;
     string str;
     for(row=firstrow;row<rows;row++){
+        str = this->Tableread(row,col);
+        if(0 == str.compare(find)) return row;
+    }
+    return -1;
+}
+
+int Table::findrow_bw(string find, int col, int lastrow)
+{
+    int row;
+    string str;
+    for(row=lastrow;row>=0;row--){
         str = this->Tableread(row,col);
         if(0 == str.compare(find)) return row;
     }
@@ -147,4 +160,137 @@ void Table::eraseemptyrows(void)
         }
         if(false == colempty) wrow++;
     }
+}
+
+int Table::findKiCadSCHrow(string fieldname, string fieldentry)
+{
+    int row;
+    row = findrow("$Comp",0);
+    while(-1!=row){
+        row = findrow("\""+fieldentry+"\"", 2, row+1);
+        if(Tableread(row,10)=="\""+fieldname+"\"") break;
+    }
+    return row;
+}
+
+int Table::findKiCadSCHRef(string fieldentry)
+{
+    int row;
+    row = findrow("$Comp",0);
+    while(-1!=row){
+        row = findrow("\""+fieldentry+"\"", 2, row+1);
+        if((Tableread(row,1)=="0")&&Tableread(row,0)=="F") break;
+    }
+    return row;
+}
+
+int Table::findKiCadSCHVal(string fieldentry)
+{
+    int row;
+    row = findrow("$Comp",0);
+    while(-1!=row){
+        row = findrow("\""+fieldentry+"\"", 2, row+1);
+        if((Tableread(row,1)=="1")&&Tableread(row,0)=="F") break;
+    }
+    return row;
+}
+
+int Table::findKiCadSCHFP(string fieldentry)
+{
+    int row;
+    row = findrow("$Comp",0);
+    while(-1!=row){
+        row = findrow("\""+fieldentry+"\"", 2, row+1);
+        if((Tableread(row,1)=="2")&&Tableread(row,0)=="F") break;
+    }
+    return row;
+}
+
+int Table::findKiCadSCHDS(string fieldentry)
+{
+    int row;
+    row = findrow("$Comp",0);
+    while(-1!=row){
+        row = findrow("\""+fieldentry+"\"", 2, row+1);
+        if((Tableread(row,1)=="3")&&Tableread(row,0)=="F") break;
+    }
+    return row;
+}
+
+int Table::getCompbeginrow(int row)
+{
+    row = findrow_bw("$Comp",0,row);
+    return row;
+}
+
+int Table::getCompendrow(int row)
+{
+    row = findrow("$EndComp",0,row);
+    return row;
+}
+
+string Table::getEntry(int row, string fieldname)
+{
+    int startrow, endrow;
+    startrow = getCompbeginrow(row);
+    endrow = getCompendrow(row);
+    row = findrow("\""+fieldname+"\"",10,startrow);
+    if(row>endrow) return "";
+    return Tableread(row,2);
+}
+
+string Table::getRef(int row)
+{
+    int startrow, endrow;
+    startrow = getCompbeginrow(row);
+    endrow = getCompendrow(row);
+    row = startrow;
+    while(Tableread(row,0)!="F"){
+        row = findrow("0",1,row+1);
+        if(-1==row) return "";
+    }
+    if(row>endrow) return "";
+    return Tableread(row,2);
+}
+
+string Table::getVal(int row)
+{
+    int startrow, endrow;
+    startrow = getCompbeginrow(row);
+    endrow = getCompendrow(row);
+    row = startrow;
+    while(Tableread(row,0)!="F"){
+        row = findrow("1",1,row+1);
+        if(-1==row) return "";
+    }
+    if(row>endrow) return "";
+    return Tableread(row,2);
+}
+
+string Table::getFP(int row)
+{
+    int startrow, endrow;
+    startrow = getCompbeginrow(row);
+    endrow = getCompendrow(row);
+    row = startrow;
+    while(Tableread(row,0)!="F"){
+        row = findrow("2",1,row+1);
+        if(-1==row) return "";
+    }
+    if(row>endrow) return "";
+    return Tableread(row,2);
+}
+
+string Table::getDS(int row)
+{
+    int startrow, endrow;
+    startrow = getCompbeginrow(row);
+    endrow = getCompendrow(row);
+    row = startrow;
+    while(Tableread(row,0)!="F"){
+        row = findrow("3",1,row+1);
+        if(-1==row) return "";
+    }
+    if(row>endrow) return "";
+    return Tableread(row,2);
 }
