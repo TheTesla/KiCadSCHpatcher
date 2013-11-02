@@ -81,7 +81,7 @@ int main(int argc, char *argv[])
 
     int i, row;
 
-    row = KiCadSCHTab.findKiCadSCHVal("CONN_25", 120);
+    row = KiCadSCHTab.findKiCadSCHVal("BAS70BRW", 120, 1);
     cout << row << endl;
     cout << KiCadSCHTab.getVal(row)<< endl;
 
@@ -93,7 +93,7 @@ int main(int argc, char *argv[])
 
     Patch SCHpatch;
     SCHpatch.iKiCadSCHtab = KiCadSCHTab;
-    SCHpatch.addEntry("Digi-Key Part Number", "12345", row);
+    SCHpatch.addEntry("Digi-Key Part Number", "12345", row, true, true);
 
 
     cout << patchFile(KiCadSCHFile, oFile, SCHpatch.patchvec) << endl;

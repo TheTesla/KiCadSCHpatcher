@@ -9,6 +9,7 @@
 
 #include "Table.h"
 #include <iostream>
+#include <string>
 
 Table::Table()
 {
@@ -165,46 +166,50 @@ void Table::eraseemptyrows(void)
     }
 }
 
-int Table::findKiCadSCHrow(string fieldname, string fieldentry, int startrow)
+int Table::findKiCadSCHrow(string fieldname, string fieldentry, int startrow, unsigned subpart)
 {
     int row;
     row = findrow("$Comp",startrow);
     while(-1!=row){
+        if(Tableread(row,10)=="\""+fieldname+"\"") {
+            if(to_string(subpart) == getUnitNbr(row)) return row;
+        }
         row = findrow("\""+fieldentry+"\"", 2, row+1);
-        if(Tableread(row,10)=="\""+fieldname+"\"") break;
     }
-    return row;
+    return -1;
 }
 
-int Table::findKiCadSCHStdAttrib(string attrib, string fieldentry, int startrow)
+int Table::findKiCadSCHStdAttrib(string attrib, string fieldentry, int startrow, unsigned subpart)
 {
     int row;
     row = findrow("$Comp",0,startrow);
     while(-1!=row){
+        if((Tableread(row,1)==attrib)&&Tableread(row,0)=="F"){
+            if(to_string(subpart) == getUnitNbr(row)) return row;
+        }
         row = findrow("\""+fieldentry+"\"", 2, row+1);
-        if((Tableread(row,1)==attrib)&&Tableread(row,0)=="F") break;
     }
-    return row;
+    return -1;
 }
 
-int Table::findKiCadSCHRef(string fieldentry, int startrow)
+int Table::findKiCadSCHRef(string fieldentry, int startrow, unsigned subpart)
 {
-    return findKiCadSCHStdAttrib("0", fieldentry, startrow);
+    return findKiCadSCHStdAttrib("0", fieldentry, startrow, subpart);
 }
 
-int Table::findKiCadSCHVal(string fieldentry, int startrow)
+int Table::findKiCadSCHVal(string fieldentry, int startrow, unsigned subpart)
 {
-    return findKiCadSCHStdAttrib("1", fieldentry, startrow);
+    return findKiCadSCHStdAttrib("1", fieldentry, startrow, subpart);
 }
 
-int Table::findKiCadSCHFP(string fieldentry, int startrow)
+int Table::findKiCadSCHFP(string fieldentry, int startrow, unsigned subpart)
 {
-    return findKiCadSCHStdAttrib("2", fieldentry, startrow);
+    return findKiCadSCHStdAttrib("2", fieldentry, startrow, subpart);
 }
 
-int Table::findKiCadSCHDS(string fieldentry, int startrow)
+int Table::findKiCadSCHDS(string fieldentry, int startrow, unsigned subpart)
 {
-    return findKiCadSCHStdAttrib("3", fieldentry, startrow);
+    return findKiCadSCHStdAttrib("3", fieldentry, startrow, subpart);
 }
 
 int Table::getCompbeginrow(int row)
@@ -278,6 +283,24 @@ string Table::getFP(int row)
 string Table::getDS(int row)
 {
     return getStdAttrib("3", row);
+}
+
+int Table::getUnitrow(int row)
+{
+    int startrow, endrow;
+    startrow = getCompbeginrow(row);
+    endrow = getCompendrow(row);
+    row = startrow;
+    row = findrow("U",0,row+1);
+    if(row>endrow) return -1;
+    return row;
+}
+
+string Table::getUnitNbr(int row)
+{
+    row = getUnitrow(row);
+    if(-1==row) return "";
+    return Tableread(row,1);
 }
 
 int Table::getKoordrow(int row)

@@ -36,12 +36,12 @@ class Table
         int findcol(string find, int row=0, int firstcol=0);
         void eraseemptyrows(void);
         int findrow_bw(string find, int col, int lastrow);
-        int findKiCadSCHrow(string fieldname, string fieldentry, int startrow = 0);
-        int findKiCadSCHStdAttrib(string attrib, string fieldentry, int startrow = 0);
-        int findKiCadSCHRef(string fieldentry, int startrow = 0);
-        int findKiCadSCHVal(string fieldentry, int startrow = 0);
-        int findKiCadSCHFP(string fieldentry, int startrow = 0);
-        int findKiCadSCHDS(string fieldentry, int startrow = 0);
+        int findKiCadSCHrow(string fieldname, string fieldentry, int startrow = 0, unsigned subpart = 1);
+        int findKiCadSCHStdAttrib(string attrib, string fieldentry, int startrow = 0, unsigned subpart = 1);
+        int findKiCadSCHRef(string fieldentry, int startrow = 0, unsigned subpart = 1);
+        int findKiCadSCHVal(string fieldentry, int startrow = 0, unsigned subpart = 1);
+        int findKiCadSCHFP(string fieldentry, int startrow = 0, unsigned subpart = 1);
+        int findKiCadSCHDS(string fieldentry, int startrow = 0, unsigned subpart = 1);
 
         int getCompbeginrow(int row);
         int getCompendrow(int row);
@@ -53,6 +53,8 @@ class Table
         string getVal(int row);
         string getFP(int row);
         string getDS(int row);
+        int getUnitrow(int row);
+        string getUnitNbr(int row);
         int getKoordrow(int row);
         string getX(int row);
         string getY(int row);
