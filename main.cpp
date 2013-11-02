@@ -22,20 +22,13 @@
 #include <iomanip>
 #include <stdio.h>
 #include "KiCadlibOp.h"
+#include "Patch.h"
 
 using namespace std;
 
 
 
-typedef struct modiFile_t
-{
-    bool del;   // true: delete the line
-    bool add;   // true: add new line
-    int lineNbr;// the corresponding line-number of the input-file
-    string line;// content of the new line (if line is added)
-} modiFile_t;
-
-int patchFile(ifstream &iFile, ofstream &oFile, modiFile_t* patch)
+int patchFile(ifstream &iFile, ofstream &oFile, vector<modiFile_t> patch)
 {
     string iline, oline;
     modiFile_t currentpatch;
@@ -53,7 +46,7 @@ int patchFile(ifstream &iFile, ofstream &oFile, modiFile_t* patch)
         currentpatch.del = false;
         currentpatch.line = "";
         currentpatch.lineNbr = 0;
-        for(i=0;i<5;i++){
+        for(i=0;i<patch.size();i++){
             if(line_n == patch[i].lineNbr){
                 currentpatch = patch[i];
                 if(currentpatch.add){
@@ -73,8 +66,11 @@ int patchFile(ifstream &iFile, ofstream &oFile, modiFile_t* patch)
 }
 
 
+
+
 int main(int argc, char *argv[])
 {
+    cout << "blub"  << endl;
     string KiCadSCHFilename;
     Table KiCadSCHTab;
 
@@ -85,7 +81,7 @@ int main(int argc, char *argv[])
 
     int i, row;
 
-    row = KiCadSCHTab.findKiCadSCHVal("CONN_25", 124);
+    row = KiCadSCHTab.findKiCadSCHVal("CONN_25", 120);
     cout << row << endl;
     cout << KiCadSCHTab.getVal(row)<< endl;
 
@@ -94,25 +90,13 @@ int main(int argc, char *argv[])
     KiCadSCHFile.clear();
     KiCadSCHFile.seekg(0, ios::beg);
 
-    modiFile_t patch[5];
-    patch[0].del = true;
-    patch[0].add = false;
-    patch[0].lineNbr = 0;
-    patch[1].del = true;
-    patch[1].add = false;
-    patch[1].lineNbr = 1;
-    patch[2].del = true;
-    patch[2].add = true;
-    patch[2].lineNbr = 2;
-    patch[2].line = "2";
-    patch[3].del = false;
-    patch[3].add = true;
-    patch[3].lineNbr = 2;
-    patch[3].line = "3";
-    patch[4].del = true;
-    patch[4].add = false;
-    patch[4].lineNbr = 4;
-    cout << patchFile(KiCadSCHFile, oFile, patch) << endl;
+
+    Patch SCHpatch;
+    SCHpatch.iKiCadSCHtab = KiCadSCHTab;
+    SCHpatch.addEntry("Digi-Key Part Number", "12345", row);
+
+
+    cout << patchFile(KiCadSCHFile, oFile, SCHpatch.patchvec) << endl;
 
     oFile.close();
 

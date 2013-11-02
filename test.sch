@@ -1,7 +1,8 @@
-2
-3
+1 "" 2 3 4 5 6
+7 8 9 0
 EESchema Schematic File Version 2  date 22.10.2013 14:17:06
 LIBS:power
+LIBS:device
 LIBS:transistors
 LIBS:conn
 LIBS:linear
@@ -134,6 +135,7 @@ F 0 "P1" V 1150 4000 60  0000 C CNN
 F 1 "CONN_25" V 1250 4000 60  0000 C CNN
 F 2 "PIN_ARRAY_25X1" V 1400 4000 60  0000 C CNN
 F 3 "" H 1200 4000 60  0000 C CNN
+F 4 "12345" H 1200 4000 60 0000 C CNN "Digi-Key Part Number"
 	1    1200 4000
 	-1   0    0    1   
 $EndComp

@@ -29,13 +29,17 @@
 			</Target>
 		</Build>
 		<Compiler>
+			<Add option="-std=c++11" />
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 		</Compiler>
 		<Unit filename="ICProcTable.cpp" />
 		<Unit filename="ICSymbol.cpp" />
 		<Unit filename="KiCadlibOp.cpp" />
+		<Unit filename="Patch.cpp" />
+		<Unit filename="Patch.h" />
 		<Unit filename="Table.cpp" />
+		<Unit filename="Table.h" />
 		<Unit filename="main.cpp" />
 		<Extensions>
 			<code_completion />

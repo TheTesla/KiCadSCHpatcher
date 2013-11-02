@@ -123,6 +123,9 @@ int Table::findrow(string find, int col, int firstrow)
     return -1;
 }
 
+
+
+
 int Table::findrow_bw(string find, int col, int lastrow)
 {
     int row;
@@ -216,13 +219,30 @@ int Table::getCompendrow(int row)
     return row;
 }
 
-string Table::getEntry(int row, string fieldname)
+int Table::getLastentryrow(int row)
+{
+    int startrow, endrow;
+    startrow = getCompbeginrow(row);
+    endrow = getCompendrow(row);
+    row = findrow_bw("F",0,endrow);
+    if(row<startrow) return -1;
+    return row;
+}
+
+int Table::getEntryrow(int row, string fieldname)
 {
     int startrow, endrow;
     startrow = getCompbeginrow(row);
     endrow = getCompendrow(row);
     row = findrow("\""+fieldname+"\"",10,startrow);
-    if(row>endrow) return "";
+    if(row>endrow) return -1;
+    return row;
+}
+
+string Table::getEntry(int row, string fieldname)
+{
+    row = getEntryrow(row, fieldname);
+    if(-1==row) return "";
     return Tableread(row,2);
 }
 

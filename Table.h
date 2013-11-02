@@ -45,6 +45,8 @@ class Table
 
         int getCompbeginrow(int row);
         int getCompendrow(int row);
+        int getLastentryrow(int row);
+        int getEntryrow(int row, string fieldname);
         string getEntry(int row, string fieldname);
         string getStdAttrib(string attrib, int row);
         string getRef(int row);
