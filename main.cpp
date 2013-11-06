@@ -23,6 +23,7 @@
 #include <stdio.h>
 #include "KiCadlibOp.h"
 #include "Patch.h"
+#include "KiCadSCH.h"
 
 using namespace std;
 
@@ -72,37 +73,36 @@ int main(int argc, char *argv[])
 {
     cout << "blub"  << endl;
     string KiCadSCHFilename;
-    Table KiCadSCHTab;
+    //Table KiCadSCHTab;
+    KiCadSCH kicadsch;
+
 
     KiCadSCHFilename = "ATUC256L4U.sch";
-    ifstream KiCadSCHFile;
-    KiCadSCHFile.open(KiCadSCHFilename.c_str());
-    KiCadSCHTab.loadTable(KiCadSCHFile);
+    kicadsch.readSCHfile(KiCadSCHFilename);
 
     int i, row;
 
-    row = KiCadSCHTab.findKiCadSCHVal("BAS70BRW", 120, 1);
+    row = kicadsch.findrow(VAL,"BAS70BRW", 120, 1);
     cout << row << endl;
-    cout << KiCadSCHTab.getVal(row)<< endl;
+    cout << kicadsch.getEntry(row, VAL)<< endl;
 
     ofstream oFile;
     oFile.open("test.sch");
-    KiCadSCHFile.clear();
-    KiCadSCHFile.seekg(0, ios::beg);
 
 
-    Patch SCHpatch;
-    SCHpatch.iKiCadSCHtab = KiCadSCHTab;
-    SCHpatch.addEntry("Digi-Key Part Number", "12345", row, true, true);
 
 
-    cout << patchFile(KiCadSCHFile, oFile, SCHpatch.patchvec) << endl;
+    //SCHpatch.addEntry("Digi-Key Part Number", "12345", row, true, true);
+    kicadsch.addEntry(VAL, "12345", row, true, true);
+
+
+    cout << kicadsch.patchFile(oFile) << endl;
 
     oFile.close();
 
     for(i=row;i<10;i++){
 
-        cout << KiCadSCHTab.Tableread(i,0) << endl;
+        cout << kicadsch.tab.Tableread(i,0) << endl;
 
     }
 

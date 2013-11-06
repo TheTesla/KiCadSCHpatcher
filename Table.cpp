@@ -10,6 +10,7 @@
 #include "Table.h"
 #include <iostream>
 #include <string>
+#include "KiCadSCH.h"
 
 Table::Table()
 {
@@ -169,7 +170,7 @@ void Table::eraseemptyrows(void)
 int Table::findKiCadSCHrow(string fieldname, string fieldentry, int startrow, unsigned subpart)
 {
     int row;
-    row = findrow("$Comp",startrow);
+    row = findrow("$Comp", 0, startrow);
     while(-1!=row){
         if(Tableread(row,10)=="\""+fieldname+"\"") {
             if(to_string(subpart) == getUnitNbr(row)) return row;
@@ -182,7 +183,7 @@ int Table::findKiCadSCHrow(string fieldname, string fieldentry, int startrow, un
 int Table::findKiCadSCHStdAttrib(string attrib, string fieldentry, int startrow, unsigned subpart)
 {
     int row;
-    row = findrow("$Comp",0,startrow);
+    row = findrow("$Comp", 0, startrow);
     while(-1!=row){
         if((Tableread(row,1)==attrib)&&Tableread(row,0)=="F"){
             if(to_string(subpart) == getUnitNbr(row)) return row;
@@ -251,7 +252,7 @@ string Table::getEntry(int row, string fieldname)
     return Tableread(row,2);
 }
 
-string Table::getStdAttrib(string attrib, int row)
+int Table::getStdAttribrow(string attrib, int row)
 {
     int startrow, endrow;
     startrow = getCompbeginrow(row);
@@ -259,9 +260,16 @@ string Table::getStdAttrib(string attrib, int row)
     row = startrow;
     while(Tableread(row,0)!="F"){
         row = findrow(attrib,1,row+1);
-        if(-1==row) return "";
+        if(-1==row) return -1;
     }
-    if(row>endrow) return "";
+    if(row>endrow) return -1;
+    return row;
+}
+
+string Table::getStdAttrib(string attrib, int row)
+{
+    row = getStdAttribrow(attrib, row);
+    if(-1==row) return "";
     return Tableread(row,2);
 }
 

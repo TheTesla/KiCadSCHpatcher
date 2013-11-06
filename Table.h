@@ -23,6 +23,7 @@
 #include <string>
 #include <algorithm>
 
+
 using namespace std;
 
 class Table
@@ -36,6 +37,7 @@ class Table
         int findcol(string find, int row=0, int firstcol=0);
         void eraseemptyrows(void);
         int findrow_bw(string find, int col, int lastrow);
+
         int findKiCadSCHrow(string fieldname, string fieldentry, int startrow = 0, unsigned subpart = 1);
         int findKiCadSCHStdAttrib(string attrib, string fieldentry, int startrow = 0, unsigned subpart = 1);
         int findKiCadSCHRef(string fieldentry, int startrow = 0, unsigned subpart = 1);
@@ -48,6 +50,7 @@ class Table
         int getLastentryrow(int row);
         int getEntryrow(int row, string fieldname);
         string getEntry(int row, string fieldname);
+        int getStdAttribrow(string attrib, int row);
         string getStdAttrib(string attrib, int row);
         string getRef(int row);
         string getVal(int row);
