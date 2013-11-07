@@ -31,7 +31,7 @@ class Table
     public:
         Table();
         ~Table();
-        void loadTable(ifstream &File);
+        void loadTable(ifstream &File, string delim = ",", string ignorebefore = " ", string ignoreafter = " ");
         string Tableread(int row, int col);
         int findrow(string find, int col=0, int firstrow=0);
         int findcol(string find, int row=0, int firstcol=0);

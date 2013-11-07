@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1383773211 source:c:\projekte\c++\kicadschpatcher\main.cpp
+1383838589 source:c:\projekte\c++\kicadschpatcher\main.cpp
 	<cstdlib>
 	<iostream>
 	<sstream>
@@ -16,7 +16,7 @@
 	"Patch.h"
 	"KiCadSCH.h"
 
-1383508867 c:\projekte\c++\kicadschpatcher\table.h
+1383836011 c:\projekte\c++\kicadschpatcher\table.h
 	<cstdlib>
 	<fstream>
 	<string>
@@ -49,7 +49,7 @@
 1378027272 source:c:\projekte\c++\kicadschpatcher\kicadlibop.cpp
 	"KiCadlibOp.h"
 
-1383513229 source:c:\projekte\c++\kicadschpatcher\table.cpp
+1383837299 source:c:\projekte\c++\kicadschpatcher\table.cpp
 	"Table.h"
 	<iostream>
 	<string>
@@ -71,6 +71,6 @@
 	<vector>
 	<fstream>
 
-1383773167 source:c:\projekte\c++\kicadschpatcher\kicadsch.cpp
+1383822724 source:c:\projekte\c++\kicadschpatcher\kicadsch.cpp
 	"KiCadSCH.h"
 

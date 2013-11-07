@@ -15,7 +15,7 @@ KiCadSCH::~KiCadSCH()
 int KiCadSCH::readSCHfile(ifstream &file)
 {
     if(!file.is_open()) return -1;
-    tab.loadTable(file);
+    tab.loadTable(file, " ");
     file.clear();
     file.seekg(0, ios::beg);
     return 0;

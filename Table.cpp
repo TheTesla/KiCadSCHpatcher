@@ -20,9 +20,9 @@ Table::~Table()
 {
 }
 
-void Table::loadTable(ifstream &File)
+void Table::loadTable(ifstream &File, string delim, string ignorebefore, string ignoreafter)
 {
-    int col, row, i, pos, oldpos, entrystartpos, qmpos;
+    int col, row, i, pos, oldpos, entrystartpos, qmpos, entrbegpos, entrendpos;
     string entry, line;
     bool in_quotation_marks = false;
 
@@ -39,8 +39,8 @@ void Table::loadTable(ifstream &File)
             qmpos = 0;
             entrystartpos = 0;
             in_quotation_marks = false;
-            while(1){
-                pos = line.find_first_of(" ", oldpos);
+            while(line.size()!=pos){
+                pos = line.find_first_of(delim, oldpos);
                 // Leerzeichen zwischen Anfuehrungszeichen zaehlen nicht
                 qmpos = oldpos;
                 while(1){ // weil zwei Anfuehrungszeichen in einem Eintrag sein koennen
@@ -49,10 +49,23 @@ void Table::loadTable(ifstream &File)
                     qmpos++;
                     in_quotation_marks = !in_quotation_marks;
                 }
-                if(string::npos==pos) break;
+                if(string::npos==pos) pos = line.size();
                 if(!in_quotation_marks){
-                    if(oldpos<pos){
+                    // zwischen zwei Delimiter befindet sich der Eintrag
+                    if((oldpos<pos)||((ignorebefore!=delim)&&(ignoreafter!=delim))){
+                            /* Besonderheit: Delimitterzeichen ist zu ignorierendes Zeichen -
+                                             keine Unterscheidung zwischen leeren Eintraegen
+                                             und mehreren zu ignorierenden Fuellzeichen moeglich
+                            */
+
                         entry = line.substr(entrystartpos, pos-entrystartpos);
+                        entrbegpos = entry.find_first_not_of(ignorebefore); // zu ignorierende Zeichen am Anfang, ...
+                        entrendpos = entry.find_last_not_of(ignoreafter); // zu ignorierende Zeichen am Ende, ...
+                        if((string::npos!=entrbegpos)&&(string::npos!=entrendpos)){
+                            entry = entry.substr(entrbegpos, entrendpos-entrbegpos+1); // ... entfernen
+                        }else{
+                            entry = "";
+                        }
                         tabstr[col+row*cols] = entry;
                         col++;
                     }
@@ -60,8 +73,6 @@ void Table::loadTable(ifstream &File)
                 }
                 oldpos = pos+1;
             }
-            entry = line.substr(entrystartpos, line.size()-entrystartpos);
-            tabstr[col+row*cols] = entry;
             row++;
         }
     }

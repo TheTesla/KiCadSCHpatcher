@@ -82,7 +82,7 @@ int main(int argc, char *argv[])
 
     int i, row;
 
-    row = kicadsch.findrow(VAL,"BAS70BRW", 120, 1);
+    row = kicadsch.findrow(VAL,"BAS 70BRW", 120, 1);
     cout << row << endl;
     cout << kicadsch.getEntry(row, VAL)<< endl;
 
