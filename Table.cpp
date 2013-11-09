@@ -43,13 +43,13 @@ void Table::loadTable(ifstream &File, string delim, string ignorebefore, string 
                 pos = line.find_first_of(delim, oldpos);
                 // Leerzeichen zwischen Anfuehrungszeichen zaehlen nicht
                 qmpos = oldpos;
+                if(string::npos==pos) pos = line.size();
                 while(1){ // weil zwei Anfuehrungszeichen in einem Eintrag sein koennen
                     qmpos = line.find_first_of("\"", qmpos);
                     if((string::npos==qmpos)||(qmpos>pos)) break;
                     qmpos++;
                     in_quotation_marks = !in_quotation_marks;
                 }
-                if(string::npos==pos) pos = line.size();
                 if(!in_quotation_marks){
                     // zwischen zwei Delimiter befindet sich der Eintrag
                     if((oldpos<pos)||((ignorebefore!=delim)&&(ignoreafter!=delim))){
@@ -136,9 +136,6 @@ int Table::findrow(string find, int col, int firstrow)
     return -1;
 }
 
-
-
-
 int Table::findrow_bw(string find, int col, int lastrow)
 {
     int row;
@@ -176,173 +173,4 @@ void Table::eraseemptyrows(void)
         }
         if(false == colempty) wrow++;
     }
-}
-
-int Table::findKiCadSCHrow(string fieldname, string fieldentry, int startrow, unsigned subpart)
-{
-    int row;
-    row = findrow("$Comp", 0, startrow);
-    while(-1!=row){
-        if(Tableread(row,10)=="\""+fieldname+"\"") {
-            if(to_string(subpart) == getUnitNbr(row)) return row;
-        }
-        row = findrow("\""+fieldentry+"\"", 2, row+1);
-    }
-    return -1;
-}
-
-int Table::findKiCadSCHStdAttrib(string attrib, string fieldentry, int startrow, unsigned subpart)
-{
-    int row;
-    row = findrow("$Comp", 0, startrow);
-    while(-1!=row){
-        if((Tableread(row,1)==attrib)&&Tableread(row,0)=="F"){
-            if(to_string(subpart) == getUnitNbr(row)) return row;
-        }
-        row = findrow("\""+fieldentry+"\"", 2, row+1);
-    }
-    return -1;
-}
-
-int Table::findKiCadSCHRef(string fieldentry, int startrow, unsigned subpart)
-{
-    return findKiCadSCHStdAttrib("0", fieldentry, startrow, subpart);
-}
-
-int Table::findKiCadSCHVal(string fieldentry, int startrow, unsigned subpart)
-{
-    return findKiCadSCHStdAttrib("1", fieldentry, startrow, subpart);
-}
-
-int Table::findKiCadSCHFP(string fieldentry, int startrow, unsigned subpart)
-{
-    return findKiCadSCHStdAttrib("2", fieldentry, startrow, subpart);
-}
-
-int Table::findKiCadSCHDS(string fieldentry, int startrow, unsigned subpart)
-{
-    return findKiCadSCHStdAttrib("3", fieldentry, startrow, subpart);
-}
-
-int Table::getCompbeginrow(int row)
-{
-    row = findrow_bw("$Comp",0,row);
-    return row;
-}
-
-int Table::getCompendrow(int row)
-{
-    row = findrow("$EndComp",0,row);
-    return row;
-}
-
-int Table::getLastentryrow(int row)
-{
-    int startrow, endrow;
-    startrow = getCompbeginrow(row);
-    endrow = getCompendrow(row);
-    row = findrow_bw("F",0,endrow);
-    if(row<startrow) return -1;
-    return row;
-}
-
-int Table::getEntryrow(int row, string fieldname)
-{
-    int startrow, endrow;
-    startrow = getCompbeginrow(row);
-    endrow = getCompendrow(row);
-    row = findrow("\""+fieldname+"\"",10,startrow);
-    if(row>endrow) return -1;
-    return row;
-}
-
-string Table::getEntry(int row, string fieldname)
-{
-    row = getEntryrow(row, fieldname);
-    if(-1==row) return "";
-    return Tableread(row,2);
-}
-
-int Table::getStdAttribrow(string attrib, int row)
-{
-    int startrow, endrow;
-    startrow = getCompbeginrow(row);
-    endrow = getCompendrow(row);
-    row = startrow;
-    while(Tableread(row,0)!="F"){
-        row = findrow(attrib,1,row+1);
-        if(-1==row) return -1;
-    }
-    if(row>endrow) return -1;
-    return row;
-}
-
-string Table::getStdAttrib(string attrib, int row)
-{
-    row = getStdAttribrow(attrib, row);
-    if(-1==row) return "";
-    return Tableread(row,2);
-}
-
-string Table::getRef(int row)
-{
-    return getStdAttrib("0", row);
-}
-
-string Table::getVal(int row)
-{
-    return getStdAttrib("1", row);
-}
-
-string Table::getFP(int row)
-{
-    return getStdAttrib("2", row);
-}
-
-string Table::getDS(int row)
-{
-    return getStdAttrib("3", row);
-}
-
-int Table::getUnitrow(int row)
-{
-    int startrow, endrow;
-    startrow = getCompbeginrow(row);
-    endrow = getCompendrow(row);
-    row = startrow;
-    row = findrow("U",0,row+1);
-    if(row>endrow) return -1;
-    return row;
-}
-
-string Table::getUnitNbr(int row)
-{
-    row = getUnitrow(row);
-    if(-1==row) return "";
-    return Tableread(row,1);
-}
-
-int Table::getKoordrow(int row)
-{
-    int startrow, endrow;
-    startrow = getCompbeginrow(row);
-    endrow = getCompendrow(row);
-    row = startrow;
-    row = findrow("P",0,row+1);
-    if(row>endrow) return -1;
-    return row;
-}
-
-string Table::getX(int row)
-{
-    row = getKoordrow(row);
-    if(-1==row) return "";
-    return Tableread(row,1);
-}
-
-string Table::getY(int row)
-{
-    row = getKoordrow(row);
-    if(-1==row) return "";
-    return Tableread(row,2);
 }

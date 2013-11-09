@@ -30,10 +30,11 @@ int KiCadSCH::readSCHfile(string filename)
 int KiCadSCH::findrow(string fieldname, string fieldentry, int startrow, unsigned subpart)
 {
     int row;
-    row = tab.findrow("$Comp",startrow);
+    row = getCompbeginrow(startrow);
+
     while(-1!=row){
-        if((tab.Tableread(row,10)=="\""+fieldname+"\"")&&tab.Tableread(row,0)=="F") {
-            if(to_string(subpart) == tab.getUnitNbr(row)) return row;
+        if((tab.Tableread(row,10)=="\""+fieldname+"\"")&&(tab.Tableread(row,0)=="F")) {
+            if(to_string(subpart) == getUnitNbr(row)) return row;
         }
         row = tab.findrow("\""+fieldentry+"\"", 2, row+1);
     }
@@ -43,10 +44,12 @@ int KiCadSCH::findrow(string fieldname, string fieldentry, int startrow, unsigne
 int KiCadSCH::findrow(KiCadStdfn_et fieldname, string fieldentry, int startrow, unsigned subpart)
 {
     int row;
-    row = tab.findrow("$Comp", 0, startrow);
+
+    row = getCompbeginrow(startrow);
+
     while(-1!=row){
         if((tab.Tableread(row,1)==to_string(fieldname))&&tab.Tableread(row,0)=="F"){
-            if(to_string(subpart) == tab.getUnitNbr(row)) return row;
+            if(to_string(subpart) == getUnitNbr(row)) return row;
         }
         row = tab.findrow("\""+fieldentry+"\"", 2, row+1);
     }
@@ -78,9 +81,14 @@ int KiCadSCH::getLastentryrow(int row)
 int KiCadSCH::getEntryrow(int row, string fieldname)
 {
     int startrow, endrow;
+    int col;
     startrow = getCompbeginrow(row);
     endrow = getCompendrow(row);
+    //cout << fieldname << endl;
+    //cout << startrow << "  " << endrow << endl;
+
     row = tab.findrow("\""+fieldname+"\"",10,startrow);
+    //cout << row << endl;
     if(row>endrow) return -1;
     return row;
 }
@@ -180,7 +188,6 @@ int KiCadSCH::addEntryGen(string entrycontent, int row, int entryrow, string las
     modiFile_t patch;
     string line;
 
-
     koordrow = getKoordrow(row);
     if(-1==koordrow) return -1;
     // Eintrag nicht vorhanden
@@ -214,14 +221,14 @@ int KiCadSCH::addEntryGen(string entrycontent, int row, int entryrow, string las
 int KiCadSCH::addEntry(string entryname, string entrycontent, int row, bool overwrite, bool resetparams)
 {
     int entryrow;
-    entryrow = tab.getEntryrow(row, entryname);
+    entryrow = getEntryrow(row, entryname);
     return addEntryGen(entrycontent, row, entryrow, " \""+entryname+"\"", overwrite, resetparams);
 }
 
 int KiCadSCH::addEntry(KiCadStdfn_et entryname, string entrycontent, int row, bool overwrite, bool resetparams)
 {
     int entryrow;
-    entryrow = tab.getStdAttribrow(to_string(entryname), row);
+    entryrow = getEntryrow(row, entryname);
     return addEntryGen(entrycontent, row, entryrow, "", overwrite, resetparams);
 }
 

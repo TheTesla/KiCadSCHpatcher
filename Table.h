@@ -38,33 +38,6 @@ class Table
         void eraseemptyrows(void);
         int findrow_bw(string find, int col, int lastrow);
 
-        int findKiCadSCHrow(string fieldname, string fieldentry, int startrow = 0, unsigned subpart = 1);
-        int findKiCadSCHStdAttrib(string attrib, string fieldentry, int startrow = 0, unsigned subpart = 1);
-        int findKiCadSCHRef(string fieldentry, int startrow = 0, unsigned subpart = 1);
-        int findKiCadSCHVal(string fieldentry, int startrow = 0, unsigned subpart = 1);
-        int findKiCadSCHFP(string fieldentry, int startrow = 0, unsigned subpart = 1);
-        int findKiCadSCHDS(string fieldentry, int startrow = 0, unsigned subpart = 1);
-
-        int getCompbeginrow(int row);
-        int getCompendrow(int row);
-        int getLastentryrow(int row);
-        int getEntryrow(int row, string fieldname);
-        string getEntry(int row, string fieldname);
-        int getStdAttribrow(string attrib, int row);
-        string getStdAttrib(string attrib, int row);
-        string getRef(int row);
-        string getVal(int row);
-        string getFP(int row);
-        string getDS(int row);
-        int getUnitrow(int row);
-        string getUnitNbr(int row);
-        int getKoordrow(int row);
-        string getX(int row);
-        string getY(int row);
-
-
-
-
     private:
         string* tabstr;
         int cols;

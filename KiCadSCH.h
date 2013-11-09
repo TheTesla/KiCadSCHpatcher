@@ -7,7 +7,7 @@
 #include <string>
 #include <vector>
 #include <fstream>
-
+#include <iostream>
 
 using namespace std;
 
@@ -32,10 +32,8 @@ class KiCadSCH
     public:
         KiCadSCH();
         ~KiCadSCH();
-        Table tab;
         int readSCHfile(ifstream &file);
         int readSCHfile(string filename);
-        vector<modiFile_t> patchvec;
         int findrow(string fieldname, string fieldentry, int startrow = 0, unsigned subpart = 1);
         int findrow(KiCadStdfn_et fieldname, string fieldentry, int startrow = 0, unsigned subpart = 1);
         int getCompbeginrow(int row);
@@ -56,6 +54,9 @@ class KiCadSCH
 
     private:
         ifstream iSCHfile;
+        Table tab;
+        vector<modiFile_t> patchvec;
+
 };
 
 #endif // KICADSCH_H_INCLUDED

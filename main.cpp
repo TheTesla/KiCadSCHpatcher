@@ -24,6 +24,7 @@
 #include "KiCadlibOp.h"
 #include "Patch.h"
 #include "KiCadSCH.h"
+#include "CSVop.h"
 
 using namespace std;
 
@@ -66,6 +67,14 @@ int patchFile(ifstream &iFile, ofstream &oFile, vector<modiFile_t> patch)
     return 0;
 }
 
+string rmquotmarks(string str)
+{
+    int spos, epos;
+    spos = str.find_first_not_of("\"");
+    epos = str.find_last_not_of("\"");
+    if(spos!=string::npos&&epos!=string::npos) str = str.substr(spos, epos-spos+1);
+    return str;
+}
 
 
 
@@ -82,15 +91,34 @@ int main(int argc, char *argv[])
 
     int i, row;
 
-    row = kicadsch.findrow(VAL,"BAS 70BRW", 120, 1);
+    row = kicadsch.findrow(VAL,"BAS70BRW", 120, 1);
     cout << row << endl;
     cout << kicadsch.getEntry(row, VAL)<< endl;
 
     ofstream oFile;
     oFile.open("test.sch");
 
+    string search_fieldname;
+    string entry, newentry;
+    search_fieldname = "Digi-Key Part Number";
+    string update_fieldname;
+    update_fieldname = "Seeed OPL SKU";
 
+    CSVop Database;
 
+    Database.readCSVfile("ATXMega128_USB.csv");
+    cout << Database.getEntry(Database.findrow("Color", "yellow"), "Reference") << endl;
+
+    row = 0;
+    while(1){
+        row = kicadsch.getCompendrow(row+1);
+        entry = kicadsch.getEntry(row, search_fieldname);
+        entry = rmquotmarks(entry);
+
+        newentry = Database.getEntry(Database.findrow(search_fieldname,entry), update_fieldname);
+        kicadsch.addEntry(update_fieldname, newentry, row);
+        if(-1==row) break;
+    }
 
     //SCHpatch.addEntry("Digi-Key Part Number", "12345", row, true, true);
     kicadsch.addEntry(VAL, "12345", row, true, true);
@@ -100,11 +128,7 @@ int main(int argc, char *argv[])
 
     oFile.close();
 
-    for(i=row;i<10;i++){
 
-        cout << kicadsch.tab.Tableread(i,0) << endl;
-
-    }
 
 
     return EXIT_SUCCESS;
