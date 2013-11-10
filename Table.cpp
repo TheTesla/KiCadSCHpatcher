@@ -22,7 +22,7 @@ Table::~Table()
 
 void Table::loadTable(ifstream &File, string delim, string ignorebefore, string ignoreafter)
 {
-    int col, row, i, pos, oldpos, entrystartpos, qmpos, entrbegpos, entrendpos;
+    int col, row, pos, oldpos, entrystartpos, qmpos, entrbegpos, entrendpos;
     string entry, line;
     bool in_quotation_marks = false;
 

@@ -158,6 +158,15 @@ string KiCadSCH::getEntry(int row, KiCadStdfn_et fieldname)
     return tab.Tableread(row,2);
 }
 
+void KiCadSCH::getEntrys(int row, vector<datapair_t> &datavec)
+{
+    int i;
+    for(i=0;i<datavec.size();i++){
+        datavec[i].fieldentry = getEntry(row, datavec[i].fieldname, datavec[i].namecontains, datavec[i].strcontainsname);
+    }
+}
+
+
 int KiCadSCH::getUnitrow(int row)
 {
     int startrow, endrow;
@@ -256,8 +265,11 @@ int KiCadSCH::addEntryGen(string entrycontent, int row, int entryrow, string las
 int KiCadSCH::addEntry(string entryname, string entrycontent, int row, bool overwrite, bool resetparams)
 {
     int entryrow;
+    KiCadStdfn_et Stdfn;
+    Stdfn = convfieldnameStdfield(entryname);
     entryrow = getEntryrow(row, entryname);
-    return addEntryGen(entrycontent, row, entryrow, " \""+entryname+"\"", overwrite, resetparams);
+    if(notStd==Stdfn)   return addEntryGen(entrycontent, row, entryrow, " \""+entryname+"\"", overwrite, resetparams);
+    else                return addEntryGen(entrycontent, row, entryrow, "", overwrite, resetparams);
 }
 
 int KiCadSCH::addEntry(KiCadStdfn_et entryname, string entrycontent, int row, bool overwrite, bool resetparams)
@@ -265,5 +277,14 @@ int KiCadSCH::addEntry(KiCadStdfn_et entryname, string entrycontent, int row, bo
     int entryrow;
     entryrow = getEntryrow(row, entryname);
     return addEntryGen(entrycontent, row, entryrow, "", overwrite, resetparams);
+}
+
+int KiCadSCH::addEntrys(vector<datapair_t> newdata, int row, bool overwrite, bool resetparams)
+{
+    int i;
+    for(i=0;i<newdata.size();i++){
+        if(-1==addEntry(newdata[i].fieldname, newdata[i].fieldentry, row, overwrite, resetparams)) return -1;
+    }
+    return 0;
 }
 

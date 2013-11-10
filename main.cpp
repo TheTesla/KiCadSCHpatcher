@@ -76,6 +76,13 @@ string rmquotmarks(string str)
     return str;
 }
 
+void rmquotmarks(vector<datapair_t> &data)
+{
+    int i;
+    for(i=0;i<data.size();i++){
+        data[i].fieldentry = rmquotmarks(data[i].fieldentry);
+    }
+}
 
 
 int main(int argc, char *argv[])

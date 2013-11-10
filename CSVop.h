@@ -29,9 +29,11 @@ class CSVop
         int readCSVfile(string filename);
         int findrow(string fieldname, string fieldentry, int startrow = 0, bool namecontains = false, bool entrycontains = false, bool strcontainsname = false, bool strcontainsentry = false, unsigned subpart = 1);
         int findrow(vector<datapair_t> entrypairs, int startrow, int Nbr2find);
-        int findrow(vector<datapair_t> entrypairs, int startrow, bool namecontains = false, bool entrycontains = false, bool strcontainsname = false, bool strcontainsentry = false);
+        int findrow(vector<datapair_t> entrypairs, int startrow);
 
         string getEntry(int row, string fieldname, bool namecontains = false, bool strcontainsname = false);
+        void getEntrys(int row, vector<datapair_t> &data2update, bool takeDatabasefieldnames = false);
+        string getfullName(string fieldname, bool namecontains = false, bool strcontainsname = false);
 
     private:
         ifstream iCSVfile;

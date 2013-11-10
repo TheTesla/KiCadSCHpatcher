@@ -8,6 +8,7 @@
 #include <vector>
 #include <fstream>
 #include <iostream>
+#include "CSVop.h"
 
 using namespace std;
 
@@ -44,6 +45,7 @@ class KiCadSCH
         int getEntryrow(int row, KiCadStdfn_et fieldname);
         string getEntry(int row, string fieldname, bool namecontains = false, bool strcontainsname = false);
         string getEntry(int row, KiCadStdfn_et fieldname);
+        void getEntrys(int row, vector<datapair_t> &datavec);
         int getUnitrow(int row);
         string getUnitNbr(int row);
         int getKoordrow(int row);
@@ -52,6 +54,7 @@ class KiCadSCH
         int addEntryGen(string entrycontent, int row, int entryrow, string lastcol = "", bool overwrite = true, bool resetparams = false);
         int addEntry(string entryname, string entrycontent, int row = 0, bool overwrite = true, bool resetparams = false);
         int addEntry(KiCadStdfn_et entryname, string entrycontent, int row = 0, bool overwrite = true, bool resetparams = false);
+        int addEntrys(vector<datapair_t> newdata, int row = 0, bool overwrite = true, bool resetparams = false);
 
     private:
         ifstream iSCHfile;
