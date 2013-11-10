@@ -13,6 +13,7 @@ using namespace std;
 
 enum KiCadStdfn_et
 {
+    notStd = -1,
     REF = 0,
     VAL = 1,
     FP = 2,
@@ -39,9 +40,9 @@ class KiCadSCH
         int getCompbeginrow(int row);
         int getCompendrow(int row);
         int getLastentryrow(int row);
-        int getEntryrow(int row, string fieldname);
+        int getEntryrow(int row, string fieldname, bool namecontains = false, bool strcontainsname = false);
         int getEntryrow(int row, KiCadStdfn_et fieldname);
-        string getEntry(int row, string fieldname);
+        string getEntry(int row, string fieldname, bool namecontains = false, bool strcontainsname = false);
         string getEntry(int row, KiCadStdfn_et fieldname);
         int getUnitrow(int row);
         string getUnitNbr(int row);
@@ -56,6 +57,7 @@ class KiCadSCH
         ifstream iSCHfile;
         Table tab;
         vector<modiFile_t> patchvec;
+        KiCadStdfn_et convfieldnameStdfield(string fieldname, bool namecontains = false, bool strcontainsname = false);
 
 };
 

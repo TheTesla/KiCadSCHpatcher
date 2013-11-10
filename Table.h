@@ -33,10 +33,10 @@ class Table
         ~Table();
         void loadTable(ifstream &File, string delim = ",", string ignorebefore = " ", string ignoreafter = " ");
         string Tableread(int row, int col);
-        int findrow(string find, int col=0, int firstrow=0);
-        int findcol(string find, int row=0, int firstcol=0);
+        int findrow(string findstr, int col = 0, int lastrow = 0, bool entrycontains = false, bool strcontainsentr = false);
+        int findrow_bw(string findstr, int col, int lastrow, bool entrycontains = false, bool strcontainsentr = false);
+        int findcol(string findstr, int row = 0, int firstcol = 0, bool entrycontains = false, bool strcontainsentr = false);
         void eraseemptyrows(void);
-        int findrow_bw(string find, int col, int lastrow);
 
     private:
         string* tabstr;

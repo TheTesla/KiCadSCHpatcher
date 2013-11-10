@@ -31,7 +31,6 @@ int KiCadSCH::findrow(string fieldname, string fieldentry, int startrow, unsigne
 {
     int row;
     row = getCompbeginrow(startrow);
-
     while(-1!=row){
         if((tab.Tableread(row,10)=="\""+fieldname+"\"")&&(tab.Tableread(row,0)=="F")) {
             if(to_string(subpart) == getUnitNbr(row)) return row;
@@ -44,9 +43,7 @@ int KiCadSCH::findrow(string fieldname, string fieldentry, int startrow, unsigne
 int KiCadSCH::findrow(KiCadStdfn_et fieldname, string fieldentry, int startrow, unsigned subpart)
 {
     int row;
-
     row = getCompbeginrow(startrow);
-
     while(-1!=row){
         if((tab.Tableread(row,1)==to_string(fieldname))&&tab.Tableread(row,0)=="F"){
             if(to_string(subpart) == getUnitNbr(row)) return row;
@@ -78,17 +75,57 @@ int KiCadSCH::getLastentryrow(int row)
     return row;
 }
 
-int KiCadSCH::getEntryrow(int row, string fieldname)
+KiCadStdfn_et KiCadSCH::convfieldnameStdfield(string fieldname, bool namecontains, bool strcontainsname)
+{
+    string strtmp;
+    if(fieldname=="Reference"||fieldname=="reference"||fieldname=="Ref"||fieldname=="ref") return REF;
+    if(fieldname=="Value"||fieldname=="value"||fieldname=="Val"||fieldname=="val") return VAL;
+    if(fieldname=="Datasheet"||fieldname=="datasheet"||fieldname=="DS"||fieldname=="ds") return DS;
+    if(fieldname=="Footprint"||fieldname=="footprint"||fieldname=="FP"||fieldname=="fp") return FP;
+    if(namecontains){
+        strtmp = "Reference";
+        if(strtmp.find(fieldname)) return REF;
+        strtmp = "reference";
+        if(strtmp.find(fieldname)) return REF;
+        strtmp = "Value";
+        if(strtmp.find(fieldname)) return VAL;
+        strtmp = "value";
+        if(strtmp.find(fieldname)) return VAL;
+        strtmp = "Datasheet";
+        if(strtmp.find(fieldname)) return DS;
+        strtmp = "datasheet";
+        if(strtmp.find(fieldname)) return DS;
+        strtmp = "DS";
+        if(strtmp.find(fieldname)) return DS;
+        strtmp = "ds";
+        if(strtmp.find(fieldname)) return DS;
+        strtmp = "Footprint";
+        if(strtmp.find(fieldname)) return FP;
+        strtmp = "footprint";
+        if(strtmp.find(fieldname)) return FP;
+        strtmp = "FP";
+        if(strtmp.find(fieldname)) return FP;
+        strtmp = "fp";
+        if(strtmp.find(fieldname)) return FP;
+    }
+    if(strcontainsname){
+        if(fieldname.find("Ref")||fieldname.find("ref")) return REF;
+        if(fieldname.find("Val")||fieldname.find("val")) return VAL;
+        if(fieldname.find("Datasheet")||fieldname.find("datasheet")||fieldname.find("DS")||fieldname.find("ds")) return DS;
+        if(fieldname.find("Footprint")||fieldname.find("footprint")||fieldname.find("FP")||fieldname.find("fp")) return FP;
+    }
+    return notStd;
+}
+
+int KiCadSCH::getEntryrow(int row, string fieldname, bool namecontains, bool strcontainsname)
 {
     int startrow, endrow;
-    int col;
+    KiCadStdfn_et Stdfn;
     startrow = getCompbeginrow(row);
     endrow = getCompendrow(row);
-    //cout << fieldname << endl;
-    //cout << startrow << "  " << endrow << endl;
-
-    row = tab.findrow("\""+fieldname+"\"",10,startrow);
-    //cout << row << endl;
+    Stdfn = convfieldnameStdfield(fieldname, namecontains, strcontainsname);
+    if(-1==Stdfn)   row = tab.findrow("\""+fieldname+"\"", 10, startrow, namecontains, strcontainsname);
+    else            row = getEntryrow(row, Stdfn);
     if(row>endrow) return -1;
     return row;
 }
@@ -107,10 +144,9 @@ int KiCadSCH::getEntryrow(int row, KiCadStdfn_et fieldname)
     return row;
 }
 
-
-string KiCadSCH::getEntry(int row, string fieldname)
+string KiCadSCH::getEntry(int row, string fieldname, bool namecontains, bool strcontainsname)
 {
-    row = getEntryrow(row, fieldname);
+    row = getEntryrow(row, fieldname, namecontains, strcontainsname);
     if(-1==row) return "";
     return tab.Tableread(row,2);
 }
@@ -183,10 +219,9 @@ int KiCadSCH::patchFile(ofstream &oFile)
 
 int KiCadSCH::addEntryGen(string entrycontent, int row, int entryrow, string lastcol, bool overwrite, bool resetparams)
 {
-    int startrow, endrow, lastentryrow, koordrow;
+    int lastentryrow, koordrow;
     int lastentryNbr;
     modiFile_t patch;
-    string line;
 
     koordrow = getKoordrow(row);
     if(-1==koordrow) return -1;

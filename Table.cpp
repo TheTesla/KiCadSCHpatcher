@@ -125,35 +125,41 @@ void Table::findtablesize(ifstream &File)
     }
 }
 
-int Table::findrow(string find, int col, int firstrow)
+int Table::findrow(string findstr, int col, int firstrow, bool entrycontains, bool strcontainsentr)
 {
     int row;
     string str;
     for(row=firstrow;row<rows;row++){
-        str = this->Tableread(row,col);
-        if(0 == str.compare(find)) return row;
+        str = Tableread(row,col);
+        if(strcontainsentr) if(findstr.find(str)) return row;
+        if(entrycontains) if(str.find(findstr)) return row;
+        if(str==findstr) return row;
     }
     return -1;
 }
 
-int Table::findrow_bw(string find, int col, int lastrow)
+int Table::findrow_bw(string findstr, int col, int lastrow, bool entrycontains, bool strcontainsentr)
 {
     int row;
     string str;
     for(row=lastrow;row>=0;row--){
-        str = this->Tableread(row,col);
-        if(0 == str.compare(find)) return row;
+        str = Tableread(row,col);
+        if(strcontainsentr) if(findstr.find(str)) return row;
+        if(entrycontains) if(str.find(findstr)) return row;
+        if(str==findstr) return row;
     }
     return -1;
 }
 
-int Table::findcol(string find, int row, int firstcol)
+int Table::findcol(string findstr, int row, int firstcol, bool entrycontains, bool strcontainsentr)
 {
     int col;
     string str;
     for(col=firstcol;col<cols;col++){
-        str = this->Tableread(row,col);
-        if(0 == str.compare(find)) return col;
+        str = Tableread(row,col);
+        if(strcontainsentr) if(findstr.find(str)) return col;
+        if(entrycontains) if(str.find(findstr)) return col;
+        if(str==findstr) return col;
     }
     return -1;
 }
