@@ -16,6 +16,7 @@ int KiCadSCH::readSCHfile(ifstream &file)
 {
     if(!file.is_open()) return -1;
     tab.loadTable(file, " ");
+    tab.rmquotmarks();
     file.clear();
     file.seekg(0, ios::beg);
     return 0;
@@ -32,10 +33,10 @@ int KiCadSCH::findrow(string fieldname, string fieldentry, int startrow, unsigne
     int row;
     row = getCompbeginrow(startrow);
     while(-1!=row){
-        if((tab.Tableread(row,10)=="\""+fieldname+"\"")&&(tab.Tableread(row,0)=="F")) {
+        if((tab.Tableread(row,10)==fieldname)&&(tab.Tableread(row,0)=="F")) {
             if(to_string(subpart) == getUnitNbr(row)) return row;
         }
-        row = tab.findrow("\""+fieldentry+"\"", 2, row+1);
+        row = tab.findrow(fieldentry, 2, row+1);
     }
     return -1;
 }
@@ -48,7 +49,7 @@ int KiCadSCH::findrow(KiCadStdfn_et fieldname, string fieldentry, int startrow, 
         if((tab.Tableread(row,1)==to_string(fieldname))&&tab.Tableread(row,0)=="F"){
             if(to_string(subpart) == getUnitNbr(row)) return row;
         }
-        row = tab.findrow("\""+fieldentry+"\"", 2, row+1);
+        row = tab.findrow(fieldentry, 2, row+1);
     }
     return -1;
 }
@@ -84,35 +85,35 @@ KiCadStdfn_et KiCadSCH::convfieldnameStdfield(string fieldname, bool namecontain
     if(fieldname=="Footprint"||fieldname=="footprint"||fieldname=="FP"||fieldname=="fp") return FP;
     if(namecontains){
         strtmp = "Reference";
-        if(strtmp.find(fieldname)) return REF;
+        if(string::npos!=strtmp.find(fieldname)) return REF;
         strtmp = "reference";
-        if(strtmp.find(fieldname)) return REF;
+        if(string::npos!=strtmp.find(fieldname)) return REF;
         strtmp = "Value";
-        if(strtmp.find(fieldname)) return VAL;
+        if(string::npos!=strtmp.find(fieldname)) return VAL;
         strtmp = "value";
-        if(strtmp.find(fieldname)) return VAL;
+        if(string::npos!=strtmp.find(fieldname)) return VAL;
         strtmp = "Datasheet";
-        if(strtmp.find(fieldname)) return DS;
+        if(string::npos!=strtmp.find(fieldname)) return DS;
         strtmp = "datasheet";
-        if(strtmp.find(fieldname)) return DS;
+        if(string::npos!=strtmp.find(fieldname)) return DS;
         strtmp = "DS";
-        if(strtmp.find(fieldname)) return DS;
+        if(string::npos!=strtmp.find(fieldname)) return DS;
         strtmp = "ds";
-        if(strtmp.find(fieldname)) return DS;
+        if(string::npos!=strtmp.find(fieldname)) return DS;
         strtmp = "Footprint";
-        if(strtmp.find(fieldname)) return FP;
+        if(string::npos!=strtmp.find(fieldname)) return FP;
         strtmp = "footprint";
-        if(strtmp.find(fieldname)) return FP;
+        if(string::npos!=strtmp.find(fieldname)) return FP;
         strtmp = "FP";
-        if(strtmp.find(fieldname)) return FP;
+        if(string::npos!=strtmp.find(fieldname)) return FP;
         strtmp = "fp";
-        if(strtmp.find(fieldname)) return FP;
+        if(string::npos!=strtmp.find(fieldname)) return FP;
     }
     if(strcontainsname){
-        if(fieldname.find("Ref")||fieldname.find("ref")) return REF;
-        if(fieldname.find("Val")||fieldname.find("val")) return VAL;
-        if(fieldname.find("Datasheet")||fieldname.find("datasheet")||fieldname.find("DS")||fieldname.find("ds")) return DS;
-        if(fieldname.find("Footprint")||fieldname.find("footprint")||fieldname.find("FP")||fieldname.find("fp")) return FP;
+        if(string::npos!=fieldname.find("Ref")||string::npos!=fieldname.find("ref")) return REF;
+        if(string::npos!=fieldname.find("Val")||string::npos!=fieldname.find("val")) return VAL;
+        if(string::npos!=fieldname.find("Datasheet")||string::npos!=fieldname.find("datasheet")||string::npos!=fieldname.find("DS")||string::npos!=fieldname.find("ds")) return DS;
+        if(string::npos!=fieldname.find("Footprint")||string::npos!=fieldname.find("footprint")||string::npos!=fieldname.find("FP")||string::npos!=fieldname.find("fp")) return FP;
     }
     return notStd;
 }
@@ -124,8 +125,12 @@ int KiCadSCH::getEntryrow(int row, string fieldname, bool namecontains, bool str
     startrow = getCompbeginrow(row);
     endrow = getCompendrow(row);
     Stdfn = convfieldnameStdfield(fieldname, namecontains, strcontainsname);
-    if(-1==Stdfn)   row = tab.findrow("\""+fieldname+"\"", 10, startrow, namecontains, strcontainsname);
-    else            row = getEntryrow(row, Stdfn);
+    if(-1==Stdfn){
+        row = tab.findrow(fieldname, 10, startrow, namecontains, strcontainsname);
+    }
+    else{
+        row = getEntryrow(row, Stdfn);
+    }
     if(row>endrow) return -1;
     return row;
 }
@@ -242,7 +247,8 @@ int KiCadSCH::addEntryGen(string entrycontent, int row, int entryrow, string las
         patch.add = true;
         patch.lineNbr = lastentryrow + 1;
 
-        patch.line = "F " + to_string(lastentryNbr + 1) + " \"" + entrycontent + "\"" + " H " + tab.Tableread(koordrow,1) + " " + tab.Tableread(koordrow,2) + " 60 0000 C CNN" + lastcol;
+        patch.line  = "F " + to_string(lastentryNbr + 1) + " \"" + entrycontent + "\"" + " H " + tab.Tableread(koordrow,1) + " " + tab.Tableread(koordrow,2)
+                    + " 60 0000 C CNN" + lastcol;
     // Eintrag bereits vorhanden
     }else{
         if(!overwrite){// nicht ueberschreiben
@@ -253,9 +259,12 @@ int KiCadSCH::addEntryGen(string entrycontent, int row, int entryrow, string las
         patch.add = true;
         patch.lineNbr = row;
         if(resetparams){
-            patch.line = "F " + tab.Tableread(row, 1) + " \"" + entrycontent + "\"" + " H " + tab.Tableread(koordrow,1) + " " + tab.Tableread(koordrow,2) + " 60 0000 C CNN" + lastcol;
+            patch.line  = "F " + tab.Tableread(row, 1) + " \"" + entrycontent + "\"" + " H " + tab.Tableread(koordrow,1) + " " + tab.Tableread(koordrow,2)
+                        + " 60 0000 C CNN" + lastcol; // hier keine Anfuehrungszeichen hinzufuegen, damit der Eintrag nicht nur leer, sondern auch nicht vorhanden sein kann
         }else{ // nur den Inhalt anpassen, Koordinaten, Ausrichtung, Sichtbarkeit (Anzeige) usw. beibehalten
-            patch.line = "F " + tab.Tableread(row, 1) + " \"" + entrycontent + "\" " + tab.Tableread(row,3) + " " + tab.Tableread(row,4) + " " + tab.Tableread(row,5) + " " + tab.Tableread(row,6) + " " + tab.Tableread(row,7) + " " + tab.Tableread(row,8) + " " + tab.Tableread(row,9) + " " + tab.Tableread(row,10);
+            patch.line  = "F "   + tab.Tableread(row, 1) + " \"" + entrycontent + "\" " + tab.Tableread(row,3) + " " + tab.Tableread(row,4) + " "
+                        + tab.Tableread(row,5) + " " + tab.Tableread(row,6) + " " + tab.Tableread(row,7) + " " + tab.Tableread(row,8) + " " + tab.Tableread(row,9)
+                        + " \"" + tab.Tableread(row,10) + "\""; // Aus Tabelle wurden Anfuehrungszeichen entfernt - deshalb wieder hinzuuegen
         }
     }
     patchvec.push_back(patch);

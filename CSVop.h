@@ -6,19 +6,12 @@
 #include <iostream>
 #include <vector>
 #include "Table.h"
+#include "extraops.h"
 
 using namespace std;
 
 
-typedef struct datapair_t
-{
-    string fieldname;
-    string fieldentry;
-    bool namecontains; // fieldname ist in Tabelleneintrag enthalten
-    bool entrycontains;  // fieldentry ist in Tabelleneintrag enthalten
-    bool strcontainsname; // Tabelleneintrag ist in fieldname enthalten
-    bool strcontainsentry; // Tabelleneintrag ist in fieldentry enthalten
-} datapair_t;
+
 
 class CSVop
 {
@@ -29,10 +22,10 @@ class CSVop
         int readCSVfile(string filename);
         int findrow(string fieldname, string fieldentry, int startrow = 0, bool namecontains = false, bool entrycontains = false, bool strcontainsname = false, bool strcontainsentry = false, unsigned subpart = 1);
         int findrow(vector<datapair_t> entrypairs, int startrow, int Nbr2find);
-        int findrow(vector<datapair_t> entrypairs, int startrow);
+        int findrow(vector<datapair_t> entrypairs, int startrow = 1);
 
         string getEntry(int row, string fieldname, bool namecontains = false, bool strcontainsname = false);
-        void getEntrys(int row, vector<datapair_t> &data2update, bool takeDatabasefieldnames = false);
+        void getEntrys(int row, vector<datapair_t> &data2update);
         string getfullName(string fieldname, bool namecontains = false, bool strcontainsname = false);
 
     private:

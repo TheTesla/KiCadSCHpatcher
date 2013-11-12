@@ -8,9 +8,7 @@
  */
 
 #include "Table.h"
-#include <iostream>
-#include <string>
-#include "KiCadSCH.h"
+
 
 Table::Table()
 {
@@ -84,6 +82,13 @@ string Table::Tableread(int row, int col)
     return tabstr[col + row*cols];
 }
 
+int Table::Tablewrite(int row, int col, string entry)
+{
+    if(row>rows || col>cols || row<0 || col<0) return -1;
+    tabstr[col+row*cols] = entry;
+    return 0;
+}
+
 
 // Trennzeichen ist Leerzeichen, zwischen Anfuehrungszeuchen nicht mitgezaehlt
 void Table::findtablesize(ifstream &File)
@@ -131,8 +136,8 @@ int Table::findrow(string findstr, int col, int firstrow, bool entrycontains, bo
     string str;
     for(row=firstrow;row<rows;row++){
         str = Tableread(row,col);
-        if(strcontainsentr) if(findstr.find(str)) return row;
-        if(entrycontains) if(str.find(findstr)) return row;
+        if(strcontainsentr) if(string::npos!=findstr.find(str)) return row;
+        if(entrycontains) if(string::npos!=str.find(findstr)) return row;
         if(str==findstr) return row;
     }
     return -1;
@@ -144,8 +149,8 @@ int Table::findrow_bw(string findstr, int col, int lastrow, bool entrycontains, 
     string str;
     for(row=lastrow;row>=0;row--){
         str = Tableread(row,col);
-        if(strcontainsentr) if(findstr.find(str)) return row;
-        if(entrycontains) if(str.find(findstr)) return row;
+        if(strcontainsentr) if(string::npos!=findstr.find(str)) return row;
+        if(entrycontains) if(string::npos!=str.find(findstr)) return row;
         if(str==findstr) return row;
     }
     return -1;
@@ -157,8 +162,8 @@ int Table::findcol(string findstr, int row, int firstcol, bool entrycontains, bo
     string str;
     for(col=firstcol;col<cols;col++){
         str = Tableread(row,col);
-        if(strcontainsentr) if(findstr.find(str)) return col;
-        if(entrycontains) if(str.find(findstr)) return col;
+        if(strcontainsentr) if(string::npos!=findstr.find(str)) return col;
+        if(entrycontains) if(string::npos!=str.find(findstr)) return col;
         if(str==findstr) return col;
     }
     return -1;
@@ -173,10 +178,20 @@ void Table::eraseemptyrows(void)
     for(rrow=0;rrow<rows;rrow++){
         colempty = true;
         for(col=0;col<cols;col++){
-            str = this->Tableread(rrow, col);
+            str = Tableread(rrow, col);
             tabstr[col + wrow*cols] = str;
             if(0 != str.compare("")) colempty = false;
         }
         if(false == colempty) wrow++;
+    }
+}
+
+void Table::rmquotmarks(void)
+{
+    int rowit, colit;
+    for(rowit=0;rowit<rows;rowit++){
+        for(colit=0;colit<cols;colit++){
+            Tablewrite(rowit, colit, ::rmquotmarks(Tableread(rowit, colit)));
+        }
     }
 }

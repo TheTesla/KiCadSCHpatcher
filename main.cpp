@@ -15,16 +15,13 @@
 #include <fstream>
 #include <string>
 #include <algorithm>
-#include "Table.h"
-#include "ICSymbol.h"
-#include "ICProcTable.h"
 #include <ctime>
 #include <iomanip>
 #include <stdio.h>
-#include "KiCadlibOp.h"
-#include "Patch.h"
 #include "KiCadSCH.h"
 #include "CSVop.h"
+#include "extraops.h"
+
 
 using namespace std;
 
@@ -67,22 +64,7 @@ int patchFile(ifstream &iFile, ofstream &oFile, vector<modiFile_t> patch)
     return 0;
 }
 
-string rmquotmarks(string str)
-{
-    int spos, epos;
-    spos = str.find_first_not_of("\"");
-    epos = str.find_last_not_of("\"");
-    if(spos!=string::npos&&epos!=string::npos) str = str.substr(spos, epos-spos+1);
-    return str;
-}
 
-void rmquotmarks(vector<datapair_t> &data)
-{
-    int i;
-    for(i=0;i<data.size();i++){
-        data[i].fieldentry = rmquotmarks(data[i].fieldentry);
-    }
-}
 
 
 int main(int argc, char *argv[])
@@ -109,6 +91,13 @@ int main(int argc, char *argv[])
     string entry, newentry;
     search_fieldname = "Digi-Key Part Number";
     string update_fieldname;
+
+    datapair_t searchentry;
+    datapair_t updateentry;
+    vector<datapair_t> searchvec;
+    vector<datapair_t> updatevec;
+
+
     update_fieldname = "Seeed OPL SKU";
 
     CSVop Database;
@@ -116,14 +105,26 @@ int main(int argc, char *argv[])
     Database.readCSVfile("ATXMega128_USB.csv");
     cout << Database.getEntry(Database.findrow("Color", "yellow"), "Reference") << endl;
 
+
+    searchentry.fieldname = "Digi-Key Part Number";
+    //searchentry.namecontains = true;
+    //searchentry.strcontainsname = true;
+    searchvec.push_back(searchentry);
+    updateentry.fieldname = "Seeed";
+    updateentry.namecontains = true;
+    updateentry.takeDatabasefieldname = true;
+    //updateentry.strcontainsname = true;
+    updatevec.push_back(updateentry);
+
+
     row = 0;
     while(1){
         row = kicadsch.getCompendrow(row+1);
-        entry = kicadsch.getEntry(row, search_fieldname);
-        entry = rmquotmarks(entry);
+        kicadsch.getEntrys(row, searchvec); // searchvec mit Eintraegen aus SCH-file anreichern
+        rmquotmarks(searchvec);
 
-        newentry = Database.getEntry(Database.findrow(search_fieldname,entry), update_fieldname);
-        kicadsch.addEntry(update_fieldname, newentry, row);
+        Database.getEntrys(Database.findrow(searchvec), updatevec); // updatevec mit Eintraegen aus der Datenbank anreichern
+        kicadsch.addEntrys(updatevec, row);
         if(-1==row) break;
     }
 

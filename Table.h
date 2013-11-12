@@ -22,6 +22,7 @@
 #include <fstream>
 #include <string>
 #include <algorithm>
+#include "extraops.h"
 
 
 using namespace std;
@@ -37,6 +38,9 @@ class Table
         int findrow_bw(string findstr, int col, int lastrow, bool entrycontains = false, bool strcontainsentr = false);
         int findcol(string findstr, int row = 0, int firstcol = 0, bool entrycontains = false, bool strcontainsentr = false);
         void eraseemptyrows(void);
+        int Tablewrite(int row, int col, string entry);
+        void rmquotmarks(void);
+
 
     private:
         string* tabstr;

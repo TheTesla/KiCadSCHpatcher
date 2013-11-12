@@ -48,10 +48,10 @@ int CSVop::findrow(vector<datapair_t> entrypairs, int startrow, int Nbr2find)
         for(i=1;i<entrypairs.size();i++){
             col = tab.findcol(entrypairs[i].fieldname, 0, 0, entrypairs[i].namecontains, entrypairs[i].strcontainsname);
             if(entrypairs[i].strcontainsentry){
-                if(entrypairs[i].fieldentry.find(tab.Tableread(row, col))) cnt++;
+                if(string::npos!=entrypairs[i].fieldentry.find(tab.Tableread(row, col))) cnt++;
             }
             else if(entrypairs[i].entrycontains){
-                if(tab.Tableread(row, col).find(entrypairs[i].fieldentry)) cnt++;
+                if(string::npos!=tab.Tableread(row, col).find(entrypairs[i].fieldentry)) cnt++;
             }
             else {
                 if(tab.Tableread(row, col)==entrypairs[i].fieldentry) cnt++;
@@ -83,11 +83,11 @@ string CSVop::getfullName(string fieldname, bool namecontains, bool strcontainsn
     return tab.Tableread(0, col);
 }
 
-void CSVop::getEntrys(int row, vector<datapair_t> &data2update, bool takeDatabasefieldnames)
+void CSVop::getEntrys(int row, vector<datapair_t> &data2update)
 {
     int i;
     for(i=0;i<data2update.size();i++){
         data2update[i].fieldentry = getEntry(row, data2update[i].fieldname, data2update[i].namecontains, data2update[i].strcontainsname);
-        if(takeDatabasefieldnames) data2update[i].fieldname = getfullName(data2update[i].fieldname, data2update[i].namecontains, data2update[i].strcontainsname);
+        if(data2update[i].takeDatabasefieldname) data2update[i].fieldname = getfullName(data2update[i].fieldname, data2update[i].namecontains, data2update[i].strcontainsname);
     }
 }
