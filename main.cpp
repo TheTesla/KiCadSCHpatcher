@@ -43,7 +43,6 @@ int main(int argc, char *argv[])
 
     string search_fieldname;
     string entry, newentry;
-    search_fieldname = "Digi-Key Part Number";
     string update_fieldname;
 
     datapair_t searchentry;
@@ -52,11 +51,9 @@ int main(int argc, char *argv[])
     vector<datapair_t> updatevec;
 
 
-    update_fieldname = "Seeed OPL SKU";
 
     CSVop Database;
 
-    Database.readCSVfile("ATXMega128_USB.csv");
 
     conf.readCONFfile("KiCadSCHpatcher.conf");
 
@@ -73,8 +70,11 @@ int main(int argc, char *argv[])
         updatevec.clear();
         confstate = conf.getBlock(csvrow, csvparam, searchvec, updatevec);
         Database.CSVparams = csvparam;
+        Database.readCSVfile();
         row = 0;
+        cout << searchvec.size() << " " << updatevec.size() << endl;
         while(1){
+
             row = kicadsch.getCompendrow(row+1);
             kicadsch.getEntrys(row, searchvec); // searchvec mit Eintraegen aus SCH-file anreichern
             rmquotmarks(searchvec);

@@ -61,7 +61,7 @@ class KiCadSCH
         int addEntryGen(string entrycontent, int row, int entryrow, string lastcol = "", bool overwrite = true, bool resetparams = false);
         int addEntry(string entryname, string entrycontent, int row = 0, bool overwrite = true, bool resetparams = false);
         int addEntry(KiCadStdfn_et entryname, string entrycontent, int row = 0, bool overwrite = true, bool resetparams = false);
-        int addEntrys(vector<datapair_t> newdata, int row = 0, bool overwrite = true, bool resetparams = false, bool allowemptyentries = false);
+        int addEntrys(vector<datapair_t> newdata, int row = 0);
 
     private:
         ifstream iSCHfile;

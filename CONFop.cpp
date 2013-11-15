@@ -89,6 +89,9 @@ CONFreadstate_et CONFop::getBlock(int &row, CSVparams_t &csv, vector<datapair_t>
                 entry.entrycontains = false;
                 entry.strcontainsentry = false;
                 entry.takeDatabasefieldname = false;
+                entry.resetparams = false;
+                entry.overwrite = false;
+                entry.allowemptyentries = false;
                 if("namecontains"==str){
                     entry.namecontains = true;
                     entry.strcontainsname = false;
@@ -107,8 +110,17 @@ CONFreadstate_et CONFop::getBlock(int &row, CSVparams_t &csv, vector<datapair_t>
                     entry.entrycontains = false;
                     entry.strcontainsentry = true;
                 }
-                if("takeDatabasefieldname"==tab.Tableread(row, 3)){
+                if(string::npos!=tab.Tableread(row, 3).find("takeDatabasefieldname")){
                     entry.takeDatabasefieldname = true;
+                }
+                if(string::npos!=tab.Tableread(row, 3).find("resetparams")){
+                    entry.resetparams = true;
+                }
+                if(string::npos!=tab.Tableread(row, 3).find("overwrite")){
+                    entry.overwrite = true;
+                }
+                if(string::npos!=tab.Tableread(row, 3).find("allowemptyentries")){
+                    entry.allowemptyentries = true;
                 }
                 if(SEARCH==state){
                     if(""!=entry.fieldname) searchvec.push_back(entry);

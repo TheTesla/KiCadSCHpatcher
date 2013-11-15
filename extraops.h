@@ -15,6 +15,9 @@ typedef struct datapair_t
     bool strcontainsname = false; // Tabelleneintrag ist in fieldname enthalten
     bool strcontainsentry = false; // Tabelleneintrag ist in fieldentry enthalten
     bool takeDatabasefieldname = false; // Vollstaendigen fieldname aus Datenbank in SCH-file uebernehmen, ansonsten Suchwort aus config-file
+    bool overwrite = false;
+    bool resetparams = false;
+    bool allowemptyentries = false;
 } datapair_t;
 
 typedef struct CSVparams_t

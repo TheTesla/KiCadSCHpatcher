@@ -27,6 +27,11 @@ int CSVop::readCSVfile(string filename)
     return readCSVfile(iCSVfile);
 }
 
+int CSVop::readCSVfile(void)
+{
+    iCSVfile.open(CSVparams.filename.c_str());
+    return readCSVfile(iCSVfile);
+}
 
 int CSVop::findrow(string fieldname, string fieldentry, int startrow, bool namecontains, bool entrycontains, bool strcontainsname, bool strcontainsentry, unsigned subpart)
 {

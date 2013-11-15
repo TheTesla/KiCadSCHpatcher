@@ -94,7 +94,6 @@ void KiCadSCH::updatePatchEntryNbr(void)
     //Aeussere Schleife - Eintrag/Zeile finden (gleiche Zeile nicht mehrmals verarbeiten
     for(j=0;j<patchvec.size();j++){
         tmp = patchvec[j].lineNbr - (patchvec[j].del?0:1);
-        cout << patchvec[j].lineNbr <<" "<<j << " " << tmp << endl;
         if(tmp==lineNbr) continue;
         lineNbr = tmp;
         entryNbr = patchvec[j].entryNbr;
@@ -107,7 +106,6 @@ void KiCadSCH::updatePatchEntryNbr(void)
         // Nummern aufsteigend zuordnen
         for(i=0;i<patchvec.size();i++){
             if(patchvec[i].lineNbr-(patchvec[i].del?0:1) == lineNbr){
-                cout << i << " " << entryNbr << endl;;
                 patchvec[i].entryNbr = entryNbr;
                 entryNbr++;
             }
@@ -241,7 +239,6 @@ void KiCadSCH::getEntrys(int row, vector<datapair_t> &datavec)
     }
 }
 
-
 int KiCadSCH::getUnitrow(int row)
 {
     int startrow, endrow;
@@ -347,11 +344,9 @@ int KiCadSCH::addEntryGen(string entrycontent, int row, int entryrow, string las
     index = getPatchindex(patch);
     if(-1!=index){
         if(overwrite){
-            cout << " " << patch.lineNbr << endl;
             patchvec[index] = patch;
         }
     }else{
-        cout << " " << patch.lineNbr << endl;
         patchvec.push_back(patch);
     }
 
@@ -376,12 +371,12 @@ int KiCadSCH::addEntry(KiCadStdfn_et entryname, string entrycontent, int row, bo
     return addEntryGen(entrycontent, row, entryrow, "", overwrite, resetparams);
 }
 
-int KiCadSCH::addEntrys(vector<datapair_t> newdata, int row, bool overwrite, bool resetparams, bool allowemptyentries)
+int KiCadSCH::addEntrys(vector<datapair_t> newdata, int row)
 {
     int i;
     for(i=0;i<newdata.size();i++){
-        if(""!=newdata[i].fieldentry||allowemptyentries){
-            if(-1==addEntry(newdata[i].fieldname, newdata[i].fieldentry, row, overwrite, resetparams)) return -1;
+        if(""!=newdata[i].fieldentry||newdata[i].allowemptyentries){
+            if(-1==addEntry(newdata[i].fieldname, newdata[i].fieldentry, row, newdata[i].overwrite, newdata[i].resetparams)) return -1;
         }
     }
     return 0;
