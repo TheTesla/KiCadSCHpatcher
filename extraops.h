@@ -17,6 +17,14 @@ typedef struct datapair_t
     bool takeDatabasefieldname = false; // Vollstaendigen fieldname aus Datenbank in SCH-file uebernehmen, ansonsten Suchwort aus config-file
 } datapair_t;
 
+typedef struct CSVparams_t
+{
+    string filename = "Database.csv";
+    string delim = "\t";
+    string ignorebefore = " ";
+    string ignoreafter = " ";
+} CSVparams_t;
+
 string rmquotmarks(string str);
 void rmquotmarks(vector<datapair_t> &data);
 

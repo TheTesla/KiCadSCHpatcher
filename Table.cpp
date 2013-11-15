@@ -9,6 +9,8 @@
 
 #include "Table.h"
 
+#include <iostream>
+
 
 Table::Table()
 {
@@ -16,18 +18,27 @@ Table::Table()
 
 Table::~Table()
 {
+    delete[] tabstr;
 }
 
-void Table::loadTable(ifstream &File, string delim, string ignorebefore, string ignoreafter)
+void Table::loadTable(ifstream &File, string delim, string ignorebefore, string ignoreafter, bool findtabsize)
 {
-    int col, row, pos, oldpos, entrystartpos, qmpos, entrbegpos, entrendpos;
+    int col, row;
+    size_t pos, oldpos, entrystartpos, qmpos, entrbegpos, entrendpos;
     string entry, line;
     bool in_quotation_marks = false;
 
-    findtablesize(File); // wegen dynamischer Speicherverwaltung
-    tabstr = new string[rows*cols];
+    File.clear();
+    File.seekg(0, ios::beg);
+
     col = 0;
     row = 0;
+    if(findtabsize){
+        rows = 0;
+        cols = 0;
+    }else{
+        tabstr = new string[rows*cols];
+    }
     if(File.is_open()){
         while(File.good()){
             getline(File, line);
@@ -50,7 +61,7 @@ void Table::loadTable(ifstream &File, string delim, string ignorebefore, string 
                 }
                 if(!in_quotation_marks){
                     // zwischen zwei Delimiter befindet sich der Eintrag
-                    if((oldpos<pos)||((ignorebefore!=delim)&&(ignoreafter!=delim))){
+                    if((oldpos<pos)||((string::npos==ignorebefore.find(delim))&&(string::npos==ignoreafter.find(delim)))){
                             /* Besonderheit: Delimitterzeichen ist zu ignorierendes Zeichen -
                                              keine Unterscheidung zwischen leeren Eintraegen
                                              und mehreren zu ignorierenden Fuellzeichen moeglich
@@ -64,7 +75,11 @@ void Table::loadTable(ifstream &File, string delim, string ignorebefore, string 
                         }else{
                             entry = "";
                         }
-                        tabstr[col+row*cols] = entry;
+                        if(findtabsize){
+                            cols = max(cols, col);
+                        }else{
+                            tabstr[col+row*cols] = entry;
+                        }
                         col++;
                     }
                     entrystartpos = pos+1; // weil oldpos auch innerhalb der Anfuehrungszeichen unterteilt
@@ -74,60 +89,28 @@ void Table::loadTable(ifstream &File, string delim, string ignorebefore, string 
             row++;
         }
     }
+    if(findtabsize){
+        rows = row;
+        cols++; // Korrektur: Spalte 0 ist auch eine Spalte; cols muss um eins groesser sein als letzte Spaltennummer
+        loadTable(File, delim, ignorebefore, ignoreafter, false);
+    }
 }
 
 string Table::Tableread(int row, int col)
 {
-    if(row>rows || col>cols || row<0 || col<0) return "";
+    OK = false;
+    if(row>=rows || col>=cols || row<0 || col<0) return "";
+    OK = true;
     return tabstr[col + row*cols];
 }
 
 int Table::Tablewrite(int row, int col, string entry)
 {
-    if(row>rows || col>cols || row<0 || col<0) return -1;
+    OK = false;
+    if(row>=rows || col>=cols || row<0 || col<0) return -1;
+    OK = true;
     tabstr[col+row*cols] = entry;
     return 0;
-}
-
-
-// Trennzeichen ist Leerzeichen, zwischen Anfuehrungszeuchen nicht mitgezaehlt
-void Table::findtablesize(ifstream &File)
-{
-    string line;
-    size_t pos, oldpos, qmpos;
-    bool in_quotation_marks = false;
-    rows = 0;
-    cols = 0;
-    int tmp;
-    if(File.is_open()){
-        while(File.good()){
-            getline(File, line);
-            rows++;
-            tmp = 0;
-            pos = 0;
-            oldpos = 0;
-            qmpos = 0;
-            in_quotation_marks = false;
-            while(string::npos!=pos){
-                pos = line.find_first_of(" ", oldpos);
-                // Leerzeichen zwischen Anfuehrungszeichen zaehlen nicht
-                qmpos = oldpos;
-                while(1){ // weil zwei Anfuehrungszeichen in einem Eintrag sein koennen
-                    qmpos = line.find_first_of("\"", qmpos);
-                    if((string::npos==qmpos)||(qmpos>pos)) break;
-                    qmpos++;
-                    in_quotation_marks = !in_quotation_marks;
-                }
-                if(!in_quotation_marks){
-                    if(oldpos<pos) tmp++;
-                }
-                oldpos = pos+1;
-            }
-            if(tmp>cols) cols = tmp;
-        }
-    File.clear();
-    File.seekg(0,ios::beg);
-    }
 }
 
 int Table::findrow(string findstr, int col, int firstrow, bool entrycontains, bool strcontainsentr)
@@ -184,6 +167,7 @@ void Table::eraseemptyrows(void)
         }
         if(false == colempty) wrow++;
     }
+    rows = wrow;
 }
 
 void Table::rmquotmarks(void)

@@ -1,5 +1,5 @@
 Reference	Value	Footprint	Datasheet	Digi-Key Part Number	Manufacturer Part Number	Seeed OPL SKU	Color	Notes	CSD-Electronics Part Number
-D4	BAS70BRW	SOT363	http://www.mccsemi.com/up_pdf/BAS70TW_DW-04_DW-05_DW-06_BRW(SOT-363).PDF	BAS70BRW-TPCT-ND	123	1234567					
+D4	BAS70BRW	SOT363	http://www.mccsemi.com/up_pdf/BAS70TW_DW-04_DW-05_DW-06_BRW(SOT-363).PDF	BAS70BRW-TPCT-ND	123	1234567	abc					
 R5	1k5	SM0805	http://www.seielect.com/Catalog/SEI-RMCF_RMCP.pdf	RMCF0805JT1K50CT-ND	RMCF0805JT1K50	002022001			
 R4	1k	SM0805	http://www.seielect.com/Catalog/SEI-RMCF_RMCP.pdf	RMCF0805JT1K00CT-ND	RMCF0805JT1K00	002011001			
 D3	LED	SM0805	http://catalog.osram-os.com/jsp/download.jsp?name=LO_LS_LY_R976.pdf&url=/media/_en/Graphics/00042116_0.pdf	475-2560-1-ND	LY R976-PS-36		yellow		

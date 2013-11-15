@@ -26,6 +26,8 @@ typedef struct modiFile_t
     bool del;   // true: delete the line
     bool add;   // true: add new line
     int lineNbr;// the corresponding line-number of the input-file
+    int entryNbr; // the number after "F "
+    string fieldname;
     string line;// content of the new line (if line is added)
 } modiFile_t;
 
@@ -41,6 +43,11 @@ class KiCadSCH
         int getCompbeginrow(int row);
         int getCompendrow(int row);
         int getLastentryrow(int row);
+        int getLastentryNbr(modiFile_t patch);
+        int getPatchindex(modiFile_t patch);
+        void updatePatchEntryNbr(void);
+
+
         int getEntryrow(int row, string fieldname, bool namecontains = false, bool strcontainsname = false);
         int getEntryrow(int row, KiCadStdfn_et fieldname);
         string getEntry(int row, string fieldname, bool namecontains = false, bool strcontainsname = false);
@@ -54,7 +61,7 @@ class KiCadSCH
         int addEntryGen(string entrycontent, int row, int entryrow, string lastcol = "", bool overwrite = true, bool resetparams = false);
         int addEntry(string entryname, string entrycontent, int row = 0, bool overwrite = true, bool resetparams = false);
         int addEntry(KiCadStdfn_et entryname, string entrycontent, int row = 0, bool overwrite = true, bool resetparams = false);
-        int addEntrys(vector<datapair_t> newdata, int row = 0, bool overwrite = true, bool resetparams = false);
+        int addEntrys(vector<datapair_t> newdata, int row = 0, bool overwrite = true, bool resetparams = false, bool allowemptyentries = false);
 
     private:
         ifstream iSCHfile;

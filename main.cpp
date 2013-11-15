@@ -21,69 +21,23 @@
 #include "KiCadSCH.h"
 #include "CSVop.h"
 #include "extraops.h"
-
+#include "CONFop.h"
 
 using namespace std;
 
 
 
-int patchFile(ifstream &iFile, ofstream &oFile, vector<modiFile_t> patch)
-{
-    string iline, oline;
-    modiFile_t currentpatch;
-    int line_n;
-    unsigned i;
-    if(!iFile.is_open()) return -1;
-    if(!oFile.is_open()) return -2;
-
-    for(line_n=0; oFile.good()&&iFile.good(); line_n++){
-        getline(iFile, iline);
-
-
-        oline = iline;
-        currentpatch.add = false;
-        currentpatch.del = false;
-        currentpatch.line = "";
-        currentpatch.lineNbr = 0;
-        for(i=0;i<patch.size();i++){
-            if(line_n == patch[i].lineNbr){
-                currentpatch = patch[i];
-                if(currentpatch.add){
-                    oFile << currentpatch.line << endl;
-                }
-            }
-        }
-
-        if(!currentpatch.del){
-            oFile << oline << endl;
-        }
-
-
-    }
-
-    return 0;
-}
-
-
-
-
 int main(int argc, char *argv[])
 {
-    cout << "blub"  << endl;
     string KiCadSCHFilename;
-    //Table KiCadSCHTab;
     KiCadSCH kicadsch;
-
+    CONFop conf;
 
     KiCadSCHFilename = "ATUC256L4U.sch";
     kicadsch.readSCHfile(KiCadSCHFilename);
 
+
     int i, row;
-
-    row = kicadsch.findrow(VAL,"BAS70BRW", 120, 1);
-    cout << row << endl;
-    cout << kicadsch.getEntry(row, VAL)<< endl;
-
     ofstream oFile;
     oFile.open("test.sch");
 
@@ -103,34 +57,36 @@ int main(int argc, char *argv[])
     CSVop Database;
 
     Database.readCSVfile("ATXMega128_USB.csv");
-    cout << Database.getEntry(Database.findrow("Color", "yellow"), "Reference") << endl;
+
+    conf.readCONFfile("KiCadSCHpatcher.conf");
 
 
-    searchentry.fieldname = "Digi-Key Part Number";
-    //searchentry.namecontains = true;
-    //searchentry.strcontainsname = true;
-    searchvec.push_back(searchentry);
-    updateentry.fieldname = "Seeed";
-    updateentry.namecontains = true;
-    updateentry.takeDatabasefieldname = true;
-    //updateentry.strcontainsname = true;
-    updatevec.push_back(updateentry);
-
-
+    int x;
+    x = 3;
+    int csvrow;
+    CSVparams_t csvparam;
+    CONFreadstate_et confstate;
     row = 0;
-    while(1){
-        row = kicadsch.getCompendrow(row+1);
-        kicadsch.getEntrys(row, searchvec); // searchvec mit Eintraegen aus SCH-file anreichern
-        rmquotmarks(searchvec);
+    csvrow = 0;
+    while(EOFile!=confstate){
+        searchvec.clear();
+        updatevec.clear();
+        confstate = conf.getBlock(csvrow, csvparam, searchvec, updatevec);
+        Database.CSVparams = csvparam;
+        row = 0;
+        while(1){
+            row = kicadsch.getCompendrow(row+1);
+            kicadsch.getEntrys(row, searchvec); // searchvec mit Eintraegen aus SCH-file anreichern
+            rmquotmarks(searchvec);
 
-        Database.getEntrys(Database.findrow(searchvec), updatevec); // updatevec mit Eintraegen aus der Datenbank anreichern
-        kicadsch.addEntrys(updatevec, row);
-        if(-1==row) break;
+            Database.getEntrys(Database.findrow(searchvec), updatevec); // updatevec mit Eintraegen aus der Datenbank anreichern
+            kicadsch.addEntrys(updatevec, row);
+            if(-1==row) break;
+        }
+
     }
 
-    //SCHpatch.addEntry("Digi-Key Part Number", "12345", row, true, true);
-    kicadsch.addEntry(VAL, "12345", row, true, true);
-
+    kicadsch.updatePatchEntryNbr(); // Eintraege mit laufender Nummer versehen und an Ausgabezeile anfuegen
 
     cout << kicadsch.patchFile(oFile) << endl;
 

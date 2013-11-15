@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1384203793 source:c:\projekte\c++\kicadschpatcher\main.cpp
+1384470450 source:c:\projekte\c++\kicadschpatcher\main.cpp
 	<cstdlib>
 	<iostream>
 	<sstream>
@@ -12,8 +12,9 @@
 	"KiCadSCH.h"
 	"CSVop.h"
 	"extraops.h"
+	"CONFop.h"
 
-1384196474 c:\projekte\c++\kicadschpatcher\table.h
+1384355330 c:\projekte\c++\kicadschpatcher\table.h
 	<cstdlib>
 	<fstream>
 	<string>
@@ -47,8 +48,9 @@
 1378027272 source:c:\projekte\c++\kicadschpatcher\kicadlibop.cpp
 	"KiCadlibOp.h"
 
-1384205347 source:c:\projekte\c++\kicadschpatcher\table.cpp
+1384374925 source:c:\projekte\c++\kicadschpatcher\table.cpp
 	"Table.h"
+	<iostream>
 
 1383584501 c:\projekte\c++\kicadschpatcher\patch.h
 	"Table.h"
@@ -60,7 +62,7 @@
 	<string>
 	<iostream>
 
-1384196596 c:\projekte\c++\kicadschpatcher\kicadsch.h
+1384470480 c:\projekte\c++\kicadschpatcher\kicadsch.h
 	"Table.h"
 	<string>
 	<vector>
@@ -68,13 +70,13 @@
 	<iostream>
 	"extraops.h"
 
-1384205524 source:c:\projekte\c++\kicadschpatcher\kicadsch.cpp
+1384468253 source:c:\projekte\c++\kicadschpatcher\kicadsch.cpp
 	"KiCadSCH.h"
 
-1384216311 source:c:\projekte\c++\kicadschpatcher\csvop.cpp
+1384370134 source:c:\projekte\c++\kicadschpatcher\csvop.cpp
 	"CSVop.h"
 
-1384216420 c:\projekte\c++\kicadschpatcher\csvop.h
+1384370028 c:\projekte\c++\kicadschpatcher\csvop.h
 	<string>
 	<fstream>
 	<iostream>
@@ -82,10 +84,18 @@
 	"Table.h"
 	"extraops.h"
 
-1384216404 c:\projekte\c++\kicadschpatcher\extraops.h
+1384353297 c:\projekte\c++\kicadschpatcher\extraops.h
 	<vector>
 	<string>
 
 1384195126 source:c:\projekte\c++\kicadschpatcher\extraops.cpp
+	"extraops.h"
+
+1384378321 source:c:\projekte\c++\kicadschpatcher\confop.cpp
+	"CONFop.h"
+	<iostream>
+
+1384359876 c:\projekte\c++\kicadschpatcher\confop.h
+	"Table.h"
 	"extraops.h"
 

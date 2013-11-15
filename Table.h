@@ -24,7 +24,6 @@
 #include <algorithm>
 #include "extraops.h"
 
-
 using namespace std;
 
 class Table
@@ -32,7 +31,8 @@ class Table
     public:
         Table();
         ~Table();
-        void loadTable(ifstream &File, string delim = ",", string ignorebefore = " ", string ignoreafter = " ");
+        bool OK = true;
+        void loadTable(ifstream &File, string delim = ",", string ignorebefore = " ", string ignoreafter = " ", bool findtabsize = true);
         string Tableread(int row, int col);
         int findrow(string findstr, int col = 0, int lastrow = 0, bool entrycontains = false, bool strcontainsentr = false);
         int findrow_bw(string findstr, int col, int lastrow, bool entrycontains = false, bool strcontainsentr = false);
@@ -46,7 +46,6 @@ class Table
         string* tabstr;
         int cols;
         int rows;
-        void findtablesize(ifstream &File);
 
 };
 

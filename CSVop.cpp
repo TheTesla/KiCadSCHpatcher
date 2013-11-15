@@ -8,14 +8,14 @@ CSVop::CSVop()
 
 CSVop::~CSVop()
 {
-    iCSVfile.close();
+    if(iCSVfile.is_open()) iCSVfile.close();
 }
 
 
 int CSVop::readCSVfile(ifstream &file)
 {
     if(!file.is_open()) return -1;
-    tab.loadTable(file, "\t");
+    tab.loadTable(file, CSVparams.delim, CSVparams.ignorebefore, CSVparams.ignoreafter);
     file.clear();
     file.seekg(0, ios::beg);
     return 0;

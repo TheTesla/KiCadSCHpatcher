@@ -18,6 +18,9 @@ class CSVop
     public:
         CSVop();
         ~CSVop();
+
+        CSVparams_t CSVparams;
+
         int readCSVfile(ifstream &file);
         int readCSVfile(string filename);
         int findrow(string fieldname, string fieldentry, int startrow = 0, bool namecontains = false, bool entrycontains = false, bool strcontainsname = false, bool strcontainsentry = false, unsigned subpart = 1);

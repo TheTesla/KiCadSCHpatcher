@@ -66,6 +66,76 @@ int KiCadSCH::getCompendrow(int row)
     return row;
 }
 
+// Funktion ermoeglicht das Pruefen noch nicht auf die SCH-Datei uebertragener Aenderungen
+// -> Ein Eintrag kann mehrfach ueberschrieben werden.
+// WICHTIG: .del bedeutet nur, dass Zeile der Originaldatei ersetzte/geloescht wird
+//          Es hat keine Einfluss auf Patch-Eintraegen.
+int KiCadSCH::getPatchindex(modiFile_t patch)
+{
+    int i;
+    for(i=0;i<patchvec.size();i++){
+        // Wenn .del gesetzt ist, dann ueberschreibt der Eintrag den alten Eintrag der original SCH-Datei
+        // d. h. der ersetzende Eintrag beginnt eine Zeile frueher
+        if(patchvec[i].lineNbr - (patchvec[i].del?0:1) == patch.lineNbr -(patch.del?0:1)){
+            if(patchvec[i].fieldname==patch.fieldname){
+                return i;
+            }
+        }
+    }
+    return -1;
+}
+
+void KiCadSCH::updatePatchEntryNbr(void)
+{
+    int i, j;
+    int lineNbr, tmp, entryNbr;
+    lineNbr = -1;
+
+    //Aeussere Schleife - Eintrag/Zeile finden (gleiche Zeile nicht mehrmals verarbeiten
+    for(j=0;j<patchvec.size();j++){
+        tmp = patchvec[j].lineNbr - (patchvec[j].del?0:1);
+        cout << patchvec[j].lineNbr <<" "<<j << " " << tmp << endl;
+        if(tmp==lineNbr) continue;
+        lineNbr = tmp;
+        entryNbr = patchvec[j].entryNbr;
+        // niedrigste Eintragsnummer finden
+        for(i=0;i<patchvec.size();i++){
+            if(patchvec[i].lineNbr-(patchvec[i].del?0:1) == lineNbr){
+                entryNbr = min(entryNbr, patchvec[i].entryNbr);
+            }
+        }
+        // Nummern aufsteigend zuordnen
+        for(i=0;i<patchvec.size();i++){
+            if(patchvec[i].lineNbr-(patchvec[i].del?0:1) == lineNbr){
+                cout << i << " " << entryNbr << endl;;
+                patchvec[i].entryNbr = entryNbr;
+                entryNbr++;
+            }
+        }
+    }
+
+    // Ausgabezeile um Eintragsnummer ergaenzen
+    for(i=0;i<patchvec.size();i++){
+        patchvec[i].line = "F " + to_string(patchvec[i].entryNbr) + patchvec[i].line;
+    }
+
+}
+
+int KiCadSCH::getLastentryNbr(modiFile_t patch)
+{
+    int i, entryNbr;
+    entryNbr = patch.lineNbr;
+
+    for(i=0;i<patchvec.size();i++){
+        // weiterer Eintrag an selber Stelle der Originaldatei
+        if(patchvec[i].lineNbr-(patchvec[i].del?0:1) == patch.lineNbr-(patch.del?0:1)){
+                entryNbr++;
+        }
+    }
+
+    return entryNbr;
+}
+
 int KiCadSCH::getLastentryrow(int row)
 {
     int startrow, endrow;
@@ -235,6 +305,7 @@ int KiCadSCH::addEntryGen(string entrycontent, int row, int entryrow, string las
 {
     int lastentryrow, koordrow;
     int lastentryNbr;
+    int index;
     modiFile_t patch;
 
     koordrow = getKoordrow(row);
@@ -242,34 +313,51 @@ int KiCadSCH::addEntryGen(string entrycontent, int row, int entryrow, string las
     // Eintrag nicht vorhanden
     if(-1 == entryrow){
         lastentryrow = getLastentryrow(row);
-        lastentryNbr = stoi(tab.Tableread(lastentryrow,1));
+        lastentryNbr = stoi(tab.Tableread(lastentryrow, 1));
         patch.del = false;
         patch.add = true;
-        patch.lineNbr = lastentryrow + 1;
+        patch.fieldname = lastcol;
+        patch.entryNbr = lastentryNbr + 1;
+        patch.lineNbr = lastentryrow + 1; // bei Mehrfacheintraegen, mehrfach gleiche Zeile -> updatePatchEntryNbr()
 
-        patch.line  = "F " + to_string(lastentryNbr + 1) + " \"" + entrycontent + "\"" + " H " + tab.Tableread(koordrow,1) + " " + tab.Tableread(koordrow,2)
+        patch.line  = " \"" + entrycontent + "\"" + " H " + tab.Tableread(koordrow,1) + " " + tab.Tableread(koordrow,2)
                     + " 60 0000 C CNN" + lastcol;
     // Eintrag bereits vorhanden
     }else{
         if(!overwrite){// nicht ueberschreiben
-            if(""!=tab.Tableread(entryrow, 10)) return -1;
+            if(""!=tab.Tableread(entryrow, 2)) return -1;
         } // Eintrag vorhanden, aber leer - Ergaenzen
         row = entryrow;
         patch.del = true;
         patch.add = true;
-        patch.lineNbr = row;
+        patch.fieldname = lastcol;
+        patch.entryNbr = stoi(tab.Tableread(row, 1));
+        patch.lineNbr = row; // bei Mehrfacheintraegen, mehrfach gleiche Zeile -> updatePatchEntryNbr()
         if(resetparams){
-            patch.line  = "F " + tab.Tableread(row, 1) + " \"" + entrycontent + "\"" + " H " + tab.Tableread(koordrow,1) + " " + tab.Tableread(koordrow,2)
+            patch.line  = " \"" + entrycontent + "\"" + " H " + tab.Tableread(koordrow,1) + " " + tab.Tableread(koordrow,2)
                         + " 60 0000 C CNN" + lastcol; // hier keine Anfuehrungszeichen hinzufuegen, damit der Eintrag nicht nur leer, sondern auch nicht vorhanden sein kann
         }else{ // nur den Inhalt anpassen, Koordinaten, Ausrichtung, Sichtbarkeit (Anzeige) usw. beibehalten
-            patch.line  = "F "   + tab.Tableread(row, 1) + " \"" + entrycontent + "\" " + tab.Tableread(row,3) + " " + tab.Tableread(row,4) + " "
+            patch.line  = " \"" + entrycontent + "\" " + tab.Tableread(row,3) + " " + tab.Tableread(row,4) + " "
                         + tab.Tableread(row,5) + " " + tab.Tableread(row,6) + " " + tab.Tableread(row,7) + " " + tab.Tableread(row,8) + " " + tab.Tableread(row,9)
                         + " \"" + tab.Tableread(row,10) + "\""; // Aus Tabelle wurden Anfuehrungszeichen entfernt - deshalb wieder hinzuuegen
         }
     }
-    patchvec.push_back(patch);
+
+    // Mehrfachueberschreiben von Eintraegen (bzw. nicht Ueberschreiben)
+    index = getPatchindex(patch);
+    if(-1!=index){
+        if(overwrite){
+            cout << " " << patch.lineNbr << endl;
+            patchvec[index] = patch;
+        }
+    }else{
+        cout << " " << patch.lineNbr << endl;
+        patchvec.push_back(patch);
+    }
+
     return 0;
 }
+
 
 int KiCadSCH::addEntry(string entryname, string entrycontent, int row, bool overwrite, bool resetparams)
 {
@@ -288,11 +376,13 @@ int KiCadSCH::addEntry(KiCadStdfn_et entryname, string entrycontent, int row, bo
     return addEntryGen(entrycontent, row, entryrow, "", overwrite, resetparams);
 }
 
-int KiCadSCH::addEntrys(vector<datapair_t> newdata, int row, bool overwrite, bool resetparams)
+int KiCadSCH::addEntrys(vector<datapair_t> newdata, int row, bool overwrite, bool resetparams, bool allowemptyentries)
 {
     int i;
     for(i=0;i<newdata.size();i++){
-        if(-1==addEntry(newdata[i].fieldname, newdata[i].fieldentry, row, overwrite, resetparams)) return -1;
+        if(""!=newdata[i].fieldentry||allowemptyentries){
+            if(-1==addEntry(newdata[i].fieldname, newdata[i].fieldentry, row, overwrite, resetparams)) return -1;
+        }
     }
     return 0;
 }

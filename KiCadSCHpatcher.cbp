@@ -12,6 +12,7 @@
 				<Option type="1" />
 				<Option compiler="gcc" />
 				<Compiler>
+					<Add option="-std=c++11" />
 					<Add option="-g" />
 				</Compiler>
 			</Target>
@@ -22,6 +23,7 @@
 				<Option compiler="gcc" />
 				<Compiler>
 					<Add option="-O2" />
+					<Add option="-std=c++11" />
 				</Compiler>
 				<Linker>
 					<Add option="-s" />
@@ -33,13 +35,20 @@
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 		</Compiler>
-		<Unit filename="ICProcTable.cpp" />
-		<Unit filename="ICSymbol.cpp" />
-		<Unit filename="KiCadlibOp.cpp" />
-		<Unit filename="Patch.cpp" />
-		<Unit filename="Patch.h" />
+		<Unit filename="CONFop.cpp" />
+		<Unit filename="CONFop.h" />
+		<Unit filename="CSVop.cpp" />
+		<Unit filename="CSVop.h">
+			<Option target="Debug" />
+		</Unit>
+		<Unit filename="KiCadSCH.cpp" />
+		<Unit filename="KiCadSCH.h">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
 		<Unit filename="Table.cpp" />
 		<Unit filename="Table.h" />
+		<Unit filename="extraops.cpp" />
+		<Unit filename="extraops.h" />
 		<Unit filename="main.cpp" />
 		<Extensions>
 			<code_completion />
