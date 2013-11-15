@@ -1,3 +1,15 @@
+/* Klasse verwaltet conf-Dateien
+ *
+ * Copyright (C) 2013 Stefan Helmert <stefan.helmert@gmx.net>
+ *
+ *
+ * Benutzt Table.h, Dient zum Einlesen und Abfragen von CONF-Dateien.
+
+ CSVop-class
+ - method to get all config-entries
+
+ */
+
 #ifndef CONFOP_H
 #define CONFOP_H
 

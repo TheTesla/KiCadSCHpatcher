@@ -1,4 +1,16 @@
+/* Klasse verwaltet KiCad-sch-Dateien
+ *
+ * Copyright (C) 2013 Stefan Helmert <stefan.helmert@gmx.net>
+ *
+ *
+ * Benutzt Table.h, Dient zum Einlesen und veraendern von KiCad SCH-Dateien um Bateil-Parameter zu bearbeiten.
 
+ KiCadSCH-class
+ - methods to search in sch-file
+ - methods to read sch-file like a database
+ - methids to add entries to sch-file
+
+ */
 
 #ifndef KICADSCH_H_INCLUDED
 #define KICADSCH_H_INCLUDED
@@ -7,7 +19,6 @@
 #include <string>
 #include <vector>
 #include <fstream>
-#include <iostream>
 #include "extraops.h"
 
 using namespace std;

@@ -1,16 +1,12 @@
 #include "CONFop.h"
 
-#include <iostream>
-
 CONFop::CONFop()
 {
-    //ctor
 }
 
 CONFop::~CONFop()
 {
     if(iCONFfile.is_open()) iCONFfile.close();
-
 }
 
 int CONFop::readCONFfile(ifstream &file)

@@ -1,9 +1,22 @@
+/* Klasse verwaltet csv-Dateien
+ *
+ * Copyright (C) 2013 Stefan Helmert <stefan.helmert@gmx.net>
+ *
+ *
+ * Benutzt Table.h, Dient zum Einlesen und Abfragen von CSV-Dateien.
+
+ CSVop-class
+ - methods to find entry by fieldname
+ - methods to read entries
+ */
+
+
+
 #ifndef CSVOP_H_INCLUDED
 #define CSVOP_H_INCLUDED
 
 #include <string>
 #include <fstream>
-#include <iostream>
 #include <vector>
 #include "Table.h"
 #include "extraops.h"

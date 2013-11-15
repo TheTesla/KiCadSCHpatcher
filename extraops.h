@@ -1,3 +1,12 @@
+/* Zusatzfunktionen und -Strukturen, die in fast allen Komponenten gebraucht werden
+ *
+ * Copyright (C) 2013 Stefan Helmert <stefan.helmert@gmx.net>
+ *
+ *
+ *
+
+ */
+
 #ifndef EXTRAOPS_H_INCLUDED
 #define EXTRAOPS_H_INCLUDED
 

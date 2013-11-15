@@ -1,10 +1,10 @@
 
 /*
-  Name: KiCadICgen
-  Copyright: 2012 Stefan Helmert
+  Name: KiCadSCHpatcher
+  Copyright: 2013 Stefan Helmert
   Author: Stefan Helmert
-  Date: 07.12.12 18:07
-  Description: generates or modiefies KiCad-lib-file from a pin-file
+  Date: 15.11.2013
+  Description: update Component-Entries from Database - BOM-import
 */
 
 
@@ -72,7 +72,6 @@ int main(int argc, char *argv[])
         Database.CSVparams = csvparam;
         Database.readCSVfile();
         row = 0;
-        cout << searchvec.size() << " " << updatevec.size() << endl;
         while(1){
 
             row = kicadsch.getCompendrow(row+1);

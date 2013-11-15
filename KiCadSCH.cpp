@@ -1,10 +1,8 @@
 #include "KiCadSCH.h"
 
 
-
 KiCadSCH::KiCadSCH()
 {
-
 }
 
 KiCadSCH::~KiCadSCH()
@@ -374,11 +372,13 @@ int KiCadSCH::addEntry(KiCadStdfn_et entryname, string entrycontent, int row, bo
 int KiCadSCH::addEntrys(vector<datapair_t> newdata, int row)
 {
     int i;
+    int entriesnotadded;
+    entriesnotadded = 0;
     for(i=0;i<newdata.size();i++){
         if(""!=newdata[i].fieldentry||newdata[i].allowemptyentries){
-            if(-1==addEntry(newdata[i].fieldname, newdata[i].fieldentry, row, newdata[i].overwrite, newdata[i].resetparams)) return -1;
+            if(-1==addEntry(newdata[i].fieldname, newdata[i].fieldentry, row, newdata[i].overwrite, newdata[i].resetparams)) entriesnotadded++;
         }
     }
-    return 0;
+    return entriesnotadded;
 }
 

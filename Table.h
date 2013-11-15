@@ -1,16 +1,21 @@
 /* Klasse verwaltet string-Tabellen
  *
- * Copyright (C) 2012 Stefan Helmert <stefan.helmert@gmx.net
+ * Copyright (C) 2013 Stefan Helmert <stefan.helmert@gmx.net>
  *
  *
- * loadTable() liest Datensatz aus Textdatei ein, Komma als Spaltentrenner
- * Leerzeichen am Anfang und Ende eines Eintrags werden entfernt
+ * loadTable() liest Datensatz aus Textdatei ein, Beliebiger Spaltentrenner
+ * definierte Zeichen am Anfang und Ende eines Eintrags werden entfernt
+ * Ist Spaltentrenner und zu ignorierendes Zeichen gleich, so wird bei einer
+ * Folge dieser Zeichen ein Zeichen als Trenner und die restlichen Zeichen
+ * als zu ignorierende Zeichen gewertet.
+ * Innerhalb von ""-Zeichen darf Trennzeichen vorkommen.
 
  table-class
- - read from csv-file (pin-file)
+ - read from csv-file (pin-file, conf-file, sch-file)
  - search-methods
  - method to erase empty rows
-
+ - method to remove quotationsmarks arround the entry
+ - write-method
 
  */
 
