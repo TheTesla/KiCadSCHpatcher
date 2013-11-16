@@ -79,10 +79,10 @@ int doit(string iSCHfilename, string oSCHfilename, string CONFfilename)
         round++;
         cout << "round: " << round << endl;
         cout << "    database used: " << csvparam.filename << endl;
-        cout << "    number of Parts: " << NoParts << endl;
-        cout << "    entries per Part: " << NoEntrperPart << endl;
+        cout << "    number of parts: " << NoParts << endl;
+        cout << "    entries per part: " << NoEntrperPart << endl;
         cout << "    total entries (including empty): " << NoParts*NoEntrperPart << endl;
-        cout << "    number of Entries not overwritten (excluding empty): " << notoverwritten << endl << endl;
+        cout << "    number of entries not overwritten (excluding empty): " << notoverwritten << endl << endl;
     }
 
     kicadsch.updatePatchEntryNbr(); // Eintraege mit laufender Nummer versehen und an Ausgabezeile anfuegen
