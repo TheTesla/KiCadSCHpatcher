@@ -28,10 +28,8 @@ int CONFop::readCONFfile(string filename)
 
 CONFreadstate_et CONFop::getBlock(int &row, CSVparams_t &csv, vector<datapair_t> &searchvec, vector<datapair_t> &updatevec)
 {
-    int col;
     string str;
     CONFreadstate_et state;
-    col = 0;
     state = NONE;
     datapair_t entry;
     while(tab.OK){
@@ -43,10 +41,6 @@ CONFreadstate_et CONFop::getBlock(int &row, CSVparams_t &csv, vector<datapair_t>
                 }
                 if("SEARCH"==str){
                     state = SEARCH;
-                    csv.filename = "Database.csv";
-                    csv.delim = "\t";
-                    csv.ignoreafter = " ";
-                    csv.ignorebefore = " ";
                 }
                 if("UPDATE"==str){
                     state = ERROR;
@@ -125,6 +119,9 @@ CONFreadstate_et CONFop::getBlock(int &row, CSVparams_t &csv, vector<datapair_t>
                     if(""!=entry.fieldname) updatevec.push_back(entry);
                 }
                 break;
+            default:
+                return state;
+
 
         }
 

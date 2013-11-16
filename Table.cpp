@@ -1,16 +1,5 @@
-/* Klasse verwaltet string-Tabellen
- *
- * Copyright (C) 2012 Stefan Helmert <stefan.helmert@gmx.net>
- *
- *
- * loadTable() liest Datensatz aus Textdatei ein, Komma als Spaltentrenner
- * Leerzeichen am Anfang und Ende eines Eintrags werden entfernt
- */
 
 #include "Table.h"
-
-#include <iostream>
-
 
 Table::Table()
 {

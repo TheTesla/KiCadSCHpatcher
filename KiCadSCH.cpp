@@ -1,5 +1,5 @@
 #include "KiCadSCH.h"
-
+#include <iostream>
 
 KiCadSCH::KiCadSCH()
 {
@@ -70,7 +70,7 @@ int KiCadSCH::getCompendrow(int row)
 //          Es hat keine Einfluss auf Patch-Eintraegen.
 int KiCadSCH::getPatchindex(modiFile_t patch)
 {
-    int i;
+    unsigned i;
     for(i=0;i<patchvec.size();i++){
         // Wenn .del gesetzt ist, dann ueberschreibt der Eintrag den alten Eintrag der original SCH-Datei
         // d. h. der ersetzende Eintrag beginnt eine Zeile frueher
@@ -85,7 +85,7 @@ int KiCadSCH::getPatchindex(modiFile_t patch)
 
 void KiCadSCH::updatePatchEntryNbr(void)
 {
-    int i, j;
+    unsigned i, j;
     int lineNbr, tmp, entryNbr;
     lineNbr = -1;
 
@@ -119,7 +119,8 @@ void KiCadSCH::updatePatchEntryNbr(void)
 
 int KiCadSCH::getLastentryNbr(modiFile_t patch)
 {
-    int i, entryNbr;
+    int entryNbr;
+    unsigned i;
     entryNbr = patch.lineNbr;
 
     for(i=0;i<patchvec.size();i++){
@@ -231,7 +232,7 @@ string KiCadSCH::getEntry(int row, KiCadStdfn_et fieldname)
 
 void KiCadSCH::getEntrys(int row, vector<datapair_t> &datavec)
 {
-    int i;
+    unsigned i;
     for(i=0;i<datavec.size();i++){
         datavec[i].fieldentry = getEntry(row, datavec[i].fieldname, datavec[i].namecontains, datavec[i].strcontainsname);
     }
@@ -371,14 +372,14 @@ int KiCadSCH::addEntry(KiCadStdfn_et entryname, string entrycontent, int row, bo
 
 int KiCadSCH::addEntrys(vector<datapair_t> newdata, int row)
 {
-    int i;
-    int entriesnotadded;
-    entriesnotadded = 0;
+    unsigned i;
+    int entriesnotoverwritten;
+    entriesnotoverwritten = 0;
     for(i=0;i<newdata.size();i++){
         if(""!=newdata[i].fieldentry||newdata[i].allowemptyentries){
-            if(-1==addEntry(newdata[i].fieldname, newdata[i].fieldentry, row, newdata[i].overwrite, newdata[i].resetparams)) entriesnotadded++;
+            if(-1==addEntry(newdata[i].fieldname, newdata[i].fieldentry, row, newdata[i].overwrite, newdata[i].resetparams)) entriesnotoverwritten++;
         }
     }
-    return entriesnotadded;
+    return entriesnotoverwritten;
 }
 

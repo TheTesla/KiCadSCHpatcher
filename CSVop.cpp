@@ -43,7 +43,8 @@ int CSVop::findrow(string fieldname, string fieldentry, int startrow, bool namec
 
 int CSVop::findrow(vector<datapair_t> entrypairs, int startrow, int Nbr2find)
 {
-    int col, row, i, cnt;
+    int col, row, cnt;
+    unsigned i;
     row = startrow;
     if(0==entrypairs.size()) return -1;
     while(1){
@@ -90,7 +91,7 @@ string CSVop::getfullName(string fieldname, bool namecontains, bool strcontainsn
 
 void CSVop::getEntrys(int row, vector<datapair_t> &data2update)
 {
-    int i;
+    unsigned i;
     for(i=0;i<data2update.size();i++){
         data2update[i].fieldentry = getEntry(row, data2update[i].fieldname, data2update[i].namecontains, data2update[i].strcontainsname);
         if(data2update[i].takeDatabasefieldname) data2update[i].fieldname = getfullName(data2update[i].fieldname, data2update[i].namecontains, data2update[i].strcontainsname);
