@@ -1,5 +1,7 @@
 #include "CONFop.h"
 
+#include <iostream>
+
 CONFop::CONFop()
 {
 }
@@ -11,18 +13,26 @@ CONFop::~CONFop()
 
 int CONFop::readCONFfile(ifstream &file)
 {
+    int err;
+    file.exceptions(std::ifstream::failbit | std::ifstream::badbit);
     if(!file.is_open()) return -1;
-    tab.loadTable(file, ",", " \t", " \t");
+    err = tab.loadTable(file, ",", " \t", " \t");
+    if(0!=err) return err;
     tab.rmquotmarks();
     tab.eraseemptyrows();
-    file.clear();
-    file.seekg(0, ios::beg);
+
     return 0;
 }
 
 int CONFop::readCONFfile(string filename)
 {
-    iCONFfile.open(filename.c_str());
+    iCONFfile.exceptions(std::ifstream::failbit | std::ifstream::badbit);
+    try{
+        iCONFfile.open(filename.c_str());
+    }
+    catch(std::ifstream::failure e) {
+        return -1; // Oeffenen fehlgeschlagen
+    }
     return readCONFfile(iCONFfile);
 }
 

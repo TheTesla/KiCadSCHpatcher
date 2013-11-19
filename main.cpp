@@ -47,10 +47,17 @@ int doit(string iSCHfilename, string oSCHfilename, string CONFfilename)
     CONFreadstate_et confstate;
     int notoverwritten, NoParts, NoEntrperPart, round;
 
-    if(-1==kicadsch.readSCHfile(iSCHfilename)) return -1;
-    oFile.open(oSCHfilename.c_str());
+    if(0!=kicadsch.readSCHfile(iSCHfilename)) return -1;
+    oFile.exceptions(std::ofstream::failbit | std::ofstream::badbit);
+    try{
+        oFile.open(oSCHfilename.c_str());
+    }
+    catch(std::ofstream::failure e){
+        if(oFile.bad()) return -12;
+        return -2;
+    }
     if(!oFile.is_open()) return -2;
-    if(-1==conf.readCONFfile(CONFfilename)) return -3;
+    if(0!=conf.readCONFfile(CONFfilename)) return -3;
 
 
 
@@ -62,7 +69,7 @@ int doit(string iSCHfilename, string oSCHfilename, string CONFfilename)
         updatevec.clear();
         confstate = conf.getBlock(csvrow, csvparam, searchvec, updatevec);
         Database.CSVparams = csvparam;
-        if(-1==Database.readCSVfile()) return -4;
+        if(0!=Database.readCSVfile()) return -4;
         row = 0;
         NoEntrperPart = updatevec.size();
         NoParts = 0;
@@ -108,15 +115,15 @@ int main(int argc, char *argv[])
             if(0==str.find("-c")) conf = str.substr(2, str.size()-2);
         }
         if(""==inp){
-            cout << "ERROR: input file not specified" << endl;
+            cerr << "ERROR: input file not specified" << endl;
             ok = false;
         }
         if(""==out){
-            cout << "ERROR: output file not specified" << endl;
+            cerr << "ERROR: output file not specified" << endl;
             ok = false;
         }
         if(""==conf){
-            cout << "ERROR: config file not specified" << endl;
+            cerr << "ERROR: config file not specified" << endl;
             ok = false;
         }
         if(ok){
@@ -132,10 +139,11 @@ int main(int argc, char *argv[])
             }else{
                 err = doit(inp, out, conf);
             }
-            if(-1==err) cout << "could not open input file" << endl;
-            if(-2==err) cout << "could not open output file" << endl;
-            if(-3==err) cout << "could not open config file" << endl;
-            if(-4==err) cout << "could not open database file" << endl;
+            if(-1==err) cerr << "could not open input file" << endl;
+            if(-2==err) cerr << "could not open output file" << endl;
+            if(-12==err) cerr << "could not write output file" << endl;
+            if(-3==err) cerr << "could not open config file" << endl;
+            if(-4==err) cerr << "could not open database file" << endl;
         }
     }else{
         cout << endl << "This is KiCadSCHpatcher. It is designed to update the parameters" << endl << "of the components of KiCad schematic file from a database (csv)." << endl;

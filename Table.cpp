@@ -1,35 +1,38 @@
 
 #include "Table.h"
+#include <iostream>
 
 Table::Table()
 {
+    tabstr = nullptr;
 }
 
 Table::~Table()
 {
-    delete[] tabstr;
+    if(nullptr!= tabstr) delete[] tabstr;
 }
 
-void Table::loadTable(ifstream &File, string delim, string ignorebefore, string ignoreafter, bool findtabsize)
+int Table::loadTable(ifstream &File, string delim, string ignorebefore, string ignoreafter, bool findtabsize)
 {
     int col, row;
     size_t pos, oldpos, entrystartpos, qmpos, entrbegpos, entrendpos;
     string entry, line;
     bool in_quotation_marks = false;
 
-    File.clear();
-    File.seekg(0, ios::beg);
+    if(!File.is_open()) return -2;
 
-    col = 0;
-    row = 0;
-    if(findtabsize){
-        rows = 0;
-        cols = 0;
-    }else{
-        tabstr = new string[rows*cols];
-    }
-    if(File.is_open()){
-        while(File.good()){
+    File.exceptions(std::ifstream::failbit | std::ifstream::badbit);
+    try{
+
+        col = 0;
+        row = 0;
+        if(findtabsize){
+            rows = 0;
+            cols = 0;
+        }else{
+            tabstr = new string[rows*cols];
+        }
+        while(1){
             getline(File, line);
             col = 0;
             pos = 0;
@@ -78,11 +81,23 @@ void Table::loadTable(ifstream &File, string delim, string ignorebefore, string 
             row++;
         }
     }
-    if(findtabsize){
-        rows = row;
-        cols++; // Korrektur: Spalte 0 ist auch eine Spalte; cols muss um eins groesser sein als letzte Spaltennummer
-        loadTable(File, delim, ignorebefore, ignoreafter, false);
+
+
+    catch(std::ifstream::failure e){
+        if(File.bad()) return -11;
+        if(File.eof()) {
+            File.clear();
+            File.seekg(0, ios::beg);
+            if(findtabsize){
+                rows = row;
+                cols++; // Korrektur: Spalte 0 ist auch eine Spalte; cols muss um eins groesser sein als letzte Spaltennummer
+                loadTable(File, delim, ignorebefore, ignoreafter, false);
+            }
+            return 0;
+        }
+        return -1;
     }
+    return -255; // nicht erreichbar
 }
 
 string Table::Tableread(int row, int col)

@@ -12,17 +12,25 @@ KiCadSCH::~KiCadSCH()
 
 int KiCadSCH::readSCHfile(ifstream &file)
 {
+    int err;
+    file.exceptions(std::ifstream::failbit | std::ifstream::badbit);
     if(!file.is_open()) return -1;
-    tab.loadTable(file, " ");
+    err = tab.loadTable(file, " ");
+    if(0!=err) return err;
     tab.rmquotmarks();
-    file.clear();
-    file.seekg(0, ios::beg);
+
     return 0;
 }
 
 int KiCadSCH::readSCHfile(string filename)
 {
-    iSCHfile.open(filename.c_str());
+    iSCHfile.exceptions(std::ifstream::failbit | std::ifstream::badbit);
+    try{
+        iSCHfile.open(filename.c_str());
+    }
+    catch(std::ifstream::failure e){
+        return -1; //Oeffnen fehlgeschlagen
+    }
     return readSCHfile(iSCHfile);
 }
 
@@ -272,27 +280,47 @@ int KiCadSCH::patchFile(ofstream &oFile)
     modiFile_t currentpatch;
     int line_n;
     unsigned i;
-    if(!iSCHfile.is_open()) return -1;
-    if(!oFile.is_open()) return -2;
 
-    for(line_n=0; oFile.good()&&iSCHfile.good(); line_n++){
-        getline(iSCHfile, iline);
-        oline = iline;
-        currentpatch.add = false;
-        currentpatch.del = false;
-        currentpatch.line = "";
-        currentpatch.lineNbr = 0;
-        for(i=0;i<patchvec.size();i++){
-            if(line_n == patchvec[i].lineNbr){
-                currentpatch = patchvec[i];
-                if(currentpatch.add){
-                    oFile << currentpatch.line << endl;
+    iSCHfile.exceptions(std::ifstream::failbit | std::ifstream::badbit);
+    oFile.exceptions(std::ifstream::failbit | std::ifstream::badbit);
+
+    try{
+
+        for(line_n=0; oFile.good()&&iSCHfile.good(); line_n++){
+            getline(iSCHfile, iline);
+            oline = iline;
+            currentpatch.add = false;
+            currentpatch.del = false;
+            currentpatch.line = "";
+            currentpatch.lineNbr = 0;
+            for(i=0;i<patchvec.size();i++){
+                if(line_n == patchvec[i].lineNbr){
+                    currentpatch = patchvec[i];
+                    if(currentpatch.add){
+                        oFile << currentpatch.line << endl;
+                    }
                 }
             }
+            if(!currentpatch.del){
+                oFile << oline << endl;
+            }
         }
-        if(!currentpatch.del){
-            oFile << oline << endl;
+    }
+    catch(std::fstream::failure e){
+        if(iSCHfile.eof()){
+            iSCHfile.clear();
+            iSCHfile.seekg(0, ios::beg);
+            return -1;
         }
+        if(oFile.eof()) {
+            oFile.clear();
+            return -2;
+        }
+        if(iSCHfile.bad()) return -11;
+        if(oFile.bad()) return -12;
+        if(iSCHfile.fail()) return -21;
+        if(oFile.fail()) return -22;
+        return -255;
     }
     return 0;
 }

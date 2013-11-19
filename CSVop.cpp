@@ -1,6 +1,8 @@
 
 #include "CSVop.h"
 
+#include <iostream>
+
 CSVop::CSVop()
 {
 
@@ -14,22 +16,35 @@ CSVop::~CSVop()
 
 int CSVop::readCSVfile(ifstream &file)
 {
+    int err;
+    file.exceptions(std::ifstream::failbit | std::ifstream::badbit);
     if(!file.is_open()) return -1;
-    tab.loadTable(file, CSVparams.delim, CSVparams.ignorebefore, CSVparams.ignoreafter);
-    file.clear();
-    file.seekg(0, ios::beg);
+    err = tab.loadTable(file, CSVparams.delim, CSVparams.ignorebefore, CSVparams.ignoreafter);
+    if(0!=err) return err;
     return 0;
 }
 
 int CSVop::readCSVfile(string filename)
 {
-    iCSVfile.open(filename.c_str());
+    iCSVfile.exceptions(std::ifstream::failbit | std::ifstream::badbit);
+    try{
+        iCSVfile.open(filename.c_str());
+    }
+    catch(std::ifstream::failure e){
+        return -1;
+    }
     return readCSVfile(iCSVfile);
 }
 
 int CSVop::readCSVfile(void)
 {
-    iCSVfile.open(CSVparams.filename.c_str());
+    iCSVfile.exceptions(std::ifstream::failbit | std::ifstream::badbit);
+    try{
+        iCSVfile.open(CSVparams.filename.c_str());
+    }
+    catch(std::ifstream::failure e){
+        return -1;
+    }
     return readCSVfile(iCSVfile);
 }
 
