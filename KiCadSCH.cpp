@@ -286,7 +286,7 @@ int KiCadSCH::patchFile(ofstream &oFile)
 
     try{
 
-        for(line_n=0; oFile.good()&&iSCHfile.good(); line_n++){
+        for(line_n=0; true; line_n++){
             getline(iSCHfile, iline);
             oline = iline;
             currentpatch.add = false;
@@ -307,19 +307,19 @@ int KiCadSCH::patchFile(ofstream &oFile)
         }
     }
     catch(std::fstream::failure e){
+        if(iSCHfile.bad()) return -1;
+        if(oFile.bad()) return -2;
+        if(iSCHfile.fail()) return -1;
+        if(oFile.fail()) return -2;
         if(iSCHfile.eof()){
             iSCHfile.clear();
             iSCHfile.seekg(0, ios::beg);
-            return -1;
+            return 0;
         }
         if(oFile.eof()) {
             oFile.clear();
             return -2;
         }
-        if(iSCHfile.bad()) return -11;
-        if(oFile.bad()) return -12;
-        if(iSCHfile.fail()) return -21;
-        if(oFile.fail()) return -22;
         return -255;
     }
     return 0;

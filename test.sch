@@ -1385,10 +1385,3 @@ $EndComp
 Connection ~ 7650 5900
 NoConn ~ 1550 3700
 $EndSCHEMATC
-
-
-
-
-
-
-

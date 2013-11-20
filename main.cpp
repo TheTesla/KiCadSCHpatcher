@@ -46,8 +46,11 @@ int doit(string iSCHfilename, string oSCHfilename, string CONFfilename)
     CSVparams_t csvparam;
     CONFreadstate_et confstate;
     int notoverwritten, NoParts, NoEntrperPart, round;
+    int err;
 
-    if(0!=kicadsch.readSCHfile(iSCHfilename)) return -1;
+    err = kicadsch.readSCHfile(iSCHfilename);
+    if(-1==err) return -1;
+    if(-11==err) return -11;
     oFile.exceptions(std::ofstream::failbit | std::ofstream::badbit);
     try{
         oFile.open(oSCHfilename.c_str());
@@ -56,8 +59,10 @@ int doit(string iSCHfilename, string oSCHfilename, string CONFfilename)
         if(oFile.bad()) return -12;
         return -2;
     }
-    if(!oFile.is_open()) return -2;
-    if(0!=conf.readCONFfile(CONFfilename)) return -3;
+
+    err = conf.readCONFfile(CONFfilename);
+    if(-1==err) return -3;
+    if(-11==err) return -13;
 
 
 
@@ -69,7 +74,10 @@ int doit(string iSCHfilename, string oSCHfilename, string CONFfilename)
         updatevec.clear();
         confstate = conf.getBlock(csvrow, csvparam, searchvec, updatevec);
         Database.CSVparams = csvparam;
-        if(0!=Database.readCSVfile()) return -4;
+        err = Database.readCSVfile();
+        if(-1==err) return -4;
+        if(-11==err) return -14;
+
         row = 0;
         NoEntrperPart = updatevec.size();
         NoParts = 0;
@@ -93,8 +101,10 @@ int doit(string iSCHfilename, string oSCHfilename, string CONFfilename)
     }
 
     kicadsch.updatePatchEntryNbr(); // Eintraege mit laufender Nummer versehen und an Ausgabezeile anfuegen
-    kicadsch.patchFile(oFile);
-    oFile.close();
+
+    err = kicadsch.patchFile(oFile);
+    if(oFile.is_open()) oFile.close();
+    if(0==err) return 10*err;
 
     return 0;
 }
@@ -139,11 +149,16 @@ int main(int argc, char *argv[])
             }else{
                 err = doit(inp, out, conf);
             }
-            if(-1==err) cerr << "could not open input file" << endl;
-            if(-2==err) cerr << "could not open output file" << endl;
-            if(-12==err) cerr << "could not write output file" << endl;
-            if(-3==err) cerr << "could not open config file" << endl;
+            if(-1==err) cerr << "could not open input file" << endl;;
+            if(-11==err) cerr << "read error on input file" << endl;;
+            if(-2==err) cerr << "could not open/create output file" << endl;
+            if(-12==err) cerr << "could not open/create output file - file bad" << endl;
+            if(-3==err) cerr << "could not open config file" << endl;;
+            if(-13==err) cerr << "read error on config file" << endl;;
             if(-4==err) cerr << "could not open database file" << endl;
+            if(-14==err) cerr << "read error on database file" << endl;
+            if(-10==err) cerr << "could not write to output file" << endl;
+            if(-20==err) cerr << "read error on input file while writing output file" << endl;
         }
     }else{
         cout << endl << "This is KiCadSCHpatcher. It is designed to update the parameters" << endl << "of the components of KiCad schematic file from a database (csv)." << endl;
