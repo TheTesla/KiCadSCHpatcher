@@ -11,6 +11,7 @@
 				<Option object_output="obj/Debug/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
+				<Option parameters="-iATUC256L4U.sch -oblub.sch -cKiCadSCHpatcher.conf" />
 				<Compiler>
 					<Add option="-std=c++11" />
 					<Add option="-g" />

@@ -73,6 +73,7 @@ class KiCadSCH
         int addEntry(string entryname, string entrycontent, int row = 0, bool overwrite = true, bool resetparams = false);
         int addEntry(KiCadStdfn_et entryname, string entrycontent, int row = 0, bool overwrite = true, bool resetparams = false);
         int addEntrys(vector<datapair_t> newdata, int row = 0);
+        unsigned getpatchsize(void);
 
     private:
         ifstream iSCHfile;

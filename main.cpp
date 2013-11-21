@@ -105,7 +105,7 @@ int doit(string iSCHfilename, string oSCHfilename, string CONFfilename)
     err = kicadsch.patchFile(oFile);
     if(oFile.is_open()) oFile.close();
     if(0==err) return 10*err;
-
+        cout << " total number of new entries: " << kicadsch.getpatchsize() << endl;
     return 0;
 }
 

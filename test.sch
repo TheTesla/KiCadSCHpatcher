@@ -506,8 +506,8 @@ L R R1
 U 1 1 526044B8
 P 3950 1450
 F 0 "R1" V 4030 1450 40  0000 C CNN
-F 1 "R" V 3957 1451 40  0000 C CNN
-F 2 "SM0805" V 3880 1450 30  0000 C CNN
+F 1 "169k" V 3957 1451 40  0000 C CNN
+F 2 "0805" V 3880 1450 30  0000 C CNN
 F 3 "~" H 3950 1450 30  0000 C CNN
 	1    3950 1450
 	-1   0    0    1   
@@ -522,8 +522,6 @@ F 2 "SOT-363" H 7100 6650 60  0000 C CNN
 F 3 "http://www.mccsemi.com/up_pdf/BAS70TW_DW-04_DW-05_DW-06_BRW(SOT-363).PDF" H 7050 6450 60  0001 C CNN
 F 4 "BAS70BRW-TPCT-ND" H 7050 6450 60  0001 C CNN "Digi-Key Part Number"
 F 5 "031051001" H 7050 6450 60  0001 C CNN "Seeed OPL SKU"
-F 6 "123" H 7050 6450 60 0000 C CNN "Manuf"
-F 7 "abc" H 7050 6450 60 0000 C CNN "Color"
 	1    7050 6450
 	0    -1   -1   0   
 $EndComp
@@ -537,8 +535,6 @@ F 2 "SOT-363" H 7650 6650 60  0000 C CNN
 F 3 "http://www.mccsemi.com/up_pdf/BAS70TW_DW-04_DW-05_DW-06_BRW(SOT-363).PDF" H 7650 6450 60  0001 C CNN
 F 4 "BAS70BRW-TPCT-ND" H 7650 6450 60  0001 C CNN "Digi-Key Part Number"
 F 5 "031051001" H 7650 6450 60  0001 C CNN "Seeed OPL SKU"
-F 6 "123" H 7650 6450 60 0000 C CNN "Manuf"
-F 7 "abc" H 7650 6450 60 0000 C CNN "Color"
 	2    7650 6450
 	0    -1   -1   0   
 $EndComp
@@ -575,7 +571,6 @@ F 3 "http://www.onsemi.com/pub_link/Collateral/MM3Z2V4T1-D.PDF" H 6600 6450 60  
 F 4 "MM3Z6V2ST1GOSCT-ND" H 6600 6450 60  0001 C CNN "Digi-Key Part Number"
 F 5 "MM3Z6V2ST1G" H 6600 6450 60  0001 C CNN "Manufacturer Part Number"
 F 6 "032020001" H 6600 6450 60  0001 C CNN "Seeed OPL SKU"
-F 7 "MM3Z6V2ST1G" H 6600 6450 60 0000 C CNN "Manuf"
 	1    6600 6450
 	0    -1   -1   0   
 $EndComp
@@ -590,8 +585,7 @@ F 3 "http://catalog.osram-os.com/jsp/download.jsp?name=LO_LS_LY_R976.pdf&url=/me
 F 4 "475-2560-1-ND" H 6250 6700 60  0001 C CNN "Digi-Key Part Number"
 F 5 "LY R976-PS-36" H 6250 6700 60  0001 C CNN "Manufacturer Part Number"
 F 6 "033009001" H 6250 6700 60  0001 C CNN "Seeed OPL SKU"
-F 8 "yellow" H 6250 6700 60 0001 C CNN "Color"
-F 7 "LY R976-PS-36" H 6250 6700 60 0000 C CNN "Manuf"
+F 7 "yellow" H 6250 6700 60  0001 C CNN "Color"
 	1    6250 6700
 	0    1    1    0   
 $EndComp
@@ -606,7 +600,6 @@ F 3 "http://www.seielect.com/Catalog/SEI-RMCF_RMCP.pdf" H 6250 6200 30  0001 C C
 F 4 "RMCF0805JT1K50CT-ND" H 6250 6200 60  0001 C CNN "Digi-Key Part Number"
 F 5 "RMCF0805JT1K50" H 6250 6200 60  0001 C CNN "Manufacturer Part Number"
 F 6 "002022001" H 6250 6200 60  0001 C CNN "Seeed OPL SKU"
-F 7 "RMCF0805JT1K50" H 6250 6200 60 0000 C CNN "Manuf"
 	1    6250 6200
 	1    0    0    -1  
 $EndComp
@@ -621,7 +614,6 @@ F 3 "http://portal.fciconnect.com/Comergent//fci/drawing/10118192.pdf" H 5350 64
 F 4 "609-4613-2-ND" H 5350 6400 60  0001 C CNN "Digi-Key Part Number"
 F 5 "10118192-0001LF" H 5350 6400 60  0001 C CNN "Manufacturer Part Number"
 F 6 "3400150P1" H 5350 6400 60  0001 C CNN "Seeed OPL SKU"
-F 7 "10118192-0001LF" H 5350 6400 60 0000 C CNN "Manuf"
 	1    5350 6400
 	1    0    0    -1  
 $EndComp

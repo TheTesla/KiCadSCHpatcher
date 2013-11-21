@@ -411,3 +411,7 @@ int KiCadSCH::addEntrys(vector<datapair_t> newdata, int row)
     return entriesnotoverwritten;
 }
 
+unsigned KiCadSCH::getpatchsize(void)
+{
+    return patchvec.size();
+}

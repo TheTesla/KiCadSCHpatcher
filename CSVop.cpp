@@ -21,6 +21,7 @@ int CSVop::readCSVfile(ifstream &file)
     if(!file.is_open()) return -1;
     err = tab.loadTable(file, CSVparams.delim, CSVparams.ignorebefore, CSVparams.ignoreafter);
     if(0!=err) return err;
+    tab.rmquotmarks();
     return 0;
 }
 
