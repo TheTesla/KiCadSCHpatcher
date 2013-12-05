@@ -12,6 +12,7 @@
 
 #include <vector>
 #include <string>
+#include <cmath>
 
 using namespace std;
 
@@ -23,6 +24,7 @@ typedef struct datapair_t
     bool entrycontains = false;  // fieldentry ist in Tabelleneintrag enthalten
     bool strcontainsname = false; // Tabelleneintrag ist in fieldname enthalten
     bool strcontainsentry = false; // Tabelleneintrag ist in fieldentry enthalten
+    bool valuesearch = false; // Interpretation von Prefixen (k, M usw.)  bei Werten
     bool takeDatabasefieldname = false; // Vollstaendigen fieldname aus Datenbank in SCH-file uebernehmen, ansonsten Suchwort aus config-file
     bool overwrite = false;
     bool resetparams = false;
@@ -39,6 +41,8 @@ typedef struct CSVparams_t
 
 string rmquotmarks(string str);
 void rmquotmarks(vector<datapair_t> &data);
+float norm_value(string str);
+void norm_value_search(vector<datapair_t> &searchvec);
 
 
 #endif // EXTRAOPS_H_INCLUDED

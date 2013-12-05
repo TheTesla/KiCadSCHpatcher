@@ -86,6 +86,7 @@ int doit(string iSCHfilename, string oSCHfilename, string CONFfilename)
             row = kicadsch.getCompendrow(row+1);
             kicadsch.getEntrys(row, searchvec); // searchvec mit Eintraegen aus SCH-file anreichern
             rmquotmarks(searchvec);
+            norm_value_search(searchvec);
             Database.getEntrys(Database.findrow(searchvec), updatevec); // updatevec mit Eintraegen aus der Datenbank anreichern
             notoverwritten += kicadsch.addEntrys(updatevec, row);
             if(-1==row) break;

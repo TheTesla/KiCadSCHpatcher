@@ -505,10 +505,11 @@ $Comp
 L R R1
 U 1 1 526044B8
 P 3950 1450
-F 0 "R1" V 4030 1450 40  0000 C CNN
+F 0 "R" V 4030 1450 40 0000 C CNN ""
 F 1 "169k" V 3957 1451 40  0000 C CNN
 F 2 "0805" V 3880 1450 30  0000 C CNN
 F 3 "~" H 3950 1450 30  0000 C CNN
+F 4 "http://industrial.panasonic.com/www-cgi/jvcr13pz.cgi?E+PZ+3+AOA0002+ERJ3EKF1693V+7+WW" H 3950 1450 60 0000 C CNN "Datasheets"
 	1    3950 1450
 	-1   0    0    1   
 $EndComp
@@ -593,13 +594,14 @@ $Comp
 L R R2
 U 1 1 526051CB
 P 6250 6200
-F 0 "R2" V 6330 6200 40  0000 C CNN
+F 0 "R" V 6330 6200 40 0000 C CNN ""
 F 1 "1k5" V 6257 6201 40  0000 C CNN
 F 2 "SM0805" V 6180 6200 30  0000 C CNN
 F 3 "http://www.seielect.com/Catalog/SEI-RMCF_RMCP.pdf" H 6250 6200 30  0001 C CNN
 F 4 "RMCF0805JT1K50CT-ND" H 6250 6200 60  0001 C CNN "Digi-Key Part Number"
 F 5 "RMCF0805JT1K50" H 6250 6200 60  0001 C CNN "Manufacturer Part Number"
 F 6 "002022001" H 6250 6200 60  0001 C CNN "Seeed OPL SKU"
+F 7 "http://industrial.panasonic.com/www-cgi/jvcr13pz.cgi?E+PZ+3+AOA0001+ERJ3GEYJ112V+7+WW" H 6250 6200 60 0000 C CNN "Datasheets"
 	1    6250 6200
 	1    0    0    -1  
 $EndComp
