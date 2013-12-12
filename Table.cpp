@@ -117,12 +117,15 @@ int Table::Tablewrite(int row, int col, string entry)
     return 0;
 }
 
-int Table::findrow(string findstr, int col, int firstrow, bool entrycontains, bool strcontainsentr)
+int Table::findrow(string findstr, int col, int firstrow, bool entrycontains, bool strcontainsentr, bool valuesearch, double precision)
 {
     int row;
     string str;
     for(row=firstrow;row<rows;row++){
         str = Tableread(row,col);
+        if(valuesearch){
+            if(precision>abs(norm_value(str)-norm_value(findstr))) return row;
+        }
         if(strcontainsentr) if(string::npos!=findstr.find(str)) return row;
         if(entrycontains) if(string::npos!=str.find(findstr)) return row;
         if(str==findstr) return row;

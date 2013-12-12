@@ -39,7 +39,7 @@ class Table
         bool OK = true;
         int loadTable(ifstream &File, string delim = ",", string ignorebefore = " ", string ignoreafter = " ", bool findtabsize = true);
         string Tableread(int row, int col);
-        int findrow(string findstr, int col = 0, int lastrow = 0, bool entrycontains = false, bool strcontainsentr = false);
+        int findrow(string findstr, int col = 0, int lastrow = 0, bool entrycontains = false, bool strcontainsentr = false, bool valuesearch = false, double precision = 0);
         int findrow_bw(string findstr, int col, int lastrow, bool entrycontains = false, bool strcontainsentr = false);
         int findcol(string findstr, int row = 0, int firstcol = 0, bool entrycontains = false, bool strcontainsentr = false);
         void eraseemptyrows(void);

@@ -37,7 +37,7 @@ class CSVop
         int readCSVfile(ifstream &file);
         int readCSVfile(string filename);
         int readCSVfile(void);
-        int findrow(string fieldname, string fieldentry, int startrow = 0, bool namecontains = false, bool entrycontains = false, bool strcontainsname = false, bool strcontainsentry = false, unsigned subpart = 1);
+        int findrow(string fieldname, string fieldentry, int startrow = 0, bool namecontains = false, bool entrycontains = false, bool strcontainsname = false, bool strcontainsentry = false, bool valuesearch = false, unsigned subpart = 1, double precision = 0);
         int findrow(vector<datapair_t> entrypairs, int startrow, int Nbr2find);
         int findrow(vector<datapair_t> entrypairs, int startrow = 1);
 

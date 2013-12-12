@@ -601,7 +601,7 @@ F 3 "http://www.seielect.com/Catalog/SEI-RMCF_RMCP.pdf" H 6250 6200 30  0001 C C
 F 4 "RMCF0805JT1K50CT-ND" H 6250 6200 60  0001 C CNN "Digi-Key Part Number"
 F 5 "RMCF0805JT1K50" H 6250 6200 60  0001 C CNN "Manufacturer Part Number"
 F 6 "002022001" H 6250 6200 60  0001 C CNN "Seeed OPL SKU"
-F 7 "http://industrial.panasonic.com/www-cgi/jvcr13pz.cgi?E+PZ+3+AOA0001+ERJ3GEYJ112V+7+WW" H 6250 6200 60 0000 C CNN "Datasheets"
+F 7 "http://industrial.panasonic.com/www-cgi/jvcr13pz.cgi?E+PZ+3+AOA0001+ERJ3GEYJ102V+7+WW" H 6250 6200 60 0000 C CNN "Datasheets"
 	1    6250 6200
 	1    0    0    -1  
 $EndComp

@@ -49,11 +49,11 @@ int CSVop::readCSVfile(void)
     return readCSVfile(iCSVfile);
 }
 
-int CSVop::findrow(string fieldname, string fieldentry, int startrow, bool namecontains, bool entrycontains, bool strcontainsname, bool strcontainsentry, unsigned subpart)
+int CSVop::findrow(string fieldname, string fieldentry, int startrow, bool namecontains, bool entrycontains, bool strcontainsname, bool strcontainsentry, bool valuesearch, unsigned subpart, double precision)
 {
     int col, row;
     col = tab.findcol(fieldname, 0, 0, namecontains, strcontainsname);
-    row = tab.findrow(fieldentry, col, startrow, entrycontains, strcontainsentry);
+    row = tab.findrow(fieldentry, col, startrow, entrycontains, strcontainsentry, valuesearch, precision);
     return row;
 }
 
@@ -65,11 +65,14 @@ int CSVop::findrow(vector<datapair_t> entrypairs, int startrow, int Nbr2find)
     if(0==entrypairs.size()) return -1;
     while(1){
         cnt = 1;
-        row = findrow(entrypairs[0].fieldname, entrypairs[0].fieldentry, row, entrypairs[0].entrycontains, entrypairs[0].strcontainsentry);
+        row = findrow(entrypairs[0].fieldname, entrypairs[0].fieldentry, row, entrypairs[0].entrycontains, false, entrypairs[0].strcontainsentry, false, entrypairs[0].valuesearch, 1, norm_value(entrypairs[0].fieldentry)*entrypairs[0].precision/100);
         if(-1==row) break;
         for(i=1;i<entrypairs.size();i++){
             col = tab.findcol(entrypairs[i].fieldname, 0, 0, entrypairs[i].namecontains, entrypairs[i].strcontainsname);
-            if(entrypairs[i].strcontainsentry){
+            if(entrypairs[i].valuesearch){
+                if(norm_value(entrypairs[i].fieldentry)*entrypairs[i].precision/100>abs(norm_value(tab.Tableread(row, col))-norm_value(entrypairs[i].fieldentry))) cnt++;
+            }
+            else if(entrypairs[i].strcontainsentry){
                 if(string::npos!=entrypairs[i].fieldentry.find(tab.Tableread(row, col))) cnt++;
             }
             else if(entrypairs[i].entrycontains){

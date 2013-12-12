@@ -104,6 +104,7 @@ CONFreadstate_et CONFop::getBlock(int &row, CSVparams_t &csv, vector<datapair_t>
                 if('$'==entry.fieldname[0]) {
                     entry.valuesearch = true;
                     entry.fieldname = entry.fieldname.substr(1, std::string::npos);
+                    entry.precision = norm_value(tab.Tableread(row, 3)); // in percent
                 }
                 if("entrycontains"==tab.Tableread(row, 2)){
                     entry.entrycontains = true;

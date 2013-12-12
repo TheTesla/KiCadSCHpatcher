@@ -12,7 +12,6 @@
 
 #include <vector>
 #include <string>
-#include <cmath>
 
 using namespace std;
 
@@ -29,6 +28,7 @@ typedef struct datapair_t
     bool overwrite = false;
     bool resetparams = false;
     bool allowemptyentries = false;
+    double precision = 0; // for value compare
 } datapair_t;
 
 typedef struct CSVparams_t
@@ -41,8 +41,6 @@ typedef struct CSVparams_t
 
 string rmquotmarks(string str);
 void rmquotmarks(vector<datapair_t> &data);
-float norm_value(string str);
-void norm_value_search(vector<datapair_t> &searchvec);
-
+double norm_value(string str);
 
 #endif // EXTRAOPS_H_INCLUDED
