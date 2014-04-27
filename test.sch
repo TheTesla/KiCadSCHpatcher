@@ -201,6 +201,9 @@ F 0 "#PWR07" H 10500 2540 20  0001 C CNN
 F 1 "+5V" H 10500 2540 30  0000 C CNN
 F 2 "" H 10500 2450 60  0000 C CNN
 F 3 "" H 10500 2450 60  0000 C CNN
+F 4 "http://www.seielect.com/Catalog/SEI-RMCF_RMCP.pdf" H 10500 2450 60 0000 C CNN "Datasheets"
+F 5 "RMCF0402ZT0R00CT-ND" H 10500 2450 60 0000 C CNN "Digi-Key Part Number"
+F 6 "RMCF0402ZT0R00" H 10500 2450 60 0000 C CNN "Manufacturer Part Number"
 	1    10500 2450
 	1    0    0    -1  
 $EndComp
@@ -333,6 +336,9 @@ F 0 "#PWR012" H 8850 960 30  0001 C CNN
 F 1 "+3.3V" H 8850 1110 30  0000 C CNN
 F 2 "" H 8850 1000 60  0000 C CNN
 F 3 "" H 8850 1000 60  0000 C CNN
+F 4 "http://www.seielect.com/Catalog/SEI-RMCF_RMCP.pdf" H 8850 1000 60 0000 C CNN "Datasheets"
+F 5 "RMCF0402ZT0R00CT-ND" H 8850 1000 60 0000 C CNN "Digi-Key Part Number"
+F 6 "RMCF0402ZT0R00" H 8850 1000 60 0000 C CNN "Manufacturer Part Number"
 	1    8850 1000
 	1    0    0    -1  
 $EndComp
@@ -344,6 +350,9 @@ F 0 "#PWR013" H 10400 2610 30  0001 C CNN
 F 1 "+3.3V" H 10400 2760 30  0000 C CNN
 F 2 "" H 10400 2650 60  0000 C CNN
 F 3 "" H 10400 2650 60  0000 C CNN
+F 4 "http://www.seielect.com/Catalog/SEI-RMCF_RMCP.pdf" H 10400 2650 60 0000 C CNN "Datasheets"
+F 5 "RMCF0402ZT0R00CT-ND" H 10400 2650 60 0000 C CNN "Digi-Key Part Number"
+F 6 "RMCF0402ZT0R00" H 10400 2650 60 0000 C CNN "Manufacturer Part Number"
 	1    10400 2650
 	1    0    0    -1  
 $EndComp
@@ -399,6 +408,9 @@ F 0 "#PWR014" H 8850 1390 20  0001 C CNN
 F 1 "+1.8V" H 8850 1360 30  0000 C CNN
 F 2 "" H 8850 1250 60  0000 C CNN
 F 3 "" H 8850 1250 60  0000 C CNN
+F 4 "http://www.seielect.com/Catalog/SEI-RMCF_RMCP.pdf" H 8850 1250 60 0000 C CNN "Datasheets"
+F 5 "RMCF0402ZT0R00CT-ND" H 8850 1250 60 0000 C CNN "Digi-Key Part Number"
+F 6 "RMCF0402ZT0R00" H 8850 1250 60 0000 C CNN "Manufacturer Part Number"
 	1    8850 1250
 	1    0    0    -1  
 $EndComp
@@ -410,6 +422,9 @@ F 0 "#PWR015" H 10550 3040 20  0001 C CNN
 F 1 "+1.8V" H 10550 3010 30  0000 C CNN
 F 2 "" H 10550 2900 60  0000 C CNN
 F 3 "" H 10550 2900 60  0000 C CNN
+F 4 "http://www.seielect.com/Catalog/SEI-RMCF_RMCP.pdf" H 10550 2900 60 0000 C CNN "Datasheets"
+F 5 "RMCF0402ZT0R00CT-ND" H 10550 2900 60 0000 C CNN "Digi-Key Part Number"
+F 6 "RMCF0402ZT0R00" H 10550 2900 60 0000 C CNN "Manufacturer Part Number"
 	1    10550 2900
 	0    -1   -1   0   
 $EndComp
@@ -505,11 +520,13 @@ $Comp
 L R R1
 U 1 1 526044B8
 P 3950 1450
-F 0 "R" V 4030 1450 40 0000 C CNN ""
+F 0 "R1" V 4030 1450 40  0000 C CNN
 F 1 "169k" V 3957 1451 40  0000 C CNN
 F 2 "0805" V 3880 1450 30  0000 C CNN
 F 3 "~" H 3950 1450 30  0000 C CNN
-F 4 "http://industrial.panasonic.com/www-cgi/jvcr13pz.cgi?E+PZ+3+AOA0002+ERJ3EKF1693V+7+WW" H 3950 1450 60 0000 C CNN "Datasheets"
+F 4 "http://www.seielect.com/Catalog/SEI-RMCF_RMCP.pdf" H 3950 1450 60 0000 C CNN "Datasheets"
+F 5 "RMCF0402ZT0R00CT-ND" H 3950 1450 60 0000 C CNN "Digi-Key Part Number"
+F 6 "RMCF0402ZT0R00" H 3950 1450 60 0000 C CNN "Manufacturer Part Number"
 	1    3950 1450
 	-1   0    0    1   
 $EndComp
@@ -558,6 +575,9 @@ F 0 "#PWR021" H 7300 5940 20  0001 C CNN
 F 1 "+5V" H 7300 5940 30  0000 C CNN
 F 2 "" H 7300 5850 60  0000 C CNN
 F 3 "" H 7300 5850 60  0000 C CNN
+F 4 "http://www.seielect.com/Catalog/SEI-RMCF_RMCP.pdf" H 7300 5850 60 0000 C CNN "Datasheets"
+F 5 "RMCF0402ZT0R00CT-ND" H 7300 5850 60 0000 C CNN "Digi-Key Part Number"
+F 6 "RMCF0402ZT0R00" H 7300 5850 60 0000 C CNN "Manufacturer Part Number"
 	1    7300 5850
 	1    0    0    -1  
 $EndComp
@@ -594,14 +614,14 @@ $Comp
 L R R2
 U 1 1 526051CB
 P 6250 6200
-F 0 "R" V 6330 6200 40 0000 C CNN ""
+F 0 "R2" V 6330 6200 40  0000 C CNN
 F 1 "1k5" V 6257 6201 40  0000 C CNN
 F 2 "SM0805" V 6180 6200 30  0000 C CNN
 F 3 "http://www.seielect.com/Catalog/SEI-RMCF_RMCP.pdf" H 6250 6200 30  0001 C CNN
-F 4 "RMCF0805JT1K50CT-ND" H 6250 6200 60  0001 C CNN "Digi-Key Part Number"
-F 5 "RMCF0805JT1K50" H 6250 6200 60  0001 C CNN "Manufacturer Part Number"
+F 4 "RMCF0402ZT0R00CT-ND" H 6250 6200 60 0001 C CNN "Digi-Key Part Number"
+F 5 "RMCF0402ZT0R00" H 6250 6200 60 0001 C CNN "Manufacturer Part Number"
 F 6 "002022001" H 6250 6200 60  0001 C CNN "Seeed OPL SKU"
-F 7 "http://industrial.panasonic.com/www-cgi/jvcr13pz.cgi?E+PZ+3+AOA0001+ERJ3GEYJ102V+7+WW" H 6250 6200 60 0000 C CNN "Datasheets"
+F 7 "http://www.seielect.com/Catalog/SEI-RMCF_RMCP.pdf" H 6250 6200 60 0000 C CNN "Datasheets"
 	1    6250 6200
 	1    0    0    -1  
 $EndComp

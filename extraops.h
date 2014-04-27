@@ -12,6 +12,10 @@
 
 #include <vector>
 #include <string>
+#include <cmath>
+#include <stdexcept>      // std::out_of_range
+#include <sstream>      // std::stringstream
+
 
 using namespace std;
 
@@ -41,6 +45,8 @@ typedef struct CSVparams_t
 
 string rmquotmarks(string str);
 void rmquotmarks(vector<datapair_t> &data);
+double norm_value(string str, size_t &start);
 double norm_value(string str);
+bool entrymatch(string str, string findstr, bool strcontainsentry=false, bool entrycontains=false, bool valuesearch=false, double precision=1);
 
 #endif // EXTRAOPS_H_INCLUDED

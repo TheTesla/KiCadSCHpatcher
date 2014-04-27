@@ -101,18 +101,30 @@ CONFreadstate_et CONFop::getBlock(int &row, CSVparams_t &csv, vector<datapair_t>
                     entry.strcontainsname = true;
                 }
                 entry.fieldname = tab.Tableread(row, 1);
+                cout << entry.fieldname << endl;
                 if('$'==entry.fieldname[0]) {
                     entry.valuesearch = true;
                     entry.fieldname = entry.fieldname.substr(1, std::string::npos);
                     entry.precision = norm_value(tab.Tableread(row, 3)); // in percent
-                }
-                if("entrycontains"==tab.Tableread(row, 2)){
-                    entry.entrycontains = true;
-                    entry.strcontainsentry = false;
-                }
-                if("strcontainsentry"==tab.Tableread(row, 2)){
-                    entry.entrycontains = false;
+                }else if('>'==entry.fieldname[0]){
+                    entry.valuesearch = true;
+                    entry.fieldname = entry.fieldname.substr(1, std::string::npos);
                     entry.strcontainsentry = true;
+                    entry.entrycontains = false;
+                }else if('<'==entry.fieldname[0]){
+                    entry.valuesearch = true;
+                    entry.fieldname = entry.fieldname.substr(1, std::string::npos);
+                    entry.strcontainsentry = false;
+                    entry.entrycontains = true;
+                }else{
+                    if("entrycontains"==tab.Tableread(row, 2)){
+                        entry.entrycontains = true;
+                        entry.strcontainsentry = false;
+                    }
+                    if("strcontainsentry"==tab.Tableread(row, 2)){
+                        entry.entrycontains = false;
+                        entry.strcontainsentry = true;
+                    }
                 }
                 if(string::npos!=tab.Tableread(row, 3).find("takeDatabasefieldname")){
                     entry.takeDatabasefieldname = true;

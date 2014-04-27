@@ -61,26 +61,17 @@ int CSVop::findrow(vector<datapair_t> entrypairs, int startrow, int Nbr2find)
 {
     int col, row, cnt;
     unsigned i;
+    stringstream ssval;
+    double dval;
     row = startrow;
     if(0==entrypairs.size()) return -1;
     while(1){
         cnt = 1;
-        row = findrow(entrypairs[0].fieldname, entrypairs[0].fieldentry, row, entrypairs[0].entrycontains, false, entrypairs[0].strcontainsentry, false, entrypairs[0].valuesearch, 1, norm_value(entrypairs[0].fieldentry)*entrypairs[0].precision/100);
+        row = findrow(entrypairs[0].fieldname, entrypairs[0].fieldentry, row, entrypairs[0].namecontains, entrypairs[0].entrycontains, entrypairs[0].strcontainsname, entrypairs[0].strcontainsentry, entrypairs[0].valuesearch, 1, norm_value(entrypairs[0].fieldentry)*entrypairs[0].precision/100);
         if(-1==row) break;
         for(i=1;i<entrypairs.size();i++){
             col = tab.findcol(entrypairs[i].fieldname, 0, 0, entrypairs[i].namecontains, entrypairs[i].strcontainsname);
-            if(entrypairs[i].valuesearch){
-                if(norm_value(entrypairs[i].fieldentry)*entrypairs[i].precision/100>abs(norm_value(tab.Tableread(row, col))-norm_value(entrypairs[i].fieldentry))) cnt++;
-            }
-            else if(entrypairs[i].strcontainsentry){
-                if(string::npos!=entrypairs[i].fieldentry.find(tab.Tableread(row, col))) cnt++;
-            }
-            else if(entrypairs[i].entrycontains){
-                if(string::npos!=tab.Tableread(row, col).find(entrypairs[i].fieldentry)) cnt++;
-            }
-            else {
-                if(tab.Tableread(row, col)==entrypairs[i].fieldentry) cnt++;
-            }
+            if(entrymatch(tab.Tableread(row, col),entrypairs[i].fieldentry,entrypairs[i].strcontainsentry,entrypairs[i].entrycontains,entrypairs[i].valuesearch,entrypairs[i].precision)) cnt++;
         }
         if(Nbr2find==cnt) break;
         row++;

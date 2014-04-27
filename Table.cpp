@@ -121,14 +121,10 @@ int Table::findrow(string findstr, int col, int firstrow, bool entrycontains, bo
 {
     int row;
     string str;
+    stringstream ssval;
+    double dval;
     for(row=firstrow;row<rows;row++){
-        str = Tableread(row,col);
-        if(valuesearch){
-            if(precision>abs(norm_value(str)-norm_value(findstr))) return row;
-        }
-        if(strcontainsentr) if(string::npos!=findstr.find(str)) return row;
-        if(entrycontains) if(string::npos!=str.find(findstr)) return row;
-        if(str==findstr) return row;
+        if(entrymatch(Tableread(row,col),findstr,strcontainsentr,entrycontains,valuesearch,precision)) return row;
     }
     return -1;
 }
