@@ -120,9 +120,6 @@ int Table::Tablewrite(int row, int col, string entry)
 int Table::findrow(string findstr, int col, int firstrow, bool entrycontains, bool strcontainsentr, bool valuesearch, double precision)
 {
     int row;
-    string str;
-    stringstream ssval;
-    double dval;
     for(row=firstrow;row<rows;row++){
         if(entrymatch(Tableread(row,col),findstr,strcontainsentr,entrycontains,valuesearch,precision)) return row;
     }

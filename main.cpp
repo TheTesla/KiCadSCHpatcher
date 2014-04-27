@@ -113,10 +113,6 @@ int doit(string iSCHfilename, string oSCHfilename, string CONFfilename)
 int main(int argc, char *argv[])
 {
 
-    double dtest;
-    stringstream sstest;
-
-
 
     string str, inp, out, conf;
     int i;

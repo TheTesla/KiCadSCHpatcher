@@ -62,7 +62,6 @@ int CSVop::findrow(vector<datapair_t> entrypairs, int startrow, int Nbr2find)
     int col, row, cnt;
     unsigned i;
     stringstream ssval;
-    double dval;
     row = startrow;
     if(0==entrypairs.size()) return -1;
     while(1){
