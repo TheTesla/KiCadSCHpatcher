@@ -179,3 +179,13 @@ void Table::rmquotmarks(void)
         }
     }
 }
+
+int Table::getNorows(void)
+{
+    return rows;
+}
+
+int Table::getNocols(void)
+{
+    return cols;
+}

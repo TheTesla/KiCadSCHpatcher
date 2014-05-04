@@ -106,3 +106,8 @@ void CSVop::getEntrys(int row, vector<datapair_t> &data2update)
         if(data2update[i].takeDatabasefieldname) data2update[i].fieldname = getfullName(data2update[i].fieldname, data2update[i].namecontains, data2update[i].strcontainsname);
     }
 }
+
+int CSVop::getNorows(void)
+{
+    return tab.getNorows();
+}

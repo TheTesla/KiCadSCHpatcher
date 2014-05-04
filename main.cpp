@@ -32,7 +32,7 @@ int doit(string iSCHfilename, string oSCHfilename, string CONFfilename)
 
     KiCadSCH kicadsch;
     CONFop conf;
-    int row;
+    int row, rowfound;
     ofstream oFile;
     string search_fieldname;
     string entry, newentry;
@@ -45,7 +45,7 @@ int doit(string iSCHfilename, string oSCHfilename, string CONFfilename)
     int csvrow;
     CSVparams_t csvparam;
     CONFreadstate_et confstate;
-    int notoverwritten, NoParts, NoEntrperPart, round;
+    int notoverwritten, NoParts, NoEntrperPart, round, NoMatches;
     int err;
 
     err = kicadsch.readSCHfile(iSCHfilename);
@@ -82,11 +82,14 @@ int doit(string iSCHfilename, string oSCHfilename, string CONFfilename)
         NoEntrperPart = updatevec.size();
         NoParts = 0;
         notoverwritten = 0;
+        NoMatches = 0;
         while(1){
             row = kicadsch.getCompendrow(row+1);
             kicadsch.getEntrys(row, searchvec); // searchvec mit Eintraegen aus SCH-file anreichern
             rmquotmarks(searchvec);
-            Database.getEntrys(Database.findrow(searchvec), updatevec); // updatevec mit Eintraegen aus der Datenbank anreichern
+            rowfound = Database.findrow(searchvec);
+            if(0<rowfound) NoMatches++; // zaehle erfolgreiche Treffer
+            Database.getEntrys(rowfound, updatevec); // updatevec mit Eintraegen aus der Datenbank anreichern
             notoverwritten += kicadsch.addEntrys(updatevec, row);
             if(-1==row) break;
             NoParts++;
@@ -94,6 +97,7 @@ int doit(string iSCHfilename, string oSCHfilename, string CONFfilename)
         round++;
         cout << "round: " << round << endl;
         cout << "    database used: " << csvparam.filename << endl;
+        cout << "    number of matches: " << NoMatches << endl;
         cout << "    number of parts: " << NoParts << endl;
         cout << "    entries per part: " << NoEntrperPart << endl;
         cout << "    total entries (including empty): " << NoParts*NoEntrperPart << endl;
@@ -103,9 +107,12 @@ int doit(string iSCHfilename, string oSCHfilename, string CONFfilename)
     kicadsch.updatePatchEntryNbr(); // Eintraege mit laufender Nummer versehen und an Ausgabezeile anfuegen
 
     err = kicadsch.patchFile(oFile);
+    kicadsch.printPatch();
     if(oFile.is_open()) oFile.close();
     if(0==err) return 10*err;
         cout << " total number of new entries: " << kicadsch.getpatchsize() << endl;
+
+
     return 0;
 }
 

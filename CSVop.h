@@ -44,6 +44,7 @@ class CSVop
         string getEntry(int row, string fieldname, bool namecontains = false, bool strcontainsname = false);
         void getEntrys(int row, vector<datapair_t> &data2update);
         string getfullName(string fieldname, bool namecontains = false, bool strcontainsname = false);
+        int getNorows(void);
 
     private:
         ifstream iCSVfile;

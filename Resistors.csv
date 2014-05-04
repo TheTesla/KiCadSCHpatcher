@@ -1,4 +1,4 @@
-Reference	Value (lower bound)	Value	Value (upper bound)	Tolerance (lower bound)	Tolerance (upper bound)	rel. tol?	Footprint	Datasheets	Digi-Key Part Number	Manufacturer Part Number	Manufacturer	Power (W)	Tolerance	Temperature Coefficent	Price								
+Name	Value (lower bound)	Value	Value (upper bound)	Tolerance (lower bound)	Tolerance (upper bound)	rel. tol?	Footprint	Datasheets	Digi-Key Part Number	Manufacturer Part Number	Manufacturer	Power (W)	Tolerance	Temperature Coefficent	Price								
 R	nan	0.000000e+000	nan	nan	nan	0	0402	http://www.seielect.com/Catalog/SEI-RMCF_RMCP.pdf	RMCF0402ZT0R00CT-ND	RMCF0402ZT0R00	Stackpole Electronics Inc	6.300000e-002	Jumper	-	0.02000	~	~						
 R	nan	0.000000e+000	nan	nan	nan	0	0603	http://www.seielect.com/Catalog/SEI-RMCF_RMCP.pdf	RMCF0603ZT0R00CT-ND	RMCF0603ZT0R00	Stackpole Electronics Inc	1.000000e-001	Jumper	-	0.02000	~	~						
 R	nan	0.000000e+000	nan	nan	nan	0	0805	http://www.seielect.com/Catalog/SEI-RMCF_RMCP.pdf	RMCF0805ZT0R00CT-ND	RMCF0805ZT0R00	Stackpole Electronics Inc	1.250000e-001	Jumper	-	0.03000	~	~						

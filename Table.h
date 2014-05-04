@@ -44,6 +44,8 @@ class Table
         void eraseemptyrows(void);
         int Tablewrite(int row, int col, string entry);
         void rmquotmarks(void);
+        int getNorows(void);
+        int getNocols(void);
 
 
     private:

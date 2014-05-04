@@ -201,9 +201,6 @@ F 0 "#PWR07" H 10500 2540 20  0001 C CNN
 F 1 "+5V" H 10500 2540 30  0000 C CNN
 F 2 "" H 10500 2450 60  0000 C CNN
 F 3 "" H 10500 2450 60  0000 C CNN
-F 4 "http://www.seielect.com/Catalog/SEI-RMCF_RMCP.pdf" H 10500 2450 60 0000 C CNN "Datasheets"
-F 5 "RMCF0402ZT0R00CT-ND" H 10500 2450 60 0000 C CNN "Digi-Key Part Number"
-F 6 "RMCF0402ZT0R00" H 10500 2450 60 0000 C CNN "Manufacturer Part Number"
 	1    10500 2450
 	1    0    0    -1  
 $EndComp
@@ -336,9 +333,6 @@ F 0 "#PWR012" H 8850 960 30  0001 C CNN
 F 1 "+3.3V" H 8850 1110 30  0000 C CNN
 F 2 "" H 8850 1000 60  0000 C CNN
 F 3 "" H 8850 1000 60  0000 C CNN
-F 4 "http://www.seielect.com/Catalog/SEI-RMCF_RMCP.pdf" H 8850 1000 60 0000 C CNN "Datasheets"
-F 5 "RMCF0402ZT0R00CT-ND" H 8850 1000 60 0000 C CNN "Digi-Key Part Number"
-F 6 "RMCF0402ZT0R00" H 8850 1000 60 0000 C CNN "Manufacturer Part Number"
 	1    8850 1000
 	1    0    0    -1  
 $EndComp
@@ -350,9 +344,6 @@ F 0 "#PWR013" H 10400 2610 30  0001 C CNN
 F 1 "+3.3V" H 10400 2760 30  0000 C CNN
 F 2 "" H 10400 2650 60  0000 C CNN
 F 3 "" H 10400 2650 60  0000 C CNN
-F 4 "http://www.seielect.com/Catalog/SEI-RMCF_RMCP.pdf" H 10400 2650 60 0000 C CNN "Datasheets"
-F 5 "RMCF0402ZT0R00CT-ND" H 10400 2650 60 0000 C CNN "Digi-Key Part Number"
-F 6 "RMCF0402ZT0R00" H 10400 2650 60 0000 C CNN "Manufacturer Part Number"
 	1    10400 2650
 	1    0    0    -1  
 $EndComp
@@ -408,9 +399,6 @@ F 0 "#PWR014" H 8850 1390 20  0001 C CNN
 F 1 "+1.8V" H 8850 1360 30  0000 C CNN
 F 2 "" H 8850 1250 60  0000 C CNN
 F 3 "" H 8850 1250 60  0000 C CNN
-F 4 "http://www.seielect.com/Catalog/SEI-RMCF_RMCP.pdf" H 8850 1250 60 0000 C CNN "Datasheets"
-F 5 "RMCF0402ZT0R00CT-ND" H 8850 1250 60 0000 C CNN "Digi-Key Part Number"
-F 6 "RMCF0402ZT0R00" H 8850 1250 60 0000 C CNN "Manufacturer Part Number"
 	1    8850 1250
 	1    0    0    -1  
 $EndComp
@@ -422,9 +410,6 @@ F 0 "#PWR015" H 10550 3040 20  0001 C CNN
 F 1 "+1.8V" H 10550 3010 30  0000 C CNN
 F 2 "" H 10550 2900 60  0000 C CNN
 F 3 "" H 10550 2900 60  0000 C CNN
-F 4 "http://www.seielect.com/Catalog/SEI-RMCF_RMCP.pdf" H 10550 2900 60 0000 C CNN "Datasheets"
-F 5 "RMCF0402ZT0R00CT-ND" H 10550 2900 60 0000 C CNN "Digi-Key Part Number"
-F 6 "RMCF0402ZT0R00" H 10550 2900 60 0000 C CNN "Manufacturer Part Number"
 	1    10550 2900
 	0    -1   -1   0   
 $EndComp
@@ -575,9 +560,6 @@ F 0 "#PWR021" H 7300 5940 20  0001 C CNN
 F 1 "+5V" H 7300 5940 30  0000 C CNN
 F 2 "" H 7300 5850 60  0000 C CNN
 F 3 "" H 7300 5850 60  0000 C CNN
-F 4 "http://www.seielect.com/Catalog/SEI-RMCF_RMCP.pdf" H 7300 5850 60 0000 C CNN "Datasheets"
-F 5 "RMCF0402ZT0R00CT-ND" H 7300 5850 60 0000 C CNN "Digi-Key Part Number"
-F 6 "RMCF0402ZT0R00" H 7300 5850 60 0000 C CNN "Manufacturer Part Number"
 	1    7300 5850
 	1    0    0    -1  
 $EndComp

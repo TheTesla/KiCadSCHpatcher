@@ -101,7 +101,6 @@ CONFreadstate_et CONFop::getBlock(int &row, CSVparams_t &csv, vector<datapair_t>
                     entry.strcontainsname = true;
                 }
                 entry.fieldname = tab.Tableread(row, 1);
-                cout << entry.fieldname << endl;
                 if('$'==entry.fieldname[0]) {
                     entry.valuesearch = true;
                     entry.fieldname = entry.fieldname.substr(1, std::string::npos);

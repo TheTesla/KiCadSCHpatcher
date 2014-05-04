@@ -51,6 +51,15 @@ int KiCadSCH::findrow(KiCadStdfn_et fieldname, string fieldentry, int startrow, 
 {
     int row;
     row = getCompbeginrow(startrow);
+    if(NAME==fieldname){
+        while(-1!=row){
+            if(tab.Tableread(row,0)=="L"){
+                if(to_string(subpart) == getUnitNbr(row)) return row;
+            }
+            row = tab.findrow(fieldentry, 1, row+1);
+        }
+    }
+
     while(-1!=row){
         if((tab.Tableread(row,1)==to_string(fieldname))&&tab.Tableread(row,0)=="F"){
             if(to_string(subpart) == getUnitNbr(row)) return row;
@@ -154,11 +163,16 @@ int KiCadSCH::getLastentryrow(int row)
 KiCadStdfn_et KiCadSCH::convfieldnameStdfield(string fieldname, bool namecontains, bool strcontainsname)
 {
     string strtmp;
+    if(fieldname=="Name"||fieldname=="name") return NAME;
     if(fieldname=="Reference"||fieldname=="reference"||fieldname=="Ref"||fieldname=="ref") return REF;
     if(fieldname=="Value"||fieldname=="value"||fieldname=="Val"||fieldname=="val") return VAL;
     if(fieldname=="Datasheet"||fieldname=="datasheet"||fieldname=="DS"||fieldname=="ds") return DS;
     if(fieldname=="Footprint"||fieldname=="footprint"||fieldname=="FP"||fieldname=="fp") return FP;
     if(namecontains){
+        strtmp = "Name";
+        if(string::npos!=strtmp.find(fieldname)) return NAME;
+        strtmp = "name";
+        if(string::npos!=strtmp.find(fieldname)) return NAME;
         strtmp = "Reference";
         if(string::npos!=strtmp.find(fieldname)) return REF;
         strtmp = "reference";
@@ -185,6 +199,7 @@ KiCadStdfn_et KiCadSCH::convfieldnameStdfield(string fieldname, bool namecontain
         if(string::npos!=strtmp.find(fieldname)) return FP;
     }
     if(strcontainsname){
+        if(string::npos!=fieldname.find("Name")||string::npos!=fieldname.find("name")) return NAME;
         if(string::npos!=fieldname.find("Ref")||string::npos!=fieldname.find("ref")) return REF;
         if(string::npos!=fieldname.find("Val")||string::npos!=fieldname.find("val")) return VAL;
         if(string::npos!=fieldname.find("Datasheet")||string::npos!=fieldname.find("datasheet")||string::npos!=fieldname.find("DS")||string::npos!=fieldname.find("ds")) return DS;
@@ -216,6 +231,7 @@ int KiCadSCH::getEntryrow(int row, KiCadStdfn_et fieldname)
     startrow = getCompbeginrow(row);
     endrow = getCompendrow(row);
     row = startrow;
+    if(NAME==fieldname) return getHeadrow(row);
     while(tab.Tableread(row,0)!="F"){
         row = tab.findrow(to_string(fieldname),1,row+1);
         if(-1==row) return -1;
@@ -228,6 +244,7 @@ string KiCadSCH::getEntry(int row, string fieldname, bool namecontains, bool str
 {
     row = getEntryrow(row, fieldname, namecontains, strcontainsname);
     if(-1==row) return "";
+    if(NAME==convfieldnameStdfield(fieldname, namecontains, strcontainsname)) return tab.Tableread(row,1);
     return tab.Tableread(row,2);
 }
 
@@ -235,6 +252,7 @@ string KiCadSCH::getEntry(int row, KiCadStdfn_et fieldname)
 {
     row = getEntryrow(row, fieldname);
     if(-1==row) return "";
+    if(NAME == fieldname) return tab.Tableread(row,1);
     return tab.Tableread(row,2);
 }
 
@@ -245,6 +263,24 @@ void KiCadSCH::getEntrys(int row, vector<datapair_t> &datavec)
         datavec[i].fieldentry = getEntry(row, datavec[i].fieldname, datavec[i].namecontains, datavec[i].strcontainsname);
     }
 }
+
+int KiCadSCH::getHeadrow(int row)
+{
+    int startrow, endrow;
+    startrow = getCompbeginrow(row);
+    endrow = getCompendrow(row);
+    row = tab.findrow("L",0,startrow);
+    if(row>endrow) return -1;
+    return row;
+}
+
+string KiCadSCH::getName(int row)
+{
+    row = getHeadrow(row);
+    if(-1==row) return "";
+    return tab.Tableread(row,1);
+}
+
 
 int KiCadSCH::getUnitrow(int row)
 {
@@ -276,7 +312,7 @@ int KiCadSCH::getKoordrow(int row)
 
 int KiCadSCH::patchFile(ofstream &oFile)
 {
-    string iline, oline;
+    string iline, oline, last_oline;
     modiFile_t currentpatch;
     int line_n;
     unsigned i;
@@ -285,7 +321,7 @@ int KiCadSCH::patchFile(ofstream &oFile)
     oFile.exceptions(std::ifstream::failbit | std::ifstream::badbit);
 
     try{
-
+        last_oline = "";
         for(line_n=0; true; line_n++){
             getline(iSCHfile, iline);
             oline = iline;
@@ -296,6 +332,7 @@ int KiCadSCH::patchFile(ofstream &oFile)
             for(i=0;i<patchvec.size();i++){
                 if(line_n == patchvec[i].lineNbr){
                     currentpatch = patchvec[i];
+                    patchvec[i].prevline = last_oline;
                     if(currentpatch.add){
                         oFile << currentpatch.line << endl;
                     }
@@ -303,6 +340,10 @@ int KiCadSCH::patchFile(ofstream &oFile)
             }
             if(!currentpatch.del){
                 oFile << oline << endl;
+                last_oline = oline;
+            }else{
+                cout << "   " << oline << endl;
+                if(patchvec.size()<i) patchvec[i].deletedline = oline;
             }
         }
     }
@@ -415,3 +456,18 @@ unsigned KiCadSCH::getpatchsize(void)
 {
     return patchvec.size();
 }
+
+int KiCadSCH::printPatch(void)
+{
+    modiFile_t c;
+    unsigned i;
+
+    for(i=0; i<patchvec.size(); i++){
+        c = patchvec[i];
+        cout << "  " << c.lineNbr-1 << ": " << c.prevline << endl;
+        if(c.del) cout << "- " << c.lineNbr << ": " << c.deletedline << endl;
+        if(c.add) cout << "+ " << c.lineNbr << ": " << c.line << endl;
+    }
+    return i;
+}
+

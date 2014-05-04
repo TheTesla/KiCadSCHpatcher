@@ -26,6 +26,7 @@ using namespace std;
 enum KiCadStdfn_et
 {
     notStd = -1,
+    NAME = 4,
     REF = 0,
     VAL = 1,
     FP = 2,
@@ -40,6 +41,8 @@ typedef struct modiFile_t
     int entryNbr; // the number after "F "
     string fieldname;
     string line;// content of the new line (if line is added)
+    string deletedline; // after patching - this was the original line
+    string prevline; // original line before deleted or added line
 } modiFile_t;
 
 class KiCadSCH
@@ -64,6 +67,8 @@ class KiCadSCH
         string getEntry(int row, string fieldname, bool namecontains = false, bool strcontainsname = false);
         string getEntry(int row, KiCadStdfn_et fieldname);
         void getEntrys(int row, vector<datapair_t> &datavec);
+        int getHeadrow(int row);
+        string getName(int row);
         int getUnitrow(int row);
         string getUnitNbr(int row);
         int getKoordrow(int row);
@@ -74,6 +79,8 @@ class KiCadSCH
         int addEntry(KiCadStdfn_et entryname, string entrycontent, int row = 0, bool overwrite = true, bool resetparams = false);
         int addEntrys(vector<datapair_t> newdata, int row = 0);
         unsigned getpatchsize(void);
+        int printPatch(void);
+
 
     private:
         ifstream iSCHfile;
