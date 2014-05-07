@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1398647645 source:c:\projekte\c++\kicadschpatcher\main.cpp
+1399421507 source:c:\projekte\c++\kicadschpatcher\main.cpp
 	<cstdlib>
 	<iostream>
 	<sstream>
@@ -61,36 +61,36 @@
 	<string>
 	<iostream>
 
-1398704981 c:\projekte\c++\kicadschpatcher\kicadsch.h
+1399421343 c:\projekte\c++\kicadschpatcher\kicadsch.h
 	"Table.h"
 	<string>
 	<vector>
 	<fstream>
 	"extraops.h"
 
-1398731479 source:c:\projekte\c++\kicadschpatcher\kicadsch.cpp
+1399421480 source:c:\projekte\c++\kicadschpatcher\kicadsch.cpp
 	"KiCadSCH.h"
 	<iostream>
 
-1399161167 source:c:\projekte\c++\kicadschpatcher\csvop.cpp
+1399408128 source:c:\projekte\c++\kicadschpatcher\csvop.cpp
 	"CSVop.h"
 	<iostream>
 
-1399161103 c:\projekte\c++\kicadschpatcher\csvop.h
+1399394499 c:\projekte\c++\kicadschpatcher\csvop.h
 	<string>
 	<fstream>
 	<vector>
 	"Table.h"
 	"extraops.h"
 
-1398630758 c:\projekte\c++\kicadschpatcher\extraops.h
+1399411623 c:\projekte\c++\kicadschpatcher\extraops.h
 	<vector>
 	<string>
 	<cmath>
 	<stdexcept>
 	<sstream>
 
-1398731600 source:c:\projekte\c++\kicadschpatcher\extraops.cpp
+1399416221 source:c:\projekte\c++\kicadschpatcher\extraops.cpp
 	"extraops.h"
 	<iostream>
 

@@ -33,6 +33,8 @@ int doit(string iSCHfilename, string oSCHfilename, string CONFfilename)
     KiCadSCH kicadsch;
     CONFop conf;
     int row, rowfound;
+    int i;
+    vector<int> rowsfound;
     ofstream oFile;
     string search_fieldname;
     string entry, newentry;
@@ -41,6 +43,8 @@ int doit(string iSCHfilename, string oSCHfilename, string CONFfilename)
     datapair_t updateentry;
     vector<datapair_t> searchvec;
     vector<datapair_t> updatevec;
+    vector<oplog_t> oplog;
+    oplog_t oplogentr;
     CSVop Database;
     int csvrow;
     CSVparams_t csvparam;
@@ -68,7 +72,7 @@ int doit(string iSCHfilename, string oSCHfilename, string CONFfilename)
 
     csvrow = 0;
     round = 0;
-
+    oplog.clear();
     while(EOFile!=confstate){
         searchvec.clear();
         updatevec.clear();
@@ -88,9 +92,25 @@ int doit(string iSCHfilename, string oSCHfilename, string CONFfilename)
             kicadsch.getEntrys(row, searchvec); // searchvec mit Eintraegen aus SCH-file anreichern
             rmquotmarks(searchvec);
             rowfound = Database.findrow(searchvec);
-            if(0<rowfound) NoMatches++; // zaehle erfolgreiche Treffer
-            Database.getEntrys(rowfound, updatevec); // updatevec mit Eintraegen aus der Datenbank anreichern
-            notoverwritten += kicadsch.addEntrys(updatevec, row);
+            rowsfound = Database.findrows(searchvec);
+            for(i=0;i<rowsfound.size();i++){
+                //cout << rowsfound[i] << ", ";
+            }
+            if(0!=i) cout << endl;
+
+            if(0<rowfound) {
+                NoMatches++; // zaehle erfolgreiche Treffer
+                Database.getEntrys(rowfound, updatevec); // updatevec mit Eintraegen aus der Datenbank anreichern
+                oplogentr.patchstartindex = kicadsch.getPatchsize();
+                notoverwritten += kicadsch.addEntrys(updatevec, row);
+                oplogentr.SCHrow = row;
+                oplogentr.DBrow = rowfound;
+                oplogentr.DBrows = rowsfound;
+                oplogentr.searchv = searchvec;
+                oplogentr.updatev = updatevec;
+                oplogentr.NoPatchentr = kicadsch.getPatchsize() - oplogentr.patchstartindex;
+                oplog.push_back(oplogentr);
+            }
             if(-1==row) break;
             NoParts++;
         }
@@ -107,7 +127,9 @@ int doit(string iSCHfilename, string oSCHfilename, string CONFfilename)
     kicadsch.updatePatchEntryNbr(); // Eintraege mit laufender Nummer versehen und an Ausgabezeile anfuegen
 
     err = kicadsch.patchFile(oFile);
-    kicadsch.printPatch();
+    kicadsch.printoplog(oplog);
+
+    //kicadsch.printPatch();
     if(oFile.is_open()) oFile.close();
     if(0==err) return 10*err;
         cout << " total number of new entries: " << kicadsch.getpatchsize() << endl;
@@ -115,6 +137,7 @@ int doit(string iSCHfilename, string oSCHfilename, string CONFfilename)
 
     return 0;
 }
+
 
 
 int main(int argc, char *argv[])

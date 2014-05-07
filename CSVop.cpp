@@ -57,6 +57,8 @@ int CSVop::findrow(string fieldname, string fieldentry, int startrow, bool namec
     return row;
 }
 
+// first match
+// Nbr2find (1 - or; number of search entries - and)
 int CSVop::findrow(vector<datapair_t> entrypairs, int startrow, int Nbr2find)
 {
     int col, row, cnt;
@@ -78,11 +80,31 @@ int CSVop::findrow(vector<datapair_t> entrypairs, int startrow, int Nbr2find)
     return row;
 }
 
+// search and
 int CSVop::findrow(vector<datapair_t> entrypairs, int startrow)
 {
     return findrow(entrypairs, startrow, int(entrypairs.size()));
 }
 
+// all matches
+vector<int> CSVop::findrows(vector<datapair_t> entrypairs, int startrow, int Nbr2find)
+{
+    vector<int> rows;
+    int row = 0;
+    rows.clear();
+    row = startrow-1;
+    while(-1!=row){
+        row = findrow(entrypairs,row+1,Nbr2find);
+        rows.push_back(row);
+    }
+    rows.pop_back();
+    return rows;
+}
+
+vector<int> CSVop::findrows(vector<datapair_t> entrypairs, int startrow)
+{
+    return findrows(entrypairs, startrow, int(entrypairs.size()));
+}
 
 string CSVop::getEntry(int row, string fieldname, bool namecontains, bool strcontainsname)
 {

@@ -43,6 +43,17 @@ typedef struct CSVparams_t
     string ignoreafter = " ";
 } CSVparams_t;
 
+typedef struct oplog_t
+{
+    int SCHrow;
+    int DBrow;
+    vector<int> DBrows;
+    vector<datapair_t> searchv;
+    vector<datapair_t> updatev;
+    int patchstartindex;
+    int NoPatchentr;
+} oplog_t;
+
 string rmquotmarks(string str);
 void rmquotmarks(vector<datapair_t> &data);
 double norm_value(string str, size_t &start);

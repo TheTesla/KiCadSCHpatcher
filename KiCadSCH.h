@@ -43,6 +43,7 @@ typedef struct modiFile_t
     string line;// content of the new line (if line is added)
     string deletedline; // after patching - this was the original line
     string prevline; // original line before deleted or added line
+    int olineNbr; // line Number in output file
 } modiFile_t;
 
 class KiCadSCH
@@ -80,6 +81,9 @@ class KiCadSCH
         int addEntrys(vector<datapair_t> newdata, int row = 0);
         unsigned getpatchsize(void);
         int printPatch(void);
+        size_t getPatchsize(void);
+        void printoplogentr(oplog_t entry);
+        void printoplog(vector<oplog_t> entrys);
 
 
     private:

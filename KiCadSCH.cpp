@@ -298,7 +298,7 @@ string KiCadSCH::getUnitNbr(int row)
     if(-1==row) return "";
     return tab.Tableread(row,1);
 }
-
+#
 int KiCadSCH::getKoordrow(int row)
 {
     int startrow, endrow;
@@ -316,6 +316,7 @@ int KiCadSCH::patchFile(ofstream &oFile)
     modiFile_t currentpatch;
     int line_n;
     unsigned i;
+    unsigned olineNbr = 0;
 
     iSCHfile.exceptions(std::ifstream::failbit | std::ifstream::badbit);
     oFile.exceptions(std::ifstream::failbit | std::ifstream::badbit);
@@ -335,14 +336,17 @@ int KiCadSCH::patchFile(ofstream &oFile)
                     patchvec[i].prevline = last_oline;
                     if(currentpatch.add){
                         oFile << currentpatch.line << endl;
+                        olineNbr++;
+                        patchvec[i].olineNbr = olineNbr;
                     }
                 }
             }
             if(!currentpatch.del){
                 oFile << oline << endl;
                 last_oline = oline;
+                olineNbr++;
+                patchvec[i].olineNbr = olineNbr;
             }else{
-                cout << "   " << oline << endl;
                 if(patchvec.size()<i) patchvec[i].deletedline = oline;
             }
         }
@@ -466,8 +470,42 @@ int KiCadSCH::printPatch(void)
         c = patchvec[i];
         cout << "  " << c.lineNbr-1 << ": " << c.prevline << endl;
         if(c.del) cout << "- " << c.lineNbr << ": " << c.deletedline << endl;
-        if(c.add) cout << "+ " << c.lineNbr << ": " << c.line << endl;
+        if(c.add) cout << "+ " << c.lineNbr << " <- " << "(row)" << ": " << c.line << endl;
     }
     return i;
+}
+
+size_t KiCadSCH::getPatchsize(void)
+{
+    return patchvec.size();
+}
+
+void KiCadSCH::printoplogentr(oplog_t entry)
+{
+    int i, j;
+    if(0==entry.updatev.size()) return;
+    cout << "FOUND:" << endl;
+    for(i=0;i<entry.searchv.size();i++){
+        cout << "  " << entry.searchv[i].fieldname << " = " << entry.searchv[i].fieldentry << endl;
+    }
+    cout << "UPDATE:" << endl;
+    cout << "  DBrow = " << entry.DBrow << endl;
+    cout << "  SCHrow = " << entry.SCHrow << endl;
+    j = entry.patchstartindex;
+    for(i=0;i<entry.updatev.size();i++){
+        if(std::string::npos!=patchvec[j].fieldname.find(entry.updatev[i].fieldname)){
+            cout << "  " << patchvec[j].lineNbr << " -> " << patchvec[j].olineNbr << ": " << entry.updatev[i].fieldname << " = " << entry.updatev[i].fieldentry << endl;
+            j++;
+        }
+    }
+}
+
+void KiCadSCH::printoplog(vector<oplog_t> entrys)
+{
+    unsigned i;
+    for(i=0;i<entrys.size();i++){
+        printoplogentr(entrys[i]);
+        cout << endl;
+    }
 }
 
