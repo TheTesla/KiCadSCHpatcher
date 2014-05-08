@@ -370,13 +370,14 @@ int KiCadSCH::patchFile(ofstream &oFile)
     return 0;
 }
 
-int KiCadSCH::addEntryGen(string entrycontent, int row, int entryrow, string lastcol, bool overwrite, bool resetparams)
+int KiCadSCH::addEntryGen(string entrycontent, int row, int entryrow, string lastcol, bool overwrite, bool resetparams, int uvi)
 {
     int lastentryrow, koordrow;
     int lastentryNbr;
     int index;
     modiFile_t patch;
 
+    patch.uvi = uvi;
     koordrow = getKoordrow(row);
     if(-1==koordrow) return -1;
     // Eintrag nicht vorhanden
@@ -426,21 +427,21 @@ int KiCadSCH::addEntryGen(string entrycontent, int row, int entryrow, string las
 }
 
 
-int KiCadSCH::addEntry(string entryname, string entrycontent, int row, bool overwrite, bool resetparams)
+int KiCadSCH::addEntry(string entryname, string entrycontent, int row, bool overwrite, bool resetparams, int uvi)
 {
     int entryrow;
     KiCadStdfn_et Stdfn;
     Stdfn = convfieldnameStdfield(entryname);
     entryrow = getEntryrow(row, entryname);
-    if(notStd==Stdfn)   return addEntryGen(entrycontent, row, entryrow, " \""+entryname+"\"", overwrite, resetparams);
-    else                return addEntryGen(entrycontent, row, entryrow, "", overwrite, resetparams);
+    if(notStd==Stdfn)   return addEntryGen(entrycontent, row, entryrow, " \""+entryname+"\"", overwrite, resetparams, uvi);
+    else                return addEntryGen(entrycontent, row, entryrow, "", overwrite, resetparams, uvi);
 }
 
-int KiCadSCH::addEntry(KiCadStdfn_et entryname, string entrycontent, int row, bool overwrite, bool resetparams)
+int KiCadSCH::addEntry(KiCadStdfn_et entryname, string entrycontent, int row, bool overwrite, bool resetparams, int uvi)
 {
     int entryrow;
     entryrow = getEntryrow(row, entryname);
-    return addEntryGen(entrycontent, row, entryrow, "", overwrite, resetparams);
+    return addEntryGen(entrycontent, row, entryrow, "", overwrite, resetparams, uvi);
 }
 
 int KiCadSCH::addEntrys(vector<datapair_t> newdata, int row)
@@ -450,7 +451,7 @@ int KiCadSCH::addEntrys(vector<datapair_t> newdata, int row)
     entriesnotoverwritten = 0;
     for(i=0;i<newdata.size();i++){
         if(""!=newdata[i].fieldentry||newdata[i].allowemptyentries){
-            if(-1==addEntry(newdata[i].fieldname, newdata[i].fieldentry, row, newdata[i].overwrite, newdata[i].resetparams)) entriesnotoverwritten++;
+            if(-1==addEntry(newdata[i].fieldname, newdata[i].fieldentry, row, newdata[i].overwrite, newdata[i].resetparams, i)) entriesnotoverwritten++;
         }
     }
     return entriesnotoverwritten;
@@ -493,7 +494,7 @@ void KiCadSCH::printoplogentr(oplog_t entry)
     cout << "  SCHrow = " << entry.SCHrow << endl;
     j = entry.patchstartindex;
     for(i=0;i<entry.updatev.size();i++){
-        if(std::string::npos!=patchvec[j].fieldname.find(entry.updatev[i].fieldname)){
+        if(patchvec[j].uvi == i){
             cout << "  " << patchvec[j].lineNbr << " -> " << patchvec[j].olineNbr << ": " << entry.updatev[i].fieldname << " = " << entry.updatev[i].fieldentry << endl;
             j++;
         }

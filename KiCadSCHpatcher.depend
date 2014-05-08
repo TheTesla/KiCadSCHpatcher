@@ -61,14 +61,14 @@
 	<string>
 	<iostream>
 
-1399421343 c:\projekte\c++\kicadschpatcher\kicadsch.h
+1399545650 c:\projekte\c++\kicadschpatcher\kicadsch.h
 	"Table.h"
 	<string>
 	<vector>
 	<fstream>
 	"extraops.h"
 
-1399421480 source:c:\projekte\c++\kicadschpatcher\kicadsch.cpp
+1399421554 source:c:\projekte\c++\kicadschpatcher\kicadsch.cpp
 	"KiCadSCH.h"
 	<iostream>
 
