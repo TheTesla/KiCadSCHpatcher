@@ -49,16 +49,24 @@ int CSVop::readCSVfile(void)
     return readCSVfile(iCSVfile);
 }
 
-int CSVop::findrow(string fieldname, string fieldentry, int startrow, bool namecontains, bool entrycontains, bool strcontainsname, bool strcontainsentry, bool valuesearch, unsigned subpart, double precision)
+int CSVop::findrow(string fieldname, string fieldentry, int startrow, bool namecontains, bool entrycontains, bool strcontainsname, bool strcontainsentry, bool valuesearch, bool withtolerance, unsigned subpart, double precision)
 {
     int col, row;
     col = tab.findcol(fieldname, 0, 0, namecontains, strcontainsname);
+    if(withtolerance){
+        if(0==col){
+            cout << "error: Not a value with Tolerance entry, because it is on most left column!" << endl;
+        }else{
+            col--;
+        }
+    }
     row = tab.findrow(fieldentry, col, startrow, entrycontains, strcontainsentry, valuesearch, precision);
     return row;
 }
 
 // first match
 // Nbr2find (1 - or; number of search entries - and)
+/*
 int CSVop::findrow(vector<datapair_t> entrypairs, int startrow, int Nbr2find)
 {
     int col, row, cnt;
@@ -68,16 +76,49 @@ int CSVop::findrow(vector<datapair_t> entrypairs, int startrow, int Nbr2find)
     if(0==entrypairs.size()) return -1;
     while(1){
         cnt = 1;
+
         row = findrow(entrypairs[0].fieldname, entrypairs[0].fieldentry, row, entrypairs[0].namecontains, entrypairs[0].entrycontains, entrypairs[0].strcontainsname, entrypairs[0].strcontainsentry, entrypairs[0].valuesearch, 1, norm_value(entrypairs[0].fieldentry)*entrypairs[0].precision/100);
         if(-1==row) break;
         for(i=1;i<entrypairs.size();i++){
             col = tab.findcol(entrypairs[i].fieldname, 0, 0, entrypairs[i].namecontains, entrypairs[i].strcontainsname);
+            if(entrypairs[i].withtolerance){
+                col--; // lower bound of value is in column left of value
+                entrypairs[i].entryconains = true;
+            }
             if(entrymatch(tab.Tableread(row, col),entrypairs[i].fieldentry,entrypairs[i].strcontainsentry,entrypairs[i].entrycontains,entrypairs[i].valuesearch,entrypairs[i].precision)) cnt++;
         }
         if(Nbr2find==cnt) break;
         row++;
     }
     return row;
+}
+*/
+
+int CSVop::findrow(vector<datapair_t> entrypairs, int startrow, int Nbr2find)
+{
+    int col, colouve0, row, cnt;
+    unsigned i;
+    stringstream ssval;
+    row = startrow;
+    if(0==entrypairs.size()) return -1;
+
+    // outside loop for optimisation only
+
+    colouve0 = tab.findcol(entrypairs[0].fieldname, 0, 0, entrypairs[0].namecontains, entrypairs[0].strcontainsname);
+    for(row=startrow;row<tab.getNorows();row++){
+        cnt = 0;
+        for(i=0;i<entrypairs.size();i++){
+            if(0==i){
+                col = colouve0;
+            }else{
+                col = tab.findcol(entrypairs[i].fieldname, 0, 0, entrypairs[i].namecontains, entrypairs[i].strcontainsname);
+            }
+            if(entrymatch(tab.Tableread(row, col),entrypairs[i].fieldentry,entrypairs[i].strcontainsentry,entrypairs[i].entrycontains,entrypairs[i].valuesearch,entrypairs[i].precision)) cnt++;
+            else break;
+        }
+        if(Nbr2find==cnt) return row;
+    }
+    return -1;
 }
 
 // search and

@@ -137,6 +137,9 @@ CONFreadstate_et CONFop::getBlock(int &row, CSVparams_t &csv, vector<datapair_t>
                 if(string::npos!=tab.Tableread(row, 3).find("allowemptyentries")){
                     entry.allowemptyentries = true;
                 }
+                if(string::npos!=tab.Tableread(row, 3).find("withtolerance")){
+                    entry.withtolerance = true;
+                }
                 if(SEARCH==state){
                     if(""!=entry.fieldname) searchvec.push_back(entry);
                 }

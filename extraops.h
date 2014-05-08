@@ -32,6 +32,7 @@ typedef struct datapair_t
     bool overwrite = false;
     bool resetparams = false;
     bool allowemptyentries = false;
+    bool withtolerance = false;
     double precision = 0; // for value compare
 } datapair_t;
 

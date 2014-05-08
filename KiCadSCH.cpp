@@ -483,7 +483,7 @@ size_t KiCadSCH::getPatchsize(void)
 
 void KiCadSCH::printoplogentr(oplog_t entry)
 {
-    int i, j;
+    unsigned i, j;
     if(0==entry.updatev.size()) return;
     cout << "FOUND:" << endl;
     for(i=0;i<entry.searchv.size();i++){
