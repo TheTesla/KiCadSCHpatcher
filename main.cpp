@@ -26,7 +26,6 @@
 using namespace std;
 
 
-
 int doit(string iSCHfilename, string oSCHfilename, string CONFfilename)
 {
 
@@ -98,7 +97,7 @@ int doit(string iSCHfilename, string oSCHfilename, string CONFfilename)
             rowfound = Database.findrow(searchvec);
             rowsfound = Database.findrows(searchvec);
 
-            if(0<rowfound) {
+            if(0<=rowfound) {
                 NoMatches++; // zaehle erfolgreiche Treffer
                 Database.getEntrys(rowfound, updatevec); // updatevec mit Eintraegen aus der Datenbank anreichern
                 oplogentr.patchstartindex = kicadsch.getPatchsize();

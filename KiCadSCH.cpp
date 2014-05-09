@@ -483,17 +483,32 @@ size_t KiCadSCH::getPatchsize(void)
     return patchvec.size();
 }
 
+
+void printrowvec(vector<int> rows)
+{
+    unsigned i;
+    for(i=0;i<rows.size()-1;i++){
+        cout << rows[i] << ", ";
+    }
+    cout << rows.back() << endl;
+}
+
+
 void KiCadSCH::printoplogentr(oplog_t entry)
 {
     unsigned i, j;
     if(0==entry.updatev.size()) return;
-    cout << "FOUND:" << endl;
+    cout << "SEARCH:" << endl;
     for(i=0;i<entry.searchv.size();i++){
         cout << "  " << entry.searchv[i].fieldname << " = " << entry.searchv[i].fieldentry << endl;
     }
-    cout << "UPDATE:" << endl;
+    cout << "  -> SCHrow = " << entry.SCHrow << endl;
+    cout << "FOUND:" << endl;
+    cout << "  DBrows = ";
+    printrowvec(entry.DBrows);
+    cout << "SELECT:" << endl;
     cout << "  DBrow = " << entry.DBrow << endl;
-    cout << "  SCHrow = " << entry.SCHrow << endl;
+    cout << "UPDATE:" << endl;
     j = entry.patchstartindex;
     for(i=0;i<entry.updatev.size();i++){
         if(patchvec[j].uvi == i){
