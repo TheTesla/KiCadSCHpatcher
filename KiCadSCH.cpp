@@ -345,7 +345,9 @@ int KiCadSCH::patchFile(ofstream &oFile)
                 oFile << oline << endl;
                 last_oline = oline;
                 olineNbr++;
-                patchvec[i].olineNbr = olineNbr;
+                if(patchvec.size()>i){ // if patchvec is empty
+                    patchvec[i].olineNbr = olineNbr;
+                }
             }else{
                 if(patchvec.size()<i) patchvec[i].deletedline = oline;
             }

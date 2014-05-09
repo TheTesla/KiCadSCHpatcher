@@ -108,3 +108,23 @@ bool entrymatch(string str, string findstr, bool strcontainsentry, bool entrycon
     if(str==findstr) return true;
     return false;
 }
+
+// to search by tolerance
+bool entrymatchtol(string str, string valstr, string tolstr, bool upper)
+{
+    std::stringstream ssstr;
+    double dstr;
+    ssstr.clear();
+    ssstr.str("");
+    ssstr << str;
+    ssstr >> dstr;
+
+    //cout << upper << " " << vallow(norm_value(valstr),tollow(tolstr),is_relative(tolstr)) << " " << dstr << " " << valupp(norm_value(valstr),tolupp(tolstr),is_relative(tolstr)) << " " << is_relative(tolstr) << endl;
+    if(upper){
+        if(dstr<valupp(norm_value(valstr),tolupp(tolstr),is_relative(tolstr))) return true;
+    }else{
+        if(dstr>vallow(norm_value(valstr),tollow(tolstr),is_relative(tolstr))) return true;
+    }
+
+    return false;
+}

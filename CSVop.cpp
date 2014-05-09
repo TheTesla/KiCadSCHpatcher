@@ -66,44 +66,14 @@ int CSVop::findrow(string fieldname, string fieldentry, int startrow, bool namec
 
 // first match
 // Nbr2find (1 - or; number of search entries - and)
-/*
 int CSVop::findrow(vector<datapair_t> entrypairs, int startrow, int Nbr2find)
 {
-    int col, row, cnt;
+    int col, colouve0, row, cnt, valcol, tolcol;
     unsigned i;
-    stringstream ssval;
-    row = startrow;
-    if(0==entrypairs.size()) return -1;
-    while(1){
-        cnt = 1;
-
-        row = findrow(entrypairs[0].fieldname, entrypairs[0].fieldentry, row, entrypairs[0].namecontains, entrypairs[0].entrycontains, entrypairs[0].strcontainsname, entrypairs[0].strcontainsentry, entrypairs[0].valuesearch, 1, norm_value(entrypairs[0].fieldentry)*entrypairs[0].precision/100);
-        if(-1==row) break;
-        for(i=1;i<entrypairs.size();i++){
-            col = tab.findcol(entrypairs[i].fieldname, 0, 0, entrypairs[i].namecontains, entrypairs[i].strcontainsname);
-            if(entrypairs[i].withtolerance){
-                col--; // lower bound of value is in column left of value
-                entrypairs[i].entryconains = true;
-            }
-            if(entrymatch(tab.Tableread(row, col),entrypairs[i].fieldentry,entrypairs[i].strcontainsentry,entrypairs[i].entrycontains,entrypairs[i].valuesearch,entrypairs[i].precision)) cnt++;
-        }
-        if(Nbr2find==cnt) break;
-        row++;
-    }
-    return row;
-}
-*/
-
-int CSVop::findrow(vector<datapair_t> entrypairs, int startrow, int Nbr2find)
-{
-    int col, colouve0, row, cnt;
-    unsigned i;
-    stringstream ssval;
     row = startrow;
     if(0==entrypairs.size()) return -1;
 
-    // outside loop for optimisation only
-
+    // outside for optimisation only
     colouve0 = tab.findcol(entrypairs[0].fieldname, 0, 0, entrypairs[0].namecontains, entrypairs[0].strcontainsname);
     for(row=startrow;row<tab.getNorows();row++){
         cnt = 0;
@@ -111,10 +81,40 @@ int CSVop::findrow(vector<datapair_t> entrypairs, int startrow, int Nbr2find)
             if(0==i){
                 col = colouve0;
             }else{
-                col = tab.findcol(entrypairs[i].fieldname, 0, 0, entrypairs[i].namecontains, entrypairs[i].strcontainsname);
+                if((i<entrypairs.size()-1)&&(entrypairs[i].withtolerance)){
+                    valcol = tab.findcol(entrypairs[i].fieldname, 0, 0, entrypairs[i].namecontains, entrypairs[i].strcontainsname);
+                }else if((i>0)&&(entrypairs[i-1].withtolerance)){
+                    valcol = tab.findcol(entrypairs[i-1].fieldname, 0, 0, entrypairs[i-1].namecontains, entrypairs[i-1].strcontainsname);
+                }else{
+                    col = tab.findcol(entrypairs[i].fieldname, 0, 0, entrypairs[i].namecontains, entrypairs[i].strcontainsname);
+                }
             }
-            if(entrymatch(tab.Tableread(row, col),entrypairs[i].fieldentry,entrypairs[i].strcontainsentry,entrypairs[i].entrycontains,entrypairs[i].valuesearch,entrypairs[i].precision)) cnt++;
-            else break;
+            // this is a bit "special" - value and tolerance are two parameters, upper and lower bound of value are also two parameters
+
+            if(entrypairs[i].withtolerance){
+                // our "cursor" is at first on the value, that means the first parameter
+                // but we read also the second parameter (i+1), the tolerance
+                // and we are searching for the lower bound
+                if(0==valcol){
+                    cout << "Error: value column is first one in table - there is no lower bound bound value on the left, tolerance operation failed." << endl;
+                    break;
+                }
+                if(entrymatchtol(tab.Tableread(row, valcol-1),entrypairs[i].fieldentry,entrypairs[i+1].fieldentry,false)) cnt++;
+                else break;
+            }else{// a normal parameter does not have the tolerance flag set, same is the tolerance of the value
+                // our "cursor" is on the second parameter, that means the second parameter
+                // but we read also the first parameter again (i-1), the value
+                // and we are searching for the upper bound
+                if((i>0) && (entrypairs[i-1].withtolerance)){
+                    if(entrymatchtol(tab.Tableread(row, valcol+1),entrypairs[i-1].fieldentry,entrypairs[i].fieldentry,true)) cnt++;
+                    else break;
+                }else{
+                    if(entrymatch(tab.Tableread(row, col),entrypairs[i].fieldentry,entrypairs[i].strcontainsentry,entrypairs[i].entrycontains,entrypairs[i].valuesearch,entrypairs[i].precision)) cnt++;
+                    else break;
+                }
+
+            }
+
         }
         if(Nbr2find==cnt) return row;
     }

@@ -1,6 +1,4 @@
-1 "" 2 3 4 5 6
-7 8 9 0
-EESchema Schematic File Version 2  date 22.10.2013 14:17:06
+EESchema Schematic File Version 2
 LIBS:power
 LIBS:device
 LIBS:transistors
@@ -42,7 +40,7 @@ $Descr A4 11693 8268
 encoding utf-8
 Sheet 1 1
 Title ""
-Date "22 oct 2013"
+Date "9 may 2014"
 Rev ""
 Comp ""
 Comment1 ""
@@ -506,9 +504,10 @@ L R R1
 U 1 1 526044B8
 P 3950 1450
 F 0 "R1" V 4030 1450 40  0000 C CNN
-F 1 "169k" V 3957 1451 40  0000 C CNN
-F 2 "0805" V 3880 1450 30  0000 C CNN
+F 1 "470" V 3957 1451 40  0000 C CNN
+F 2 "SM0805" V 3880 1450 30  0000 C CNN
 F 3 "~" H 3950 1450 30  0000 C CNN
+F 4 "5%" V 3950 1450 60  0001 C CNN "Tolerance"
 	1    3950 1450
 	-1   0    0    1   
 $EndComp
@@ -600,6 +599,7 @@ F 3 "http://www.seielect.com/Catalog/SEI-RMCF_RMCP.pdf" H 6250 6200 30  0001 C C
 F 4 "RMCF0805JT1K50CT-ND" H 6250 6200 60  0001 C CNN "Digi-Key Part Number"
 F 5 "RMCF0805JT1K50" H 6250 6200 60  0001 C CNN "Manufacturer Part Number"
 F 6 "002022001" H 6250 6200 60  0001 C CNN "Seeed OPL SKU"
+F 7 "50%" V 6250 6200 60  0001 C CNN "Tolerance"
 	1    6250 6200
 	1    0    0    -1  
 $EndComp
@@ -743,9 +743,10 @@ L R R3
 U 1 1 5262762D
 P 800 5750
 F 0 "R3" V 880 5750 40  0000 C CNN
-F 1 "R" V 807 5751 40  0000 C CNN
+F 1 "680" V 807 5751 40  0000 C CNN
 F 2 "SM0805" V 730 5750 30  0000 C CNN
 F 3 "~" H 800 5750 30  0000 C CNN
+F 4 "3%" V 800 5750 60  0001 C CNN "Tolerance"
 	1    800  5750
 	1    0    0    -1  
 $EndComp
@@ -765,9 +766,10 @@ L R R4
 U 1 1 5262763A
 P 1100 5750
 F 0 "R4" V 1180 5750 40  0000 C CNN
-F 1 "R" V 1107 5751 40  0000 C CNN
+F 1 "680" V 1107 5751 40  0000 C CNN
 F 2 "SM0805" V 1030 5750 30  0000 C CNN
 F 3 "~" H 1100 5750 30  0000 C CNN
+F 4 "5%" V 1100 5750 60  0001 C CNN "Tolerance"
 	1    1100 5750
 	1    0    0    -1  
 $EndComp

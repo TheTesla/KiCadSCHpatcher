@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1399421507 source:c:\projekte\c++\kicadschpatcher\main.cpp
+1399602599 source:c:\projekte\c++\kicadschpatcher\main.cpp
 	<cstdlib>
 	<iostream>
 	<sstream>
@@ -68,11 +68,11 @@
 	<fstream>
 	"extraops.h"
 
-1399554568 source:c:\projekte\c++\kicadschpatcher\kicadsch.cpp
+1399602853 source:c:\projekte\c++\kicadschpatcher\kicadsch.cpp
 	"KiCadSCH.h"
 	<iostream>
 
-1399408128 source:c:\projekte\c++\kicadschpatcher\csvop.cpp
+1399651421 source:c:\projekte\c++\kicadschpatcher\csvop.cpp
 	"CSVop.h"
 	<iostream>
 
@@ -83,22 +83,33 @@
 	"Table.h"
 	"extraops.h"
 
-1399558762 c:\projekte\c++\kicadschpatcher\extraops.h
+1399582284 c:\projekte\c++\kicadschpatcher\extraops.h
 	<vector>
 	<string>
 	<cmath>
 	<stdexcept>
 	<sstream>
+	"tolerance.h"
 
-1399416221 source:c:\projekte\c++\kicadschpatcher\extraops.cpp
+1399651303 source:c:\projekte\c++\kicadschpatcher\extraops.cpp
 	"extraops.h"
 	<iostream>
 
-1399558829 source:c:\projekte\c++\kicadschpatcher\confop.cpp
+1399603367 source:c:\projekte\c++\kicadschpatcher\confop.cpp
 	"CONFop.h"
 	<iostream>
 
 1398554847 c:\projekte\c++\kicadschpatcher\confop.h
 	"Table.h"
 	"extraops.h"
+
+1398466315 c:\projekte\c++\kicadschpatcher\tolerance.h
+	<string>
+	<iostream>
+	<stdexcept>
+	<cmath>
+	"extraops.h"
+
+1398544424 source:c:\projekte\c++\kicadschpatcher\tolerance.cpp
+	"tolerance.h"
 

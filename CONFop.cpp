@@ -92,6 +92,7 @@ CONFreadstate_et CONFop::getBlock(int &row, CSVparams_t &csv, vector<datapair_t>
                 entry.resetparams = false;
                 entry.overwrite = false;
                 entry.allowemptyentries = false;
+                entry.withtolerance = false;
                 if("namecontains"==str){
                     entry.namecontains = true;
                     entry.strcontainsname = false;
@@ -105,6 +106,9 @@ CONFreadstate_et CONFop::getBlock(int &row, CSVparams_t &csv, vector<datapair_t>
                     entry.valuesearch = true;
                     entry.fieldname = entry.fieldname.substr(1, std::string::npos);
                     entry.precision = norm_value(tab.Tableread(row, 3)); // in percent
+                    if(string::npos!=tab.Tableread(row, 2).find("withtolerance")){
+                        entry.withtolerance = true;
+                    }
                 }else if('>'==entry.fieldname[0]){
                     entry.valuesearch = true;
                     entry.fieldname = entry.fieldname.substr(1, std::string::npos);
@@ -136,9 +140,6 @@ CONFreadstate_et CONFop::getBlock(int &row, CSVparams_t &csv, vector<datapair_t>
                 }
                 if(string::npos!=tab.Tableread(row, 3).find("allowemptyentries")){
                     entry.allowemptyentries = true;
-                }
-                if(string::npos!=tab.Tableread(row, 3).find("withtolerance")){
-                    entry.withtolerance = true;
                 }
                 if(SEARCH==state){
                     if(""!=entry.fieldname) searchvec.push_back(entry);
