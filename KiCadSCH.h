@@ -44,7 +44,7 @@ typedef struct modiFile_t
     string deletedline; // after patching - this was the original line
     string prevline; // original line before deleted or added line
     int olineNbr; // line Number in output file
-    int uvi; // update vector index - for log to see which update vector entry was this in the update vector
+    unsigned uvi; // update vector index - for log to see which update vector entry was this in the update vector
 } modiFile_t;
 
 class KiCadSCH
@@ -76,9 +76,9 @@ class KiCadSCH
         int getKoordrow(int row);
 
         int patchFile(ofstream &oFile);
-        int addEntryGen(string entrycontent, int row, int entryrow, string lastcol = "", bool overwrite = true, bool resetparams = false, int uvi = 0);
-        int addEntry(string entryname, string entrycontent, int row = 0, bool overwrite = true, bool resetparams = false, int uvi = 0);
-        int addEntry(KiCadStdfn_et entryname, string entrycontent, int row = 0, bool overwrite = true, bool resetparams = false, int uvi = 0);
+        int addEntryGen(string entrycontent, int row, int entryrow, string lastcol = "", bool overwrite = true, bool resetparams = false, unsigned uvi = 0);
+        int addEntry(string entryname, string entrycontent, int row = 0, bool overwrite = true, bool resetparams = false, unsigned uvi = 0);
+        int addEntry(KiCadStdfn_et entryname, string entrycontent, int row = 0, bool overwrite = true, bool resetparams = false, unsigned uvi = 0);
         int addEntrys(vector<datapair_t> newdata, int row = 0);
         unsigned getpatchsize(void);
         int printPatch(void);

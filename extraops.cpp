@@ -119,7 +119,6 @@ bool entrymatchtol(string str, string valstr, string tolstr, bool upper)
     ssstr << str;
     ssstr >> dstr;
 
-    //cout << upper << " " << vallow(norm_value(valstr),tollow(tolstr),is_relative(tolstr)) << " " << dstr << " " << valupp(norm_value(valstr),tolupp(tolstr),is_relative(tolstr)) << " " << is_relative(tolstr) << endl;
     if(upper){
         if(dstr<valupp(norm_value(valstr),tolupp(tolstr),is_relative(tolstr))) return true;
     }else{
@@ -127,4 +126,15 @@ bool entrymatchtol(string str, string valstr, string tolstr, bool upper)
     }
 
     return false;
+}
+
+bool checkCONF(vector<datapair_t> searchvec)
+{
+    unsigned i;
+    for(i=0;i<searchvec.size();i++){
+        if((searchvec[i].withtolerance) && (searchvec.size() < i+2)){
+            return false;
+        }
+    }
+    return true;
 }

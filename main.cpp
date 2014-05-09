@@ -33,7 +33,6 @@ int doit(string iSCHfilename, string oSCHfilename, string CONFfilename)
     KiCadSCH kicadsch;
     CONFop conf;
     int row, rowfound;
-    int i;
     vector<int> rowsfound;
     ofstream oFile;
     string search_fieldname;
@@ -49,7 +48,7 @@ int doit(string iSCHfilename, string oSCHfilename, string CONFfilename)
     int csvrow;
     CSVparams_t csvparam;
     CONFreadstate_et confstate;
-    int notoverwritten, NoParts, NoEntrperPart, round, NoMatches;
+    int notoverwritten, NoParts, NoEntrperPart, round, NoMatches, Nonewentr;
     int err;
 
     err = kicadsch.readSCHfile(iSCHfilename);
@@ -77,6 +76,10 @@ int doit(string iSCHfilename, string oSCHfilename, string CONFfilename)
         searchvec.clear();
         updatevec.clear();
         confstate = conf.getBlock(csvrow, csvparam, searchvec, updatevec);
+        if(!checkCONF(searchvec)){
+            cout << "Error: value with tolerance in last position of configuration file - no tolerance specification following." << endl << endl;
+            continue;
+        }
         Database.CSVparams = csvparam;
         err = Database.readCSVfile();
         if(-1==err) return -4;
@@ -87,16 +90,13 @@ int doit(string iSCHfilename, string oSCHfilename, string CONFfilename)
         NoParts = 0;
         notoverwritten = 0;
         NoMatches = 0;
+        Nonewentr = 0;
         while(1){
             row = kicadsch.getCompendrow(row+1);
             kicadsch.getEntrys(row, searchvec); // searchvec mit Eintraegen aus SCH-file anreichern
             rmquotmarks(searchvec);
             rowfound = Database.findrow(searchvec);
             rowsfound = Database.findrows(searchvec);
-            for(i=0;i<rowsfound.size();i++){
-                //cout << rowsfound[i] << ", ";
-            }
-            if(0!=i) cout << endl;
 
             if(0<rowfound) {
                 NoMatches++; // zaehle erfolgreiche Treffer
@@ -109,6 +109,7 @@ int doit(string iSCHfilename, string oSCHfilename, string CONFfilename)
                 oplogentr.searchv = searchvec;
                 oplogentr.updatev = updatevec;
                 oplogentr.NoPatchentr = kicadsch.getPatchsize() - oplogentr.patchstartindex;
+                Nonewentr += oplogentr.NoPatchentr;
                 oplog.push_back(oplogentr);
             }
             if(-1==row) break;
@@ -121,7 +122,8 @@ int doit(string iSCHfilename, string oSCHfilename, string CONFfilename)
         cout << "    number of parts: " << NoParts << endl;
         cout << "    entries per part: " << NoEntrperPart << endl;
         cout << "    total entries (including empty): " << NoParts*NoEntrperPart << endl;
-        cout << "    number of entries not overwritten (excluding empty): " << notoverwritten << endl << endl;
+        cout << "    number of entries not overwritten (excluding empty): " << notoverwritten << endl;
+        cout << "    number of new entries: " << Nonewentr << endl << endl;
     }
 
     kicadsch.updatePatchEntryNbr(); // Eintraege mit laufender Nummer versehen und an Ausgabezeile anfuegen

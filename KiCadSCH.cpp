@@ -372,7 +372,7 @@ int KiCadSCH::patchFile(ofstream &oFile)
     return 0;
 }
 
-int KiCadSCH::addEntryGen(string entrycontent, int row, int entryrow, string lastcol, bool overwrite, bool resetparams, int uvi)
+int KiCadSCH::addEntryGen(string entrycontent, int row, int entryrow, string lastcol, bool overwrite, bool resetparams, unsigned uvi)
 {
     int lastentryrow, koordrow;
     int lastentryNbr;
@@ -429,7 +429,7 @@ int KiCadSCH::addEntryGen(string entrycontent, int row, int entryrow, string las
 }
 
 
-int KiCadSCH::addEntry(string entryname, string entrycontent, int row, bool overwrite, bool resetparams, int uvi)
+int KiCadSCH::addEntry(string entryname, string entrycontent, int row, bool overwrite, bool resetparams, unsigned uvi)
 {
     int entryrow;
     KiCadStdfn_et Stdfn;
@@ -439,7 +439,7 @@ int KiCadSCH::addEntry(string entryname, string entrycontent, int row, bool over
     else                return addEntryGen(entrycontent, row, entryrow, "", overwrite, resetparams, uvi);
 }
 
-int KiCadSCH::addEntry(KiCadStdfn_et entryname, string entrycontent, int row, bool overwrite, bool resetparams, int uvi)
+int KiCadSCH::addEntry(KiCadStdfn_et entryname, string entrycontent, int row, bool overwrite, bool resetparams, unsigned uvi)
 {
     int entryrow;
     entryrow = getEntryrow(row, entryname);
