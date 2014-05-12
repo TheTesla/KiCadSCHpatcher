@@ -68,40 +68,33 @@ int CSVop::findrow(string fieldname, string fieldentry, int startrow, bool namec
 // Nbr2find (1 - or; number of search entries - and)
 int CSVop::findrow(vector<datapair_t> entrypairs, int startrow, int Nbr2find)
 {
-    int col, colouve0, row, cnt, valcol;
+    int col, row, cnt, valcol;
+    vector<int> cols;
     col = -1;
     valcol = -1;
     unsigned i;
     row = startrow;
     if(0==entrypairs.size()) return -1;
 
-    // outside for optimisation only
-    colouve0 = tab.findcol(entrypairs[0].fieldname, 0, 0, entrypairs[0].namecontains, entrypairs[0].strcontainsname);
+
+    cols.assign(entrypairs.size(),-1);
+    for(i=0;i<entrypairs.size();i++){
+        cols[i] = tab.findcol(entrypairs[i].fieldname, 0, 0, entrypairs[i].namecontains, entrypairs[i].strcontainsname);
+    }
+
     for(row=startrow;row<tab.getNorows();row++){
         cnt = 0;
         for(i=0;i<entrypairs.size();i++){
-            if(0==i){
-                col = colouve0;
-                if(entrypairs[i].withtolerance){
-                    valcol = col;
-                    if(entrypairs.size() < i+2){
-                        cout << "Error: value with tolerance specified but no search entry in configuration file for tolerance." << endl;
-                        break;
-                    }
+            if(entrypairs[i].withtolerance){
+                if(entrypairs.size() < i+2){
+                    cout << "Error: value with tolerance specified but no search entry in configuration file for tolerance." << endl;
+                    break;
                 }
-
+                valcol = cols[i];
+            }else if((i>0)&&(entrypairs[i-1].withtolerance)){
+                valcol = cols[i-1];
             }else{
-                if(entrypairs[i].withtolerance){
-                    if(entrypairs.size() < i+2){
-                        cout << "Error: value with tolerance specified but no search entry in configuration file for tolerance." << endl;
-                        break;
-                    }
-                    valcol = tab.findcol(entrypairs[i].fieldname, 0, 0, entrypairs[i].namecontains, entrypairs[i].strcontainsname);
-                }else if((i>0)&&(entrypairs[i-1].withtolerance)){
-                    valcol = tab.findcol(entrypairs[i-1].fieldname, 0, 0, entrypairs[i-1].namecontains, entrypairs[i-1].strcontainsname);
-                }else{
-                    col = tab.findcol(entrypairs[i].fieldname, 0, 0, entrypairs[i].namecontains, entrypairs[i].strcontainsname);
-                }
+                col = cols[i];
             }
             // this is a bit "special" - value and tolerance are two parameters, upper and lower bound of value are also two parameters
 
