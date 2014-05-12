@@ -32,7 +32,7 @@ int doit(string iSCHfilename, string oSCHfilename, string CONFfilename)
     KiCadSCH kicadsch;
     CONFop conf;
     int row, rowfound;
-    vector<int> rowsfound;
+    vector<int> rowsfound, bestrowsfound;
     ofstream oFile;
     string search_fieldname;
     string entry, newentry;
@@ -41,6 +41,7 @@ int doit(string iSCHfilename, string oSCHfilename, string CONFfilename)
     datapair_t updateentry;
     vector<datapair_t> searchvec;
     vector<datapair_t> updatevec;
+    vector<datapair_t> ordervec;
     vector<oplog_t> oplog;
     oplog_t oplogentr;
     CSVop Database;
@@ -74,7 +75,8 @@ int doit(string iSCHfilename, string oSCHfilename, string CONFfilename)
     while(EOFile!=confstate){
         searchvec.clear();
         updatevec.clear();
-        confstate = conf.getBlock(csvrow, csvparam, searchvec, updatevec);
+        ordervec.clear();
+        confstate = conf.getBlock(csvrow, csvparam, searchvec, ordervec, updatevec);
         if(!checkCONF(searchvec)){
             cout << "Error: value with tolerance in last position of configuration file - no tolerance specification following." << endl << endl;
             continue;
@@ -94,10 +96,14 @@ int doit(string iSCHfilename, string oSCHfilename, string CONFfilename)
             row = kicadsch.getCompendrow(row+1);
             kicadsch.getEntrys(row, searchvec); // searchvec mit Eintraegen aus SCH-file anreichern
             rmquotmarks(searchvec);
-            rowfound = Database.findrow(searchvec);
+            //rowfound = Database.findrow(searchvec);
             rowsfound = Database.findrows(searchvec);
 
-            if(0<=rowfound) {
+            if(0<rowsfound.size()) {
+                kicadsch.getEntrys(row, ordervec);
+                bestrowsfound = Database.findbestrows(rowsfound,ordervec);
+                rowfound = bestrowsfound[0];
+
                 NoMatches++; // zaehle erfolgreiche Treffer
                 Database.getEntrys(rowfound, updatevec); // updatevec mit Eintraegen aus der Datenbank anreichern
                 oplogentr.patchstartindex = kicadsch.getPatchsize();
@@ -105,7 +111,9 @@ int doit(string iSCHfilename, string oSCHfilename, string CONFfilename)
                 oplogentr.SCHrow = row;
                 oplogentr.DBrow = rowfound;
                 oplogentr.DBrows = rowsfound;
+                oplogentr.DBbestrows = bestrowsfound;
                 oplogentr.searchv = searchvec;
+                oplogentr.orderv = ordervec;
                 oplogentr.updatev = updatevec;
                 oplogentr.NoPatchentr = kicadsch.getPatchsize() - oplogentr.patchstartindex;
                 Nonewentr += oplogentr.NoPatchentr;

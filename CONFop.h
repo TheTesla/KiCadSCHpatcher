@@ -24,6 +24,7 @@ enum CONFreadstate_et
     NONE = 0,
     DATABASE = 1,
     SEARCH = 2,
+    ORDER = 4,
     UPDATE = 3,
     READY = 127
 };
@@ -35,7 +36,7 @@ class CONFop
         ~CONFop();
         int readCONFfile(ifstream &file);
         int readCONFfile(string filename);
-        CONFreadstate_et getBlock(int &row, CSVparams_t &csv, vector<datapair_t> &searchvec, vector<datapair_t> &updatevec);
+        CONFreadstate_et getBlock(int &row, CSVparams_t &csv, vector<datapair_t> &searchvec, vector<datapair_t> &ordervec, vector<datapair_t> &updatevec);
 
     private:
         ifstream iCONFfile;

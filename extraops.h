@@ -34,6 +34,10 @@ typedef struct datapair_t
     bool allowemptyentries = false;
     bool withtolerance = false;
     double precision = 0; // for value compare
+    // additional sort features - order of operations important
+    bool highest = false;
+    bool lowest = false;
+    bool nearest = false;
 } datapair_t;
 
 typedef struct CSVparams_t
@@ -49,7 +53,9 @@ typedef struct oplog_t
     int SCHrow;
     int DBrow;
     vector<int> DBrows;
+    vector<int> DBbestrows;
     vector<datapair_t> searchv;
+    vector<datapair_t> orderv;
     vector<datapair_t> updatev;
     int patchstartindex;
     int NoPatchentr;

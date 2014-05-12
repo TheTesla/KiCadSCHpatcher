@@ -36,7 +36,7 @@ int CONFop::readCONFfile(string filename)
     return readCONFfile(iCONFfile);
 }
 
-CONFreadstate_et CONFop::getBlock(int &row, CSVparams_t &csv, vector<datapair_t> &searchvec, vector<datapair_t> &updatevec)
+CONFreadstate_et CONFop::getBlock(int &row, CSVparams_t &csv, vector<datapair_t> &searchvec, vector<datapair_t> &ordervec, vector<datapair_t> &updatevec)
 {
     string str;
     CONFreadstate_et state;
@@ -75,12 +75,17 @@ CONFreadstate_et CONFop::getBlock(int &row, CSVparams_t &csv, vector<datapair_t>
                 }
                 break;
             case SEARCH:
+                if("ORDER"==str){
+                    state = ORDER;
+                    break;
+                }
+            case ORDER:
                 if("UPDATE"==str){
                     state = UPDATE;
                     break;
                 }
             case UPDATE:
-                if("DATABASE"==str || "SEARCH"==str || "UPDATE"==str){
+                if("DATABASE"==str || "SEARCH"==str || "ORDER"==str || "UPDATE"==str){
                     state = READY;
                     return state;
                 }
@@ -93,6 +98,9 @@ CONFreadstate_et CONFop::getBlock(int &row, CSVparams_t &csv, vector<datapair_t>
                 entry.overwrite = false;
                 entry.allowemptyentries = false;
                 entry.withtolerance = false;
+                entry.highest = false;
+                entry.lowest = false;
+                entry.nearest = false;
                 if("namecontains"==str){
                     entry.namecontains = true;
                     entry.strcontainsname = false;
@@ -128,6 +136,18 @@ CONFreadstate_et CONFop::getBlock(int &row, CSVparams_t &csv, vector<datapair_t>
                         entry.entrycontains = false;
                         entry.strcontainsentry = true;
                     }
+                    if("highest"==tab.Tableread(row, 2)){
+                        entry.highest = true;
+                    }
+                    if("lowest"==tab.Tableread(row, 2)){
+                        entry.lowest = true;
+                    }
+                    if("nearest"==tab.Tableread(row, 2)){
+                        entry.nearest = true;
+                    }
+                    if(ORDER == state){
+                        entry.precision = norm_value(tab.Tableread(row, 3)); // in percent
+                    }
                 }
                 if(string::npos!=tab.Tableread(row, 3).find("takeDatabasefieldname")){
                     entry.takeDatabasefieldname = true;
@@ -143,6 +163,9 @@ CONFreadstate_et CONFop::getBlock(int &row, CSVparams_t &csv, vector<datapair_t>
                 }
                 if(SEARCH==state){
                     if(""!=entry.fieldname) searchvec.push_back(entry);
+                }
+                if(ORDER==state){
+                    if(""!=entry.fieldname) ordervec.push_back(entry);
                 }
                 if(UPDATE==state){
                     if(""!=entry.fieldname) updatevec.push_back(entry);

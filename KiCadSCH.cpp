@@ -506,6 +506,8 @@ void KiCadSCH::printoplogentr(oplog_t entry)
     cout << "FOUND:" << endl;
     cout << "  DBrows = ";
     printrowvec(entry.DBrows);
+    cout << "  DBrows (best) = ";
+    printrowvec(entry.DBbestrows);
     cout << "SELECT:" << endl;
     cout << "  DBrow = " << entry.DBrow << endl;
     cout << "UPDATE:" << endl;

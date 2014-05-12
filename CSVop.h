@@ -46,6 +46,26 @@ class CSVop
         string getEntry(int row, string fieldname, bool namecontains = false, bool strcontainsname = false);
         void getEntrys(int row, vector<datapair_t> &data2update);
         string getfullName(string fieldname, bool namecontains = false, bool strcontainsname = false);
+        double getLowest(int col);
+        double getLowest(int col, vector<int> rows);
+        double getHighest(int col);
+        double getHighest(int col, vector<int> rows);
+        double getNearest(int col, double val);
+        double getNearest(int col, double val, vector<int> rows);
+
+        vector<int> getrowswtol(int col, double val, double prec, bool absolute = false);
+        vector<int> getrowswtol(vector<int> irows, int col, double val, double prec, bool absolute);
+        vector<int> getLowestrows(int col, double precision, bool absolute);
+        vector<int> getLowestrows(vector<int> rows, int col, double precision, bool absolute);
+        vector<int> getHighestrows(int col, double precision, bool absolute = false);
+        vector<int> getHighestrows(vector<int> rows, int col, double precision, bool absolute = false);
+        vector<int> getNearestrows(int col, double val, double precision, bool absolute);
+        vector<int> getNearestrows(vector<int> rows, int col, double val, double precision, bool absolute);
+
+        vector<int> findbestrows(vector<int> rows, datapair_t sortdata);
+        vector<int> findbestrows(vector<int> rows, vector<datapair_t> sortdatav);
+
+
         int getNorows(void);
 
     private:
