@@ -170,6 +170,7 @@ string CSVop::getfullName(string fieldname, bool namecontains, bool strcontainsn
 {
     int col;
     col = tab.findcol(fieldname, 0, 0, namecontains, strcontainsname);
+    if(-1==col) return fieldname;
     return tab.Tableread(0, col);
 }
 

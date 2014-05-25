@@ -508,9 +508,8 @@ F 1 "470" V 3957 1451 40  0000 C CNN
 F 2 "SM0805" V 3880 1450 30  0000 C CNN
 F 3 "~" H 3950 1450 30  0000 C CNN
 F 4 "5%" V 3950 1450 60  0001 C CNN "Tolerance"
-F 5 "http://www.seielect.com/Catalog/SEI-RMCF_RMCP.pdf" H 3950 1450 60 0000 C CNN "Datasheets"
-F 6 "RMCF0402FT453RCT-ND" H 3950 1450 60 0000 C CNN "Digi-Key Part Number"
-F 7 "RMCF0402FT453R" H 3950 1450 60 0000 C CNN "Manufacturer Part Number"
+F 5 "RMCF0402FT453RCT-ND" H 3950 1450 60 0001 C CNN "Digi-Key Part Number"
+F 6 "RMCF0402FT453R" H 3950 1450 60 0001 C CNN "Manufacturer Part Number"
 	1    3950 1450
 	-1   0    0    1   
 $EndComp
@@ -603,7 +602,6 @@ F 4 "RMCF0402FT1K00CT-ND" H 6250 6200 60 0001 C CNN "Digi-Key Part Number"
 F 5 "RMCF0402FT1K00" H 6250 6200 60 0001 C CNN "Manufacturer Part Number"
 F 6 "002022001" H 6250 6200 60  0001 C CNN "Seeed OPL SKU"
 F 7 "50%" V 6250 6200 60  0001 C CNN "Tolerance"
-F 8 "http://www.seielect.com/Catalog/SEI-RMCF_RMCP.pdf" H 6250 6200 60 0000 C CNN "Datasheets"
 	1    6250 6200
 	1    0    0    -1  
 $EndComp
@@ -751,9 +749,8 @@ F 1 "680" V 807 5751 40  0000 C CNN
 F 2 "SM0805" V 730 5750 30  0000 C CNN
 F 3 "~" H 800 5750 30  0000 C CNN
 F 4 "3%" V 800 5750 60  0001 C CNN "Tolerance"
-F 5 "http://www.seielect.com/Catalog/SEI-RMCF_RMCP.pdf" H 800 5750 60 0000 C CNN "Datasheets"
-F 6 "RMCF0402FT681RCT-ND" H 800 5750 60 0000 C CNN "Digi-Key Part Number"
-F 7 "RMCF0402FT681R" H 800 5750 60 0000 C CNN "Manufacturer Part Number"
+F 5 "RMCF0402FT681RCT-ND" H 800 5750 60 0001 C CNN "Digi-Key Part Number"
+F 6 "RMCF0402FT681R" H 800 5750 60 0001 C CNN "Manufacturer Part Number"
 	1    800  5750
 	1    0    0    -1  
 $EndComp
@@ -777,9 +774,8 @@ F 1 "680" V 1107 5751 40  0000 C CNN
 F 2 "SM0805" V 1030 5750 30  0000 C CNN
 F 3 "~" H 1100 5750 30  0000 C CNN
 F 4 "5%" V 1100 5750 60  0001 C CNN "Tolerance"
-F 5 "http://www.seielect.com/Catalog/SEI-RMCF_RMCP.pdf" H 1100 5750 60 0000 C CNN "Datasheets"
-F 6 "RMCF0402FT665RCT-ND" H 1100 5750 60 0000 C CNN "Digi-Key Part Number"
-F 7 "RMCF0402FT665R" H 1100 5750 60 0000 C CNN "Manufacturer Part Number"
+F 5 "RMCF0402FT665RCT-ND" H 1100 5750 60 0001 C CNN "Digi-Key Part Number"
+F 6 "RMCF0402FT665R" H 1100 5750 60 0001 C CNN "Manufacturer Part Number"
 	1    1100 5750
 	1    0    0    -1  
 $EndComp

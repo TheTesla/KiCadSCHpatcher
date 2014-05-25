@@ -393,7 +393,7 @@ int KiCadSCH::addEntryGen(string entrycontent, int row, int entryrow, string las
         patch.lineNbr = lastentryrow + 1; // bei Mehrfacheintraegen, mehrfach gleiche Zeile -> updatePatchEntryNbr()
 
         patch.line  = " \"" + entrycontent + "\"" + " H " + tab.Tableread(koordrow,1) + " " + tab.Tableread(koordrow,2)
-                    + " 60 0000 C CNN" + lastcol;
+                    + " 60 0001 C CNN" + lastcol;
     // Eintrag bereits vorhanden
     }else{
         if(!overwrite){// nicht ueberschreiben
@@ -407,7 +407,7 @@ int KiCadSCH::addEntryGen(string entrycontent, int row, int entryrow, string las
         patch.lineNbr = row; // bei Mehrfacheintraegen, mehrfach gleiche Zeile -> updatePatchEntryNbr()
         if(resetparams){
             patch.line  = " \"" + entrycontent + "\"" + " H " + tab.Tableread(koordrow,1) + " " + tab.Tableread(koordrow,2)
-                        + " 60 0000 C CNN" + lastcol; // hier keine Anfuehrungszeichen hinzufuegen, damit der Eintrag nicht nur leer, sondern auch nicht vorhanden sein kann
+                        + " 60 0001 C CNN" + lastcol; // hier keine Anfuehrungszeichen hinzufuegen, damit der Eintrag nicht nur leer, sondern auch nicht vorhanden sein kann
         }else{ // nur den Inhalt anpassen, Koordinaten, Ausrichtung, Sichtbarkeit (Anzeige) usw. beibehalten
             patch.line  = " \"" + entrycontent + "\" " + tab.Tableread(row,3) + " " + tab.Tableread(row,4) + " "
                         + tab.Tableread(row,5) + " " + tab.Tableread(row,6) + " " + tab.Tableread(row,7) + " " + tab.Tableread(row,8) + " " + tab.Tableread(row,9)
@@ -433,6 +433,7 @@ int KiCadSCH::addEntry(string entryname, string entrycontent, int row, bool over
 {
     int entryrow;
     KiCadStdfn_et Stdfn;
+    cout << entryname << endl;
     Stdfn = convfieldnameStdfield(entryname);
     entryrow = getEntryrow(row, entryname);
     if(notStd==Stdfn)   return addEntryGen(entrycontent, row, entryrow, " \""+entryname+"\"", overwrite, resetparams, uvi);
