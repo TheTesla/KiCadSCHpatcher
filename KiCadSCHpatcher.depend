@@ -68,7 +68,7 @@
 	<fstream>
 	"extraops.h"
 
-1401036204 source:c:\projekte\c++\kicadschpatcher\kicadsch.cpp
+1401040183 source:c:\projekte\c++\kicadschpatcher\kicadsch.cpp
 	"KiCadSCH.h"
 	<iostream>
 

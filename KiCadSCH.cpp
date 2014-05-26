@@ -433,7 +433,6 @@ int KiCadSCH::addEntry(string entryname, string entrycontent, int row, bool over
 {
     int entryrow;
     KiCadStdfn_et Stdfn;
-    cout << entryname << endl;
     Stdfn = convfieldnameStdfield(entryname);
     entryrow = getEntryrow(row, entryname);
     if(notStd==Stdfn)   return addEntryGen(entrycontent, row, entryrow, " \""+entryname+"\"", overwrite, resetparams, uvi);
