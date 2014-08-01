@@ -46,7 +46,7 @@ double norm_value(string str, size_t &start)
     if(0==commapos) valstr = "0"+valstr;
 
     prefixpos = str.find_first_of("afpnµumkKMGTP", start);
-    if((prefixpos!=std::string::npos) && (prefixpos>endpos+1)){ // Characters between last number digit
+    if((prefixpos!=std::string::npos) && (std::string::npos!=endpos) && (prefixpos>endpos+1)){ // Characters between last number digit
         emptypos = str.find_first_not_of(" _", start); // only spaces under "_" are allowed
         if((emptypos==std::string::npos) || (emptypos!=prefixpos-1)) prefixpos = std::string::npos;
     }
