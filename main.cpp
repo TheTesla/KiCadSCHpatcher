@@ -44,7 +44,7 @@ int doit(string iSCHfilename, string oSCHfilename, string CONFfilename)
     vector<datapair_t> ordervec;
     vector<oplog_t> oplog;
     oplog_t oplogentr;
-    CSVop Database;
+    CSVop* Database_ptr;
     int csvrow;
     CSVparams_t csvparam;
     CONFreadstate_et confstate;
@@ -81,8 +81,9 @@ int doit(string iSCHfilename, string oSCHfilename, string CONFfilename)
             cout << "Error: value with tolerance in last position of configuration file - no tolerance specification following." << endl << endl;
             continue;
         }
-        Database.CSVparams = csvparam;
-        err = Database.readCSVfile();
+        Database_ptr = new(CSVop);
+        Database_ptr->CSVparams = csvparam;
+        err = Database_ptr->readCSVfile();
         if(-1==err) return -4;
         if(-11==err) return -14;
 
@@ -97,15 +98,15 @@ int doit(string iSCHfilename, string oSCHfilename, string CONFfilename)
             kicadsch.getEntrys(row, searchvec); // searchvec mit Eintraegen aus SCH-file anreichern
             rmquotmarks(searchvec);
             //rowfound = Database.findrow(searchvec);
-            rowsfound = Database.findrows(searchvec);
+            rowsfound = Database_ptr->findrows(searchvec);
 
             if(0<rowsfound.size()) {
                 kicadsch.getEntrys(row, ordervec);
-                bestrowsfound = Database.findbestrows(rowsfound,ordervec);
+                bestrowsfound = Database_ptr->findbestrows(rowsfound,ordervec);
                 rowfound = bestrowsfound[0];
 
                 NoMatches++; // zaehle erfolgreiche Treffer
-                Database.getEntrys(rowfound, updatevec); // updatevec mit Eintraegen aus der Datenbank anreichern
+                Database_ptr->getEntrys(rowfound, updatevec); // updatevec mit Eintraegen aus der Datenbank anreichern
                 oplogentr.patchstartindex = kicadsch.getPatchsize();
                 notoverwritten += kicadsch.addEntrys(updatevec, row);
                 oplogentr.SCHrow = row;
@@ -122,6 +123,7 @@ int doit(string iSCHfilename, string oSCHfilename, string CONFfilename)
             if(-1==row) break;
             NoParts++;
         }
+        delete(Database_ptr);
         round++;
         cout << "round: " << round << endl;
         cout << "    database used: " << csvparam.filename << endl;
